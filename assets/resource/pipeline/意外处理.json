@@ -1,0 +1,37 @@
+{
+  "$__mpe_config_意外处理": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\意外处理.json",
+      "filename": "意外处理",
+      "lastSyncTime": 1766566273175,
+      "prefix": "",
+      "savedViewport": {
+        "x": -2024,
+        "y": -377,
+        "zoom": 1
+      },
+      "version": "v0.13.0_beta_2"
+    }
+  },
+  "意外处理": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2446,
+        "y": 631
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "意外/确定.png",
+          "意外/重试.png"
+        ]
+      },
+      "type": "FeatureMatch"
+    }
+  }
+}

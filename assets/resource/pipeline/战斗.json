@@ -1,0 +1,204 @@
+{
+  "$__mpe_config_战斗": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/战斗.json",
+      "filename": "战斗",
+      "lastSyncTime": 1766566287109,
+      "prefix": "",
+      "savedViewport": {
+        "x": -217,
+        "y": 105,
+        "zoom": 0.66
+      },
+      "version": "v0.13.0_beta_2"
+    }
+  },
+  "开始战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 0,
+        "y": 29
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "放弃战斗",
+      "暴走识别",
+      "普通卡组"
+    ],
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/卡组一.png",
+          "战斗/卡组二.png",
+          "战斗/卡组三.png",
+          "战斗/卡组四.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "战斗失败": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 445
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/战斗失败.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "战斗胜利": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 251
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/战斗胜利.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "放弃战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "enabled": false,
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/放弃.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "普通卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 445
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "focus": {
+      "Node.Recognition.Starting": "识别到普通感染者"
+    },
+    "next": [
+      "跳过战斗"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "卡组三"
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "暴走卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 251
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "跳过战斗"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "卡组二"
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "暴走识别": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 223
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "focus": {
+      "Node.Recognition.Succeeded": "识别到暴走感染者"
+    },
+    "next": [
+      "暴走卡组"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "暴走的"
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "跳过战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 900,
+        "y": 251
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "战斗胜利",
+      "战斗失败"
+    ],
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/跳过.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  }
+}

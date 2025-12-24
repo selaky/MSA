@@ -1,0 +1,168 @@
+{
+  "$__mpe_config_跑图主流程": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/跑图主流程.json",
+      "filename": "跑图主流程",
+      "lastSyncTime": 1766567193877,
+      "prefix": "",
+      "savedViewport": {
+        "x": 216,
+        "y": 110,
+        "zoom": 0.66
+      },
+      "version": "v0.13.0_beta_2"
+    }
+  },
+  "$__mpe_external_开始战斗_跑图主流程": {
+    "$__mpe_code": {
+      "position": {
+        "x": 605,
+        "y": 117
+      }
+    }
+  },
+  "$__mpe_external_意外处理_跑图主流程": {
+    "$__mpe_code": {
+      "position": {
+        "x": 605,
+        "y": 31
+      }
+    }
+  },
+  "下一区": {
+    "$__mpe_code": {
+      "position": {
+        "x": 615,
+        "y": 428
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "enabled": true,
+    "recognition": {
+      "param": {
+        "template": [
+          "跑图/下一区.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "前进": {
+    "$__mpe_code": {
+      "position": {
+        "x": 618,
+        "y": 659
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "跑图/前进.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "开始跑图": {
+    "$__mpe_code": {
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "跑图循环开始"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "终止跑图循环": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 813
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "StopTask"
+    },
+    "enabled": false,
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "跑图循环开始": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "终止跑图循环",
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      },
+      {
+        "jump_back": true,
+        "name": "开始战斗"
+      },
+      {
+        "jump_back": true,
+        "name": "跑图获得卡牌"
+      },
+      {
+        "jump_back": true,
+        "name": "下一区"
+      },
+      {
+        "jump_back": true,
+        "name": "前进"
+      }
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "跑图获得卡牌": {
+    "$__mpe_code": {
+      "position": {
+        "x": 612,
+        "y": 235
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "卡牌/点击屏幕跳过.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  }
+}
