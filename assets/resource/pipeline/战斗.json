@@ -3,12 +3,13 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1766638433122,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1766641009225,
       "prefix": "",
       "savedViewport": {
-        "x": 154,
-        "y": 163,
-        "zoom": 0.5
+        "x": 204,
+        "y": 36,
+        "zoom": 0.87
       },
       "version": "v0.13.0"
     }
@@ -55,6 +56,9 @@
       "param": {},
       "type": "Click"
     },
+    "focus": {
+      "Node.Action.Starting": "战斗失败"
+    },
     "recognition": {
       "param": {
         "roi": [
@@ -80,6 +84,9 @@
     "action": {
       "param": {},
       "type": "Click"
+    },
+    "focus": {
+      "Node.Action.Starting": "战斗胜利啦"
     },
     "recognition": {
       "param": {
@@ -153,8 +160,8 @@
   "放弃战斗": {
     "$__mpe_code": {
       "position": {
-        "x": 1200,
-        "y": 0
+        "x": 1216,
+        "y": -38
       }
     },
     "action": {
@@ -162,6 +169,9 @@
       "type": "Click"
     },
     "enabled": false,
+    "focus": {
+      "Node.Action.Starting": "捡垃圾要紧，溜了溜了~"
+    },
     "recognition": {
       "param": {
         "roi": [
@@ -189,7 +199,7 @@
       "type": "Click"
     },
     "focus": {
-      "Node.Recognition.Starting": "识别到普通感染者"
+      "Node.Recognition.Starting": "检测到普通感染者，准备战斗。"
     },
     "next": [
       "跳过战斗"
@@ -250,7 +260,7 @@
       "type": "DoNothing"
     },
     "focus": {
-      "Node.Recognition.Succeeded": "识别到暴走感染者"
+      "Node.Recognition.Succeeded": "检测到暴走感染者，准备战斗！"
     },
     "next": [
       "暴走卡组"
@@ -280,6 +290,9 @@
     "action": {
       "param": {},
       "type": "Click"
+    },
+    "focus": {
+      "Node.Action.Starting": "跳过战斗"
     },
     "next": [
       "战斗获得卡牌一",

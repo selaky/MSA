@@ -3,12 +3,13 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1766639051947,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1766644948440,
       "prefix": "",
       "savedViewport": {
-        "x": 231,
-        "y": -33,
-        "zoom": 0.76
+        "x": -50,
+        "y": -619,
+        "zoom": 1
       },
       "version": "v0.13.0"
     }
@@ -42,7 +43,7 @@
     },
     "enabled": true,
     "focus": {
-      "Node.Recognition.Succeeded": "区域探索完成，前往下一区"
+      "Node.Action.Starting": "区域探索完成，前往下一区"
     },
     "recognition": {
       "param": {
@@ -63,7 +64,7 @@
     "$__mpe_code": {
       "position": {
         "x": 600,
-        "y": 745
+        "y": 825
       }
     },
     "action": {
@@ -107,8 +108,8 @@
   "终止跑图循环": {
     "$__mpe_code": {
       "position": {
-        "x": 614,
-        "y": 947
+        "x": 585,
+        "y": 1093
       }
     },
     "action": {
@@ -174,7 +175,8 @@
     "recognition": {
       "param": {
         "template": [
-          "卡牌/点击屏幕跳过.png"
+          "卡牌/点击屏幕跳过.png",
+          "卡牌/点击屏幕跳过-小.png"
         ]
       },
       "type": "TemplateMatch"
