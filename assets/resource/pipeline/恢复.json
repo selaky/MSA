@@ -1,31 +1,47 @@
 {
   "$__mpe_config_恢复": {
     "$__mpe_code": {
-      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/恢复.json",
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\恢复.json",
       "filename": "恢复",
-      "lastSyncTime": 1766655796110,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1766670379240,
       "prefix": "",
       "savedViewport": {
-        "x": -42,
-        "y": -606,
-        "zoom": 0.76
+        "x": -268,
+        "y": 34,
+        "zoom": 0.5
       },
       "version": "v0.13.0"
-    }
-  },
-  "$__mpe_external_放弃战斗_恢复": {
-    "$__mpe_code": {
-      "position": {
-        "x": 930,
-        "y": 1416
-      }
     }
   },
   "AP不足": {
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 283
+        "y": 300
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "统计大AP药数量"
+    ],
+    "recognition": {
+      "param": {
+        "template": [
+          "恢复/行动力恢复药-大.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "AP药统计结束": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 316
       }
     },
     "action": {
@@ -38,19 +54,81 @@
       "判断停止使用AP药"
     ],
     "recognition": {
-      "param": {
-        "template": [
-          "恢复/行动力恢复药-大.png"
-        ]
-      },
-      "type": "TemplateMatch"
+      "param": {},
+      "type": "DirectHit"
     }
   },
   "BC不足": {
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 501
+        "y": 954
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "统计大BC药数量"
+    ],
+    "recognition": {
+      "param": {
+        "template": [
+          "恢复/战斗力恢复药-大.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "BC药不足，关闭恢复界面": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 1511
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "BC药不足，放弃战斗"
+    ],
+    "recognition": {
+      "param": {
+        "template": [
+          "恢复/关闭恢复界面.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "BC药不足，放弃战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 1518
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "template": [
+          "战斗/放弃"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "BC药统计结束": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 970
       }
     },
     "action": {
@@ -63,19 +141,15 @@
       "判断停止使用BC药"
     ],
     "recognition": {
-      "param": {
-        "template": [
-          "恢复/战斗力恢复药-大.png"
-        ]
-      },
-      "type": "TemplateMatch"
+      "param": {},
+      "type": "DirectHit"
     }
   },
   "使用大恢复药": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 267
+        "x": 1800,
+        "y": 283
       }
     },
     "action": {
@@ -103,8 +177,8 @@
   "使用小恢复药": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 703
+        "x": 1800,
+        "y": 1155
       }
     },
     "action": {
@@ -132,7 +206,7 @@
   "免费恢复": {
     "$__mpe_code": {
       "position": {
-        "x": 300,
+        "x": 1800,
         "y": 0
       }
     },
@@ -159,8 +233,8 @@
   "关闭恢复界面": {
     "$__mpe_code": {
       "position": {
-        "x": 1446,
-        "y": 346
+        "x": 2100,
+        "y": 283
       }
     },
     "action": {
@@ -185,8 +259,8 @@
   "判断使用大AP药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 271
+        "x": 1500,
+        "y": 287
       }
     },
     "action": {
@@ -207,8 +281,8 @@
   "判断使用大BC药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 489
+        "x": 1500,
+        "y": 941
       }
     },
     "action": {
@@ -229,8 +303,8 @@
   "判断使用小AP药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 707
+        "x": 1500,
+        "y": 505
       }
     },
     "action": {
@@ -251,8 +325,8 @@
   "判断使用小BC药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 925
+        "x": 1500,
+        "y": 1159
       }
     },
     "action": {
@@ -273,8 +347,8 @@
   "判断停止使用AP药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 1143
+        "x": 1500,
+        "y": 723
       }
     },
     "action": {
@@ -293,8 +367,8 @@
   "判断停止使用BC药": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 1361
+        "x": 1500,
+        "y": 1377
       }
     },
     "action": {
@@ -305,7 +379,7 @@
       "Node.Recognition.Succeeded": "BC药使用已达到上限，开启纯跑图模式"
     },
     "next": [
-      "放弃战斗"
+      "BC药不足，关闭恢复界面"
     ],
     "recognition": {
       "param": {},
@@ -337,11 +411,127 @@
       "type": "TemplateMatch"
     }
   },
-  "行动力耗尽": {
+  "统计大AP药数量": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 284
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "统计小AP药数量"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          ".*"
+        ],
+        "roi": [
+          785,
+          385,
+          93,
+          29
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "统计大BC药数量": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 938
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "统计小BC药数量"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          ".*"
+        ],
+        "roi": [
+          785,
+          385,
+          93,
+          29
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "统计小AP药数量": {
     "$__mpe_code": {
       "position": {
         "x": 900,
-        "y": 1171
+        "y": 284
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "AP药统计结束"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          ".*"
+        ],
+        "roi": [
+          785,
+          497,
+          93,
+          32
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "统计小BC药数量": {
+    "$__mpe_code": {
+      "position": {
+        "x": 900,
+        "y": 938
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "BC药统计结束"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          ".*"
+        ],
+        "roi": [
+          785,
+          497,
+          93,
+          32
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "行动力耗尽": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 752
       }
     },
     "action": {

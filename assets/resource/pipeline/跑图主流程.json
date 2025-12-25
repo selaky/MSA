@@ -4,12 +4,12 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图主流程.json",
       "filename": "跑图主流程",
       "isModifiedExternally": true,
-      "lastSyncTime": 1766648847216,
+      "lastSyncTime": 1766669763809,
       "prefix": "",
       "savedViewport": {
-        "x": 63,
-        "y": -164,
-        "zoom": 0.76
+        "x": 142,
+        "y": 232,
+        "zoom": 0.57
       },
       "version": "v0.13.0"
     }
@@ -17,32 +17,32 @@
   "$__mpe_external_开始恢复_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 602,
-        "y": 23
+        "x": 905,
+        "y": 128
       }
     }
   },
   "$__mpe_external_开始战斗_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 605,
-        "y": 117
+        "x": 905,
+        "y": 223
       }
     }
   },
   "$__mpe_external_意外处理_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 601,
-        "y": -67
+        "x": 905,
+        "y": 33
       }
     }
   },
   "下一区": {
     "$__mpe_code": {
       "position": {
-        "x": 611,
-        "y": 444
+        "x": 900,
+        "y": 512
       }
     },
     "action": {
@@ -68,11 +68,30 @@
       "type": "TemplateMatch"
     }
   },
+  "初始化吃药数据": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "跑图循环开始"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
   "前进": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 825
+        "x": 900,
+        "y": 827
       }
     },
     "action": {
@@ -106,7 +125,7 @@
       "type": "DoNothing"
     },
     "next": [
-      "跑图循环开始"
+      "初始化吃药数据"
     ],
     "recognition": {
       "param": {},
@@ -116,7 +135,7 @@
   "跑图循环开始": {
     "$__mpe_code": {
       "position": {
-        "x": 300,
+        "x": 600,
         "y": 0
       }
     },
@@ -158,8 +177,8 @@
   "跑图获得卡牌": {
     "$__mpe_code": {
       "position": {
-        "x": 615,
-        "y": 227
+        "x": 900,
+        "y": 318
       }
     },
     "action": {
