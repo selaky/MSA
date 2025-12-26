@@ -25,6 +25,9 @@ _STATE_BY_TASK_ID: dict[int, RecoverState] = {}
 
 
 def reset_state(task_id: int) -> None:
+    """重置指定任务的状态，并清理所有其他旧任务的状态以防止内存泄漏。"""
+    # 清理所有旧的 task_id，只保留当前的
+    _STATE_BY_TASK_ID.clear()
     _STATE_BY_TASK_ID[task_id] = RecoverState()
 
 
@@ -75,13 +78,32 @@ def coerce_int(value: Any, *, where: str) -> int:
 _DIGITS_RE: Final[re.Pattern[str]] = re.compile(r"^\d+$")
 
 
-def parse_ocr_digits(text: str, *, node_name: str) -> int:
-    """解析 OCR 结果为纯数字（仅支持 0-9），不做乘号等兼容。"""
+def parse_ocr_digits(text: str, *, node_name: str, max_value: int = 99999) -> int:
+    """解析 OCR 结果为纯数字（仅支持 0-9），不做乘号等兼容。
 
+    Args:
+        text: OCR 识别的文本
+        node_name: 节点名称，用于错误信息
+        max_value: 允许的最大值，默认 99999
+
+    Returns:
+        解析后的整数值
+
+    Raises:
+        ValueError: 当 OCR 结果不是纯数字或超出合理范围时
+    """
     s = (text or "").strip()
     if not _DIGITS_RE.fullmatch(s):
         raise ValueError(f"OCR 结果不是纯数字：node={node_name} text={text!r}")
-    return int(s)
+
+    value = int(s)
+    if value < 0 or value > max_value:
+        raise ValueError(
+            f"OCR 结果超出合理范围：node={node_name} text={text!r} "
+            f"value={value} (期望范围: 0-{max_value})"
+        )
+
+    return value
 
 
 def find_last_node_detail(task_detail: Any, *, node_name: str) -> Any:
