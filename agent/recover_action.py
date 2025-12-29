@@ -67,3 +67,17 @@ class StorePotionStorage(CustomAction):
         except Exception as e:
             logging.warning(f"[{node_name}]统计数据出错：{e}")
             return False
+        
+@AgentServer.custom_action("add_potion_usage")
+class AddPotionUsage(CustomAction):
+    """把药品使用计数+1"""
+    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
+        try:
+            node_name = argv.node_name
+            potion_type = recover_helper.node_name_extract(node_name)
+            potion_type.inc_usage()
+            logging.info(f"{potion_type.name}的使用量增加,现在为{potion_type.usage}")
+            return True
+        except Exception as e:
+            logging.error(f"{potion_type.name}+1失败")
+            return False

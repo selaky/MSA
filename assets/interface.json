@@ -5,8 +5,9 @@
     // 示例：https://github.com/MaaXYZ/MaaFramework/blob/main/sample/interface.json
     "interface_version": 2,
     "name": "MSA",
-    "description": "这是一个使用 MaaFramework 创建的新项目,全名 Miss Sirius Assistant。目前是测试版.",
+    "description": "这是一个使用 MaaFramework 创建的新项目,全名 Miss.Sirius Assistant。目前是测试版.",
     // "contact": "QQ群: 123456789",
+    "icon": "Sirius.ico",
     "license": "MIT",
     "welcome": "首次使用！欢迎使用 MSA!",
     // 填写项目地址和版本号可实现自动更新功能

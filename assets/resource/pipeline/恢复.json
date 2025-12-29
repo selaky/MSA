@@ -4,12 +4,12 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\恢复.json",
       "filename": "恢复",
       "isModifiedExternally": true,
-      "lastSyncTime": 1766994944271,
+      "lastSyncTime": 1766999440068,
       "prefix": "",
       "savedViewport": {
-        "x": -488,
-        "y": -170,
-        "zoom": 0.87
+        "x": -446,
+        "y": -516,
+        "zoom": 0.57
       },
       "version": "v0.13.0"
     }
@@ -18,7 +18,7 @@
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 364
+        "y": 392
       }
     },
     "action": {
@@ -41,7 +41,7 @@
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 1018
+        "y": 1174
       }
     },
     "action": {
@@ -64,14 +64,13 @@
     "$__mpe_code": {
       "position": {
         "x": 1500,
-        "y": 1446
+        "y": 1694
       }
     },
     "action": {
       "param": {},
       "type": "Click"
     },
-    "enabled": false,
     "next": [
       "BC药不足，放弃战斗"
     ],
@@ -88,7 +87,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1800,
-        "y": 1453
+        "y": 1730
       }
     },
     "action": {
@@ -115,7 +114,6 @@
       "param": {},
       "type": "Click"
     },
-    "enabled": false,
     "next": [
       "关闭恢复界面"
     ],
@@ -138,14 +136,13 @@
     "$__mpe_code": {
       "position": {
         "x": 1500,
-        "y": 1219
+        "y": 1411
       }
     },
     "action": {
       "param": {},
       "type": "Click"
     },
-    "enabled": false,
     "next": [
       "关闭恢复界面"
     ],
@@ -204,13 +201,16 @@
     "$__mpe_code": {
       "position": {
         "x": 1800,
-        "y": 347
+        "y": 376
       }
     },
     "action": {
       "param": {},
       "type": "Click"
     },
+    "next": [
+      "等待恢复界面关闭"
+    ],
     "recognition": {
       "param": {
         "roi": [
@@ -230,12 +230,14 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 351
+        "y": 348
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "add_potion_usage"
+      },
+      "type": "Custom"
     },
     "focus": {
       "Node.Recognition.Succeeded": "使用大AP药"
@@ -254,12 +256,14 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 1005
+        "y": 1130
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "add_potion_usage"
+      },
+      "type": "Custom"
     },
     "focus": {
       "Node.Recognition.Succeeded": "使用大BC药"
@@ -278,12 +282,14 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 569
+        "y": 630
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "add_potion_usage"
+      },
+      "type": "Custom"
     },
     "focus": {
       "Node.Recognition.Succeeded": "使用小AP药"
@@ -302,12 +308,14 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 1223
+        "y": 1412
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "add_potion_usage"
+      },
+      "type": "Custom"
     },
     "focus": {
       "Node.Recognition.Succeeded": "使用小BC药"
@@ -326,7 +334,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 787
+        "y": 912
       }
     },
     "action": {
@@ -346,7 +354,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 1441
+        "y": 1718
       }
     },
     "action": {
@@ -389,11 +397,27 @@
       "type": "TemplateMatch"
     }
   },
+  "等待恢复界面关闭": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2107,
+        "y": 402
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
   "行动力耗尽": {
     "$__mpe_code": {
       "position": {
         "x": 1500,
-        "y": 816
+        "y": 940
       }
     },
     "action": {
@@ -409,7 +433,7 @@
     "$__mpe_code": {
       "position": {
         "x": 600,
-        "y": 348
+        "y": 362
       }
     },
     "action": {
@@ -440,7 +464,7 @@
     "$__mpe_code": {
       "position": {
         "x": 600,
-        "y": 1002
+        "y": 1144
       }
     },
     "action": {
@@ -471,7 +495,7 @@
     "$__mpe_code": {
       "position": {
         "x": 900,
-        "y": 348
+        "y": 362
       }
     },
     "action": {
@@ -504,7 +528,7 @@
     "$__mpe_code": {
       "position": {
         "x": 900,
-        "y": 1002
+        "y": 1144
       }
     },
     "action": {
