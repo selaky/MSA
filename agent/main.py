@@ -6,6 +6,7 @@ from maa.toolkit import Toolkit
 import my_action
 import my_reco
 import recover_action
+import recover_reco
 
 
 def main():

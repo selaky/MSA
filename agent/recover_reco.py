@@ -42,7 +42,7 @@ class ShouldUsePotion(CustomRecognition):
                 
                 logging.info(msg)
                 # 返回失败 (坐标全 0)
-                return CustomRecognition.AnalyzeResult(box=(0, 0, 0, 0), detail=msg)
+                return CustomRecognition.AnalyzeResult(box=None, detail=msg)
 
         except Exception as e:
             # 出错时捕捉异常
