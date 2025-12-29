@@ -20,11 +20,16 @@ class SinglePotion:
         """使用药水数量 +1"""
         self.usage += 1
 
-    def print_information(self):
-        """打印这类药品的信息"""
-        print(f"{name}库存:{self.stock}")
-        print(f"{name}已用:{self.usage}")
-        print(f"{name}限制:{self.limit}")
+    def get_status(self):
+        """返回当前的药品状态数据"""
+        data = {
+            "name": self.name,
+            "stock": self.stock,
+            "usage": self.usage,
+            "limit": self.limit
+        }
+        return data  # 把这个打包好的数据包扔回去
+
 
 @dataclass
 class PotionType:
@@ -65,3 +70,20 @@ potion_stats = PotionManager()
 
 # 初始化所有药水名字
 potion_stats.init_names()
+
+def node_name_extract(node_name):
+    """节点名称解析.通过调用的节点名字来判断当前要处理的药品是哪一类。识别方法是看节点名字中出现了 AP 还是 BC, 以及是大还是小。"""
+    if ("AP" in node_name):
+        if ("大" in node_name):
+            return potion_stats.ap.big
+        elif ("小" in node_name):
+            return potion_stats.ap.small
+        else:
+            raise ValueError(f"致命错误：在名称 '{node_name}' 中未识别出药品规格(大/小)！请确保你在正确的节点调用此动作或识别，并且对节点规范命名。")
+    elif ("BC" in node_name):
+        if ("大" in node_name):
+            return potion_stats.bc.big
+        elif ("小" in node_name):
+            return potion_stats.bc.small
+        else:
+            raise ValueError((f"致命错误：在名称 '{node_name}' 中未识别出药品种类(AP/BC)！请确保你在正确的节点调用此动作或识别，并且对节点规范命名。"))

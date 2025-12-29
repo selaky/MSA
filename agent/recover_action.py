@@ -45,4 +45,25 @@ class InitPotionData(CustomAction):
             logging.error(f"[初始化吃药数据]参数解析失败或设置出错:{e}")
             return False
 
-        
+@AgentServer.custom_action("store_potion_storage")
+class StorePotionStorage(CustomAction):
+    """储存 OCR 识别到的药水数量"""
+    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
+        try:
+            node_name = argv.node_name
+            # 获取 OCR 结果
+            ocr_res = int(argv.reco_detail.best_result.text)
+            logging.info(f"{node_name} OCR 识别结果为 {ocr_res}")
+
+            # 进行节点解析
+            
+            potion_type = recover_helper.node_name_extract(node_name)
+
+            # 将 OCR 结果存入对应药水的记录中
+            potion_type.stock = ocr_res
+            logging.info(f"{node_name} 成功保存数据, {potion_type.name} 的剩余数量为 {potion_type.stock}")
+
+            return True
+        except Exception as e:
+            logging.warning(f"[{node_name}]统计数据出错：{e}")
+            return False

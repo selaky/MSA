@@ -3,12 +3,13 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\恢复.json",
       "filename": "恢复",
-      "lastSyncTime": 1766933044101,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1766983303795,
       "prefix": "",
       "savedViewport": {
-        "x": 0,
-        "y": -131,
-        "zoom": 0.66
+        "x": -47,
+        "y": -73,
+        "zoom": 0.57
       },
       "version": "v0.13.0"
     }
@@ -233,6 +234,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用大AP药"
     },
@@ -255,6 +257,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用大BC药"
     },
@@ -277,6 +280,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用小AP药"
     },
@@ -299,6 +303,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用小BC药"
     },
@@ -321,6 +326,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": "AP药使用已达到预订值，跑图无法继续，任务圆满完成",
     "next": [
       "行动力耗尽"
@@ -341,6 +347,7 @@
       "param": {},
       "type": "DoNothing"
     },
+    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "BC药使用已达到预订值，开启纯跑图模式，消耗剩余AP"
     },
@@ -401,8 +408,10 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "store_potion_storage"
+      },
+      "type": "Custom"
     },
     "next": [
       "记录小 AP 药库存"
@@ -430,8 +439,10 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "store_potion_storage"
+      },
+      "type": "Custom"
     },
     "next": [
       "记录小BC药库存"
@@ -459,8 +470,10 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "store_potion_storage"
+      },
+      "type": "Custom"
     },
     "next": [
       "判断使用大AP药",
@@ -490,8 +503,10 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "store_potion_storage"
+      },
+      "type": "Custom"
     },
     "next": [
       "判断使用大BC药",
