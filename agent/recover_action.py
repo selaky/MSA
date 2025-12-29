@@ -1,4 +1,4 @@
-# input: states
+# input: recover_helper
 # output: 暂无
 # pos: 这里是恢复流程中执行的动作
 
