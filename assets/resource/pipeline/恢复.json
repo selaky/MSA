@@ -4,11 +4,11 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\恢复.json",
       "filename": "恢复",
       "isModifiedExternally": true,
-      "lastSyncTime": 1766983303795,
+      "lastSyncTime": 1766988645631,
       "prefix": "",
       "savedViewport": {
-        "x": -47,
-        "y": -73,
+        "x": -189,
+        "y": -93,
         "zoom": 0.57
       },
       "version": "v0.13.0"
@@ -71,6 +71,7 @@
       "param": {},
       "type": "Click"
     },
+    "enabled": false,
     "next": [
       "BC药不足，放弃战斗"
     ],
@@ -114,6 +115,7 @@
       "param": {},
       "type": "Click"
     },
+    "enabled": false,
     "next": [
       "关闭恢复界面"
     ],
@@ -143,6 +145,7 @@
       "param": {},
       "type": "Click"
     },
+    "enabled": false,
     "next": [
       "关闭恢复界面"
     ],
@@ -234,7 +237,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用大AP药"
     },
@@ -257,7 +259,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用大BC药"
     },
@@ -280,7 +281,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用小AP药"
     },
@@ -303,7 +303,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "使用小BC药"
     },
@@ -326,7 +325,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": "AP药使用已达到预订值，跑图无法继续，任务圆满完成",
     "next": [
       "行动力耗尽"
@@ -347,7 +345,6 @@
       "param": {},
       "type": "DoNothing"
     },
-    "enabled": false,
     "focus": {
       "Node.Recognition.Succeeded": "BC药使用已达到预订值，开启纯跑图模式，消耗剩余AP"
     },
