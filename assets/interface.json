@@ -5,9 +5,11 @@
     // 示例：https://github.com/MaaXYZ/MaaFramework/blob/main/sample/interface.json
     "interface_version": 2,
     "name": "MSA",
+    "label": "MSA",
+    "title": "天狼星小助手",
     "description": "这是一个使用 MaaFramework 创建的新项目,全名 Miss.Sirius Assistant。目前是测试版.",
     // "contact": "QQ群: 123456789",
-    "icon": "Sirius.ico",
+    "icon": "assets/Sirius.ico",
     "license": "MIT",
     "welcome": "首次使用！欢迎使用 MSA!",
     // 填写项目地址和版本号可实现自动更新功能
@@ -31,7 +33,7 @@
                 "window_regex": "StarEra",
                 // 截图及控制方式，请根据项目实际情况修改
                 // 文档: https://maafw.xyz/docs/2.4-ControlMethods
-                "screencap": "PrintWindow", // 截图方式
+                "screencap": "FramePool", // 截图方式
                 "mouse": "Seize", // 鼠标控制方式
                 "keyboard": "PostMessageWithCursorPos" // 键盘控制方式
             }
@@ -49,7 +51,7 @@
     "agent": {
         "child_exec": "python",
         "child_args": [
-            "../agent/main.py"
+            "./agent/main.py"
         ]
     },
     "task": [
