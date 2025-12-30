@@ -152,14 +152,14 @@ jobs:
           fi
 
           # 下载纯 Python 包（不需要指定平台）
-          python -m pip download --no-deps -d temp_packages maafw strenum MaaAgentBinary
+          python -m pip download --no-deps -d temp_packages strenum MaaAgentBinary
 
-          # 下载平台特定的包（numpy 有 native 代码）
+          # 下载平台特定的包（maafw 和 numpy 包含 native 代码）
           python -m pip download --no-deps --only-binary=:all: \
             --platform "${PLATFORM}" \
             --python-version 312 \
             -d temp_packages \
-            numpy
+            maafw numpy
 
           # 解压 wheel 包到 packages 目录
           for whl in temp_packages/*.whl; do
