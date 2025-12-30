@@ -3,15 +3,14 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\战斗.json",
       "filename": "战斗",
-      "isModifiedExternally": true,
-      "lastSyncTime": 1766795100439,
+      "lastSyncTime": 1766976584983,
       "prefix": "",
       "savedViewport": {
-        "x": 158,
-        "y": 69,
-        "zoom": 0.43
+        "x": -546,
+        "y": -153,
+        "zoom": 0.76
       },
-      "version": "v0.13.0"
+      "version": "v0.13.1"
     }
   },
   "$__mpe_external_跑图循环开始_战斗": {
@@ -125,9 +124,6 @@
       "param": {},
       "type": "Click"
     },
-    "focus": {
-      "Node.Recognition.Succeeded": "战斗获得卡牌一"
-    },
     "next": [
       "战斗获得卡牌二"
     ],
@@ -155,9 +151,6 @@
     "action": {
       "param": {},
       "type": "Click"
-    },
-    "focus": {
-      "Node.Recognition.Succeeded": "战斗获得卡牌二"
     },
     "next": [
       "战斗胜利"
