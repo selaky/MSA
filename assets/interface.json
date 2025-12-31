@@ -62,7 +62,8 @@
                 "自动前往下一区",
                 "自动进行战斗",
                 "自动使用每日免费回复",
-                "恢复药使用上限"
+                "恢复药使用上限",
+                "升级自动加点"
             ]
         }
     ],
@@ -341,6 +342,65 @@
                     }
                 }
             }
+        },
+        "升级自动加点": {
+            "type": "switch",
+            "label": "升级自动加点",
+            "description": "开启后，角色升级时会自动分配属性点",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "label": "开启",
+                    "option": [
+                        "属性分配方式"
+                    ]
+                },
+                {
+                    "name": "No",
+                    "label": "关闭",
+                    "pipeline_override": {
+                        "分配行动力": {
+                            "enabled": false
+                        },
+                        "分配领导力": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "属性分配方式": {
+            "type": "select",
+            "label": "属性分配方式",
+            "description": "选择升级时属性点的分配方式",
+            "default_case": "行动力",
+            "cases": [
+                {
+                    "name": "行动力",
+                    "label": "全部分配给行动力",
+                    "pipeline_override": {
+                        "分配行动力": {
+                            "enabled": true
+                        },
+                        "分配领导力": {
+                            "enabled": false
+                        }
+                    }
+                },
+                {
+                    "name": "领导力",
+                    "label": "全部分配给领导力",
+                    "pipeline_override": {
+                        "分配行动力": {
+                            "enabled": false
+                        },
+                        "分配领导力": {
+                            "enabled": true
+                        }
+                    }
+                }
+            ]
         }
     }
 }
