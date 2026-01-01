@@ -210,6 +210,27 @@ jobs:
           python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
           cd ..
 
+      # 自定义 exe 图标和名称（仅 Windows）
+      - name: Customize exe icon and name (Windows)
+        if: matrix.os == 'win'
+        shell: bash
+        run: |
+          # 安装 wine
+          sudo apt-get update
+          sudo apt-get install -y wine64
+
+          # 下载 rcedit 工具
+          RCEDIT_VERSION="v2.0.0"
+          curl -L -o rcedit.exe "https://github.com/electron/rcedit/releases/download/${RCEDIT_VERSION}/rcedit-x64.exe"
+
+          # 使用 rcedit 修改 exe 图标
+          wine rcedit.exe install/MFAAvalonia.exe --set-icon assets/logo.ico
+
+          # 重命名 exe 文件
+          mv install/MFAAvalonia.exe "install/MSA天狼星小助手.exe"
+
+          echo "Exe customization completed: icon changed and renamed to MSA天狼星小助手.exe"
+
       - uses: actions/upload-artifact@v4
         with:
           name: MSA-${{ matrix.os }}-${{ matrix.arch }}
