@@ -65,6 +65,17 @@
                 "恢复药使用上限",
                 "升级自动加点"
             ]
+        },
+        {
+            "name": "竞技场",
+            "entry": "开始竞技场",
+            "default_check": false,
+            "option": [
+                "竞技场目标积分",
+                "使用星币提升体力",
+                "竞技场战斗卡组",
+                "使用单独的防御卡组"
+            ]
         }
     ],
     "option": {
@@ -397,6 +408,224 @@
                         },
                         "分配领导力": {
                             "enabled": true
+                        }
+                    }
+                }
+            ]
+        },
+        "竞技场目标积分": {
+            "type": "input",
+            "label": "目标积分",
+            "description": "达到目标积分后，停止竞技场任务",
+            "inputs": [
+                {
+                    "name": "目标积分",
+                    "label": "目标积分",
+                    "description": "达到目标积分后停止任务",
+                    "default": "100",
+                    "pipeline_type": "int",
+                    "verify": "^[1-9]\\d*$",
+                    "pattern_msg": "请输入正整数"
+                }
+            ],
+            "pipeline_override": {
+                "初始化竞技场数据": {
+                    "action": {
+                        "param": {
+                            "custom_action_param": {
+                                "target_points": "{目标积分}"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "使用星币提升体力": {
+            "type": "switch",
+            "label": "使用星币提升体力",
+            "description": "开启后，每次战斗前自动使用星币提升体力",
+            "default_case": "Yes",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "label": "开启",
+                    "pipeline_override": {
+                        "星币提升体力": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "label": "关闭",
+                    "pipeline_override": {
+                        "星币提升体力": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "竞技场战斗卡组": {
+            "type": "select",
+            "label": "战斗卡组",
+            "description": "在竞技场战斗时使用的卡组",
+            "default_case": "卡组4",
+            "cases": [
+                {
+                    "name": "卡组1",
+                    "label": "卡组1",
+                    "pipeline_override": {
+                        "选择竞技场战斗卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组1"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组2",
+                    "label": "卡组2",
+                    "pipeline_override": {
+                        "选择竞技场战斗卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组3",
+                    "label": "卡组3",
+                    "pipeline_override": {
+                        "选择竞技场战斗卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组3"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组4",
+                    "label": "卡组4",
+                    "pipeline_override": {
+                        "选择竞技场战斗卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组4"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "使用单独的防御卡组": {
+            "type": "switch",
+            "label": "使用单独的防御卡组",
+            "description": "开启后，会在结束竞技场任务前自动切换卡组，可以利用此功能换较弱的卡组作为自己的竞技场卡组，助力其他玩家获取积分。",
+            "default_case": "No",
+            "cases": [
+                {
+                    "name": "Yes",
+                    "label": "开启",
+                    "option": [
+                        "竞技场防御卡组"
+                    ],
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "enabled": true
+                        }
+                    }
+                },
+                {
+                    "name": "No",
+                    "label": "关闭",
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "enabled": false
+                        }
+                    }
+                }
+            ]
+        },
+        "竞技场防御卡组": {
+            "type": "select",
+            "label": "防御卡组",
+            "description": "赠人玫瑰，手留余香。",
+            "default_case": "卡组1",
+            "cases": [
+                {
+                    "name": "卡组1",
+                    "label": "卡组1",
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组1"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组2",
+                    "label": "卡组2",
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组3",
+                    "label": "卡组3",
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组3"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "卡组4",
+                    "label": "卡组4",
+                    "pipeline_override": {
+                        "选择竞技场防御卡组": {
+                            "recognition": {
+                                "param": {
+                                    "expected": [
+                                        "卡组4"
+                                    ]
+                                }
+                            }
                         }
                     }
                 }
