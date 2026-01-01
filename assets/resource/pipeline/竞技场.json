@@ -1,0 +1,453 @@
+{
+  "$__mpe_config_竞技场": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\竞技场.json",
+      "filename": "竞技场",
+      "lastSyncTime": 1767236700839,
+      "prefix": "",
+      "savedViewport": {
+        "x": -130,
+        "y": 254,
+        "zoom": 0.5
+      },
+      "version": "v0.14.0"
+    }
+  },
+  "一轮竞技场结束": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3600,
+        "y": 370
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "竞技场循环开始"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "初始化竞技场数据": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "竞技场循环开始"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "开始竞技场": {
+    "$__mpe_code": {
+      "position": {
+        "x": 0,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "初始化竞技场数据"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "星币提升体力": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 18
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          90,
+          486,
+          130,
+          27
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "选择竞技场战斗卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击匹配": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2400,
+        "y": 18
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          381,
+          307,
+          63,
+          58
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "跳过竞技场战斗"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "竞技场失败": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3000,
+        "y": 336
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "竞技场失败记录"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          693,
+          3,
+          588,
+          277
+        ],
+        "template": [
+          "战斗/战斗失败.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "竞技场失败记录": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3300,
+        "y": 370
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "一轮竞技场结束"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "竞技场循环开始": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "记录竞技场积分"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "竞技场次数未达上限": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 192
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "进入继续竞技场流程"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "竞技场积分未达上限": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "进入继续竞技场流程"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "竞技场胜利": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3000,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "竞技场胜利记录"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          693,
+          3,
+          588,
+          277
+        ],
+        "template": [
+          "战斗/战斗胜利.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "竞技场胜利记录": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3300,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "一轮竞技场结束"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "记录竞技场积分": {
+    "$__mpe_code": {
+      "position": {
+        "x": 900,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "竞技场积分未达上限",
+      "竞技场次数未达上限",
+      "进入竞技场结束流程"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "^(0|[1-9]\\d*)$"
+        ],
+        "roi": [
+          419,
+          419,
+          114,
+          31
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "跳过竞技场战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2700,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "竞技场胜利",
+      "竞技场失败"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          1169,
+          534,
+          114,
+          109
+        ],
+        "template": [
+          "战斗/跳过.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "输出竞技场数据统计": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 350
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "进入竞技场结束流程": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 350
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "选择竞技场防御卡组",
+      "输出竞技场数据统计"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "进入继续竞技场流程": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1500,
+        "y": 34
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "星币提升体力",
+      "选择竞技场战斗卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "选择竞技场战斗卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "点击匹配"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "卡组四"
+        ],
+        "roi": [
+          131,
+          311,
+          97,
+          153
+        ]
+      },
+      "type": "OCR"
+    }
+  },
+  "选择竞技场防御卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1500,
+        "y": 316
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "输出竞技场数据统计"
+    ],
+    "recognition": {
+      "param": {
+        "expected": [
+          "卡组一"
+        ],
+        "roi": [
+          131,
+          311,
+          97,
+          153
+        ]
+      },
+      "type": "OCR"
+    }
+  }
+}

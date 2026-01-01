@@ -5,7 +5,7 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
-import recover_helper
+from . import recover_helper
 import logging
 import json
 
