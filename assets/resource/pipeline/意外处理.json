@@ -3,14 +3,15 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\意外处理.json",
       "filename": "意外处理",
-      "lastSyncTime": 1767146613103,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1767154111501,
       "prefix": "",
       "savedViewport": {
-        "x": 302,
-        "y": 86,
+        "x": 340,
+        "y": 141,
         "zoom": 0.57
       },
-      "version": "v0.13.1"
+      "version": "v0.14.0"
     }
   },
   "不分配属性点": {
@@ -200,7 +201,6 @@
     },
     "recognition": {
       "param": {
-        "roi": "意外处理",
         "template": [
           "意外/确定.png"
         ]
