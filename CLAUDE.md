@@ -1,0 +1,111 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## 项目概述
+
+MSA (Miss.Sirius Assistant) 是基于 [MAA Framework](https://github.com/MaaXYZ/MaaFramework) 开发的《星纪元》游戏自动化脚本。主要功能包括自动跑图、自动战斗、自动补给。
+
+## 常用命令
+
+```bash
+# Pipeline 配置检查（检测悬空引用、重复节点、缺失模板图片等）
+python check_pipeline.py
+python check_pipeline.py --strict          # 严格模式，WARN 也视为失败
+python check_pipeline.py --no-unreachable  # 不提示未触达节点
+
+# JSON/YAML 格式化（使用 prettier）
+npx prettier --write "assets/**/*.json"
+```
+
+## 核心架构
+
+### MAA Framework Pipeline 机制
+
+项目基于 MAA Framework 的任务流水线（Pipeline）协议。Pipeline 由 JSON 文件定义，每个节点包含：
+- `recognition`: 识别算法（TemplateMatch、OCR、DirectHit、Custom 等）
+- `action`: 执行动作（Click、Swipe、DoNothing、Custom、StopTask 等）
+- `next`: 后继节点列表（按顺序检测，首个匹配成功的节点被执行）
+
+执行流程：入口节点 → 顺序检测 next 列表 → 匹配成功则执行 action → 切换到匹配节点继续循环。
+
+### 目录结构
+
+```
+assets/                          # 主要开发目录
+├── interface.json               # UI 配置、任务入口、用户选项定义
+├── resource/
+│   ├── pipeline/                # 任务流水线 JSON 文件
+│   │   ├── 跑图主流程.json      # 主入口流程
+│   │   ├── 恢复.json            # 药品恢复逻辑
+│   │   ├── 战斗.json            # 战斗流程
+│   │   └── 意外处理.json        # 异常情况处理
+│   └── image/                   # 模板匹配图片资源
+│       ├── 跑图/
+│       ├── 恢复/
+│       ├── 战斗/
+│       └── 意外/
+agent/                           # Python ���定义识别和动作
+├── main.py                      # Agent 入口
+├── recover_action.py            # 恢复相关自定义动作
+├── recover_reco.py              # 恢复相关自定义识别
+└── recover_helper.py            # 药品状态管理
+deps/                            # MAA Framework SDK 和文档
+└── docs/zh_cn/                  # 中文文档（Pipeline 协议、接口说明等）
+install/                         # 打包发布目录
+```
+
+### 关键配置文件
+
+**interface.json** - 定义 UI 和任务：
+- `task`: 任务列表，每个任务有 `entry`（入口节点）和 `option`（用户选项）
+- `option`: 用户可配置选项，通过 `pipeline_override` 动态修改节点属性
+- `controller`: 控制器配置（Win32 桌面端）
+
+**Pipeline JSON** - 节点定义示例：
+```jsonc
+{
+    "节点名": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": ["路径/图片.png"],
+                "roi": [x, y, w, h]  // 识别区域
+            }
+        },
+        "action": {
+            "type": "Click"
+        },
+        "next": ["下一节点A", "下一节点B"]
+    }
+}
+```
+
+### Python Agent
+
+Agent 通过 `maa.agent.agent_server` 实现自定义识别和动作：
+
+```python
+from maa.agent.agent_server import AgentServer
+from maa.custom_action import CustomAction
+
+@AgentServer.custom_action("action_name")
+class MyAction(CustomAction):
+    def run(self, context, argv) -> bool:
+        # 实现自定义逻辑
+        return True
+```
+
+## 开发注意事项
+
+- Pipeline JSON 支持 JSONC 注释（`//` 和 `/* */`）
+- 节点名不能以 `$` 开头（保留给编辑器元数据）
+- 模板图片路径相对于 `assets/resource/image/`
+- `pipeline_override` 可在 interface.json 中动态覆盖节点属性
+- 使用 `jump_back: true` 实现循环流程
+
+## 相关文档
+
+- MAA Framework Pipeline 协议: `deps/docs/zh_cn/3.1-任务流水线协议.md`
+- ProjectInterface 协议: `deps/docs/zh_cn/3.3-ProjectInterfaceV2协议.md`
+- 控制方式说明: `deps/docs/zh_cn/2.4-控制方式说明.md`
