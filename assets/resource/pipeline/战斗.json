@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1767234211769,
+      "lastSyncTime": 1767242698550,
       "prefix": "",
       "savedViewport": {
-        "x": 104,
-        "y": 260,
-        "zoom": 0.66
+        "x": 239,
+        "y": 124,
+        "zoom": 0.44
       },
       "version": "v0.14.0"
     }
@@ -16,8 +16,8 @@
   "$__mpe_external_BC不足_战斗": {
     "$__mpe_code": {
       "position": {
-        "x": 364,
-        "y": -51
+        "x": 1079,
+        "y": -15
       }
     }
   },
@@ -43,8 +43,7 @@
     "next": [
       "放弃战斗",
       "暴走识别",
-      "普通卡组",
-      "BC不足"
+      "普通卡组"
     ],
     "on_error": [
       "跑图循环开始"
@@ -225,7 +224,8 @@
       "Node.Recognition.Starting": "检测到普通感染者，准备战斗。"
     },
     "next": [
-      "跳过战斗"
+      "跳过战斗",
+      "BC不足"
     ],
     "on_error": [
       "跑图循环开始"
@@ -257,7 +257,8 @@
       "type": "Click"
     },
     "next": [
-      "跳过战斗"
+      "跳过战斗",
+      "BC不足"
     ],
     "on_error": [
       "跑图循环开始"

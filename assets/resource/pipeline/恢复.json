@@ -4,14 +4,14 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\恢复.json",
       "filename": "恢复",
       "isModifiedExternally": true,
-      "lastSyncTime": 1767146470528,
+      "lastSyncTime": 1767243165928,
       "prefix": "",
       "savedViewport": {
-        "x": 106,
-        "y": -393,
-        "zoom": 0.44
+        "x": 232,
+        "y": 171,
+        "zoom": 0.5
       },
-      "version": "v0.13.1"
+      "version": "v0.14.0"
     }
   },
   "AP不足": {
@@ -31,6 +31,12 @@
     "rate_limit": 100,
     "recognition": {
       "param": {
+        "roi": [
+          600,
+          323,
+          103,
+          108
+        ],
         "template": [
           "恢复/行动力恢复药-大.png"
         ]
@@ -55,6 +61,12 @@
     "rate_limit": 100,
     "recognition": {
       "param": {
+        "roi": [
+          600,
+          323,
+          103,
+          108
+        ],
         "template": [
           "恢复/战斗力恢复药-大.png"
         ]
@@ -394,6 +406,12 @@
     "rate_limit": 100,
     "recognition": {
       "param": {
+        "roi": [
+          309,
+          143,
+          201,
+          282
+        ],
         "template": [
           "恢复/恢复看板娘.png"
         ]
