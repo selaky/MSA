@@ -4,7 +4,13 @@
       "Bash(dir:*)",
       "Bash(python:*)",
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "mcp__mcp-router__fetch_content",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

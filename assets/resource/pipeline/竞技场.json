@@ -3,14 +3,14 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\竞技场.json",
       "filename": "竞技场",
-      "lastSyncTime": 1767257436137,
+      "lastSyncTime": 1767257364362,
       "prefix": "",
       "savedViewport": {
-        "x": 208,
-        "y": 163,
-        "zoom": 0.66
+        "x": -1209,
+        "y": -294,
+        "zoom": 1
       },
-      "version": "v0.14.0"
+      "version": "v0.14.1"
     }
   },
   "一轮竞技场结束": {
@@ -233,9 +233,6 @@
     "next": [
       "记录竞技场积分"
     ],
-    "on_error": [
-      "不在竞技场界面"
-    ],
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -361,8 +358,10 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "display_arena_results"
+      },
+      "type": "Custom"
     },
     "attach": {
       "current_points": 0,
@@ -372,6 +371,7 @@
       "win_rate": 0
     },
     "focus": {
+      "Node.Action.Failed": "出现未知错误，竞技场数据统计失败。",
       "Node.Action.Succeeded": "竞技场战斗任务结束，目标 {attach.target_points} 积分，当前 {attach.current_points} 积分。\\n胜利 {attach.win_count} 场，失败 {attach.loss_count} 场，胜率 {attach.win_rate}"
     },
     "recognition": {
