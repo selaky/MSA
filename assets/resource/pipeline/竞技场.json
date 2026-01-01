@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\竞技场.json",
       "filename": "竞技场",
-      "lastSyncTime": 1767253827598,
+      "lastSyncTime": 1767257436137,
       "prefix": "",
       "savedViewport": {
-        "x": -479,
-        "y": 101,
-        "zoom": 0.76
+        "x": 208,
+        "y": 163,
+        "zoom": 0.66
       },
       "version": "v0.14.0"
     }
@@ -17,7 +17,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3600,
-        "y": 370
+        "y": 606
       }
     },
     "action": {
@@ -35,8 +35,8 @@
   "不在竞技场界面": {
     "$__mpe_code": {
       "position": {
-        "x": 841,
-        "y": 435
+        "x": 898,
+        "y": 346
       }
     },
     "action": {
@@ -55,7 +55,7 @@
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 34
+        "y": 16
       }
     },
     "action": {
@@ -79,7 +79,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 34
+        "y": 30
       }
     },
     "action": {
@@ -101,7 +101,7 @@
     "$__mpe_code": {
       "position": {
         "x": 0,
-        "y": 34
+        "y": 46
       }
     },
     "action": {
@@ -119,8 +119,8 @@
   "星币提升体力": {
     "$__mpe_code": {
       "position": {
-        "x": 1675,
-        "y": -139
+        "x": 1800,
+        "y": 21
       }
     },
     "action": {
@@ -147,7 +147,7 @@
     "$__mpe_code": {
       "position": {
         "x": 2400,
-        "y": 18
+        "y": 185
       }
     },
     "action": {
@@ -173,7 +173,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3000,
-        "y": 336
+        "y": 572
       }
     },
     "action": {
@@ -202,7 +202,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3300,
-        "y": 370
+        "y": 592
       }
     },
     "action": {
@@ -222,8 +222,8 @@
   "竞技场循环开始": {
     "$__mpe_code": {
       "position": {
-        "x": 607,
-        "y": 34
+        "x": 600,
+        "y": 46
       }
     },
     "action": {
@@ -231,8 +231,10 @@
       "type": "DoNothing"
     },
     "next": [
-      "记录竞技场积分",
-      "进入竞技场结束流程"
+      "记录竞技场积分"
+    ],
+    "on_error": [
+      "不在竞技场界面"
     ],
     "recognition": {
       "param": {},
@@ -243,7 +245,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3000,
-        "y": 0
+        "y": 167
       }
     },
     "action": {
@@ -272,7 +274,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3300,
-        "y": 34
+        "y": 186
       }
     },
     "action": {
@@ -303,10 +305,8 @@
       "type": "Custom"
     },
     "next": [
-      "判断继续竞技场"
-    ],
-    "on_error": [
-      "不在竞技场界面"
+      "判断继续竞技场",
+      "进入竞技场结束流程"
     ],
     "recognition": {
       "param": {
@@ -327,7 +327,7 @@
     "$__mpe_code": {
       "position": {
         "x": 2700,
-        "y": 0
+        "y": 167
       }
     },
     "action": {
@@ -357,7 +357,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1800,
-        "y": 350
+        "y": 514
       }
     },
     "action": {
@@ -383,7 +383,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 350
+        "y": 558
       }
     },
     "action": {
@@ -403,7 +403,7 @@
     "$__mpe_code": {
       "position": {
         "x": 2100,
-        "y": 0
+        "y": 167
       }
     },
     "action": {
@@ -432,7 +432,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1500,
-        "y": 316
+        "y": 497
       }
     },
     "action": {
