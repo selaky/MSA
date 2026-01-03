@@ -69,6 +69,39 @@ def find_game_window() -> wintypes.HWND:
     return hwnd
 
 
+def get_window_client_size(hwnd: wintypes.HWND) -> tuple:
+    """获取窗口客户区大小"""
+    rect = wintypes.RECT()
+    if user32.GetClientRect(hwnd, ctypes.byref(rect)):
+        return (rect.right - rect.left, rect.bottom - rect.top)
+    return (0, 0)
+
+
+def scale_coordinates(maa_x: int, maa_y: int, hwnd: wintypes.HWND) -> tuple:
+    """
+    将 MAA 缩放后的坐标转换为实际窗口客户区坐标
+
+    MAA 默认将截图缩放到短边 720 像素
+    """
+    actual_width, actual_height = get_window_client_size(hwnd)
+    if actual_width == 0 or actual_height == 0:
+        logging.warning("[坐标转换] 无法获取窗口大小，使用原始坐标")
+        return (maa_x, maa_y)
+
+    # 计算缩放比例（MAA 默认短边 720）
+    short_side = min(actual_width, actual_height)
+    scale = short_side / 720.0
+
+    # 转换坐标
+    real_x = int(maa_x * scale)
+    real_y = int(maa_y * scale)
+
+    logging.info(f"[坐标转换] 窗口大小: {actual_width}x{actual_height}, 缩放比例: {scale:.3f}")
+    logging.info(f"[坐标转换] MAA坐标: ({maa_x}, {maa_y}) -> 实际坐标: ({real_x}, {real_y})")
+
+    return (real_x, real_y)
+
+
 def background_click(hwnd: wintypes.HWND, client_x: int, client_y: int) -> bool:
     """
     执行后台点击操作
@@ -200,10 +233,10 @@ class BackgroundClickWithReco(CustomAction):
         # 从识别结果获取点击位置
         if argv.reco_detail and argv.reco_detail.best_result:
             box = argv.reco_detail.best_result.box
-            # 计算中心点
-            target_x = box[0] + box[2] // 2
-            target_y = box[1] + box[3] // 2
-            logging.info(f"[后台点击(识别)] 从识别结果获取坐标: box={box}, center=({target_x}, {target_y})")
+            # 计算中心点（MAA 缩放后的坐标）
+            maa_x = box[0] + box[2] // 2
+            maa_y = box[1] + box[3] // 2
+            logging.info(f"[后台点击(识别)] 从识别结果获取坐标: box={box}, center=({maa_x}, {maa_y})")
         else:
             logging.error("[后台点击(识别)] 无识别结果")
             return False
@@ -215,6 +248,9 @@ class BackgroundClickWithReco(CustomAction):
             return False
 
         logging.info(f"[后台点击(识别)] 找到游戏窗口句柄: {hwnd}")
+
+        # 坐标转换：MAA 缩放坐标 -> 实际窗口坐标
+        target_x, target_y = scale_coordinates(maa_x, maa_y, hwnd)
 
         # 执行后台点击
         result = background_click(hwnd, target_x, target_y)
