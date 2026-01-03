@@ -55,6 +55,11 @@
     },
     "task": [
         {
+            "name": "后台点击测试",
+            "entry": "开始后台点击测试",
+            "default_check": false
+        },
+        {
             "name": "跑图",
             "entry": "开始跑图",
             "default_check": true,

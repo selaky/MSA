@@ -12,6 +12,7 @@ from maa.toolkit import Toolkit
 
 import my_action
 import my_reco
+import background_click
 from recover import recover_action
 from recover import recover_reco
 from arena import arena_action

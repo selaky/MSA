@@ -1,0 +1,52 @@
+{
+  "开始后台点击测试": {
+    "recognition": {
+      "type": "DirectHit"
+    },
+    "action": {
+      "type": "DoNothing"
+    },
+    "next": [
+      "后台点击下一区按钮"
+    ]
+  },
+  "后台点击下一区按钮": {
+    "recognition": {
+      "type": "TemplateMatch",
+      "param": {
+        "roi": [
+          1154,
+          120,
+          118,
+          123
+        ],
+        "template": [
+          "跑图/下一区.png"
+        ]
+      }
+    },
+    "action": {
+      "type": "Custom",
+      "param": {
+        "custom_action": "background_click_reco"
+      }
+    },
+    "focus": {
+      "Node.Action.Starting": "正在测试后台点击下一区按钮"
+    },
+    "next": [
+      "后台点击测试完成"
+    ]
+  },
+  "后台点击测试完成": {
+    "recognition": {
+      "type": "DirectHit"
+    },
+    "action": {
+      "type": "DoNothing"
+    },
+    "focus": {
+      "Node.Action.Starting": "后台点击测试完成"
+    }
+  }
+}
