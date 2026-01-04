@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1767527128800,
+      "lastSyncTime": 1767532762266,
       "prefix": "",
       "savedViewport": {
-        "x": -102,
-        "y": -277,
-        "zoom": 0.76
+        "x": 336,
+        "y": -34,
+        "zoom": 0.43
       },
       "version": "v0.14.2"
     }
@@ -128,6 +128,28 @@
       "type": "TemplateMatch"
     }
   },
+  "地图探索完毕": {
+    "$__mpe_code": {
+      "position": {
+        "x": 892,
+        "y": 1251
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "StopTask"
+    },
+    "enabled": false,
+    "focus": "当前区域探索完毕，任务结束。",
+    "recognition": {
+      "param": {
+        "template": [
+          "跑图/探索区域.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
   "开始跑图": {
     "$__mpe_code": {
       "position": {
@@ -167,10 +189,7 @@
         "jump_back": true,
         "name": "升级"
       },
-      {
-        "jump_back": true,
-        "name": "开始恢复"
-      },
+      "开始恢复",
       {
         "jump_back": true,
         "name": "开始战斗"
@@ -186,7 +205,8 @@
       {
         "jump_back": true,
         "name": "跑图获得卡牌"
-      }
+      },
+      "地图探索完毕"
     ],
     "rate_limit": 500,
     "recognition": {
