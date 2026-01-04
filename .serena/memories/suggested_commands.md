@@ -4,10 +4,11 @@
 - `python check_resource.py assets/resource`
   - 用于检查资源目录是否能被 MaaFramework 正常读取（包括 pipeline JSON）。
 
-## 打包安装目录（生成 `install/`）
+## 打包安装目录（CI 构建产物，生成 `install/`）
 - `python tools/install.py <version> <os> <arch>`
   - 示例：`python tools/install.py v0.1.0 win x86_64`
   - 作用：复制 `deps/bin`、`assets/resource`、`assets/interface.json`、`agent/` 等到 `install/`。
+  - 注意：`install/` 是构建产物目录，已在 .gitignore 中忽略，开发时不应参考其中内容。
 
 ## 开发时的自动格式化（可选，但推荐）
 - `pip install pre-commit`

@@ -13,5 +13,5 @@
 - `assets/interface.json`：项目对外描述、控制器配置、资源路径、任务入口节点等。
 - `assets/resource/pipeline/`：流程节点 JSON（每个 JSON 顶层 key 是“节点名”）。
 - `agent/`：自定义动作/识别示例（`AgentServer.custom_action/custom_recognition`）。
-- `tools/install.py`：把运行所需文件复制到 `install/` 目录（含 `assets/resource` 和 `assets/interface.json`）。
+- `tools/install.py`：构建脚本，把运行所需文件复制到 `install/` 目录（CI 构建产物，不应在开发时参考）。
 - `check_resource.py`：调用 MaaFramework 的资源检查接口，对资源目录做校验。

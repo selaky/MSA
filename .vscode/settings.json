@@ -3,24 +3,15 @@
         {
             "fileMatch": [
                 "/assets/resource/**/*.json",
-                "/install/resource/**/*.json",
-                "/assets/resource/**/*.jsonc",
-                "/install/resource/**/*.jsonc"
+                "/assets/resource/**/*.jsonc"
             ],
             "url": "/deps/tools/pipeline.schema.json"
         },
         {
             "fileMatch": [
-                "/assets/interface.json",
-                "/install/interface.json"
+                "/assets/interface.json"
             ],
             "url": "/deps/tools/interface.schema.json"
-        },
-        {
-            "fileMatch": [
-                "/install/config/maa_pi_config.json"
-            ],
-            "url": "/deps/tools/interface_config.schema.json"
         }
     ],
     "files.associations": {

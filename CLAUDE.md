@@ -45,14 +45,21 @@ assets/                          # 主要开发目录
 │       ├── 恢复/
 │       ├── 战斗/
 │       └── 意外/
-agent/                           # Python ���定义识别和动作
+agent/                           # Python 自定义识别和动作
 ├── main.py                      # Agent 入口
-├── recover_action.py            # 恢复相关自定义动作
-├── recover_reco.py              # 恢复相关自定义识别
-└── recover_helper.py            # 药品状态管理
+├── recover/                     # 恢复相关模块
+│   ├── recover_action.py        # 恢复相关自定义动作
+│   ├── recover_reco.py          # 恢复相关自定义识别
+│   └── recover_helper.py        # 药品状态管理
+└── arena/                       # 竞技场相关模块
 deps/                            # MAA Framework SDK 和文档
 └── docs/zh_cn/                  # 中文文档（Pipeline 协议、接口说明等）
-install/                         # 打包发布目录
+tools/                           # 构建和检查工具
+├── install.py                   # 打包脚本（生成构建产物到 install/）
+└── configure.py                 # OCR 模型配置
+
+# 注意：install/ 是 CI 构建时动态生成的产物目录，已在 .gitignore 中忽略
+# 开发时不应参考或依赖该目录中的任何内容
 ```
 
 ### 关键配置文件
