@@ -18,7 +18,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 
 ### 1.3 技术原理
 
-《星纪元》(StarEra) 通过 `GetCursorPos` 和 `GetForegroundWindow` 验证点击。解决方案：DLL 注入 + API Hook，伪造鼠标位置和窗口状态。
+《星纪元》(StarEra) 通过 `GetCursorPos` 验证鼠标位置，通过 `WM_ACTIVATE` 消息状态判断窗口激活。解决方案：DLL 注入 Hook `GetCursorPos` 伪造鼠标位置，控制器发送 `WM_ACTIVATE` 伪造激活状态。
 
 ---
 
@@ -33,11 +33,10 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 │  自定义控制器 (msa_controller.dll)                          │
 │    - 实现 MaaCustomControllerCallbacks                      │
 │    - 截图：Windows Graphics Capture API                     │
-│    - 点击：写入共享内存 → 发送 WM_LBUTTONDOWN/UP            │
+│    - 点击：写入共享内存 → 发送 WM_ACTIVATE → 发送鼠标消息   │
 ├─────────────────────────────────────────────────────────────┤
 │  Hook DLL (msa_hook.dll) - 注入到游戏进程                   │
 │    - Hook GetCursorPos → 返回共享内存中的坐标               │
-│    - Hook GetForegroundWindow → 返回游戏窗口句柄            │
 ├─────────────────────────────────────────────────────────────┤
 │  共享内存 - 控制器与 Hook DLL 的通信桥梁                    │
 │    - 目标坐标、窗口句柄、启用标志                           │
@@ -77,7 +76,6 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 | API | 作用 |
 |-----|------|
 | `GetCursorPos` | 返回共享内存中的目标坐标（需做客户区→屏幕坐标转换） |
-| `GetForegroundWindow` | 返回游戏窗口句柄 |
 
 **坐标转换**：
 
@@ -106,20 +104,20 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 
 **Hook 行为**：
 
-`enabled` 标志同时控制两个 Hook 的行为：
+`enabled` 标志控制 `GetCursorPos` Hook 的行为：
 
-| enabled | GetCursorPos | GetForegroundWindow |
-|---------|--------------|---------------------|
-| true | 返回 `(target_x, target_y)` 转换后的屏幕坐标 | 返回 `game_hwnd` |
-| false | 透传原始 API，返回真实鼠标位置 | 透传原始 API，返回真实前台窗口 |
+| enabled | GetCursorPos |
+|---------|--------------|
+| true | 返回 `(target_x, target_y)` 转换后的屏幕坐标 |
+| false | 透传原始 API，返回真实鼠标位置 |
 
 **点击流程**：
 
 1. 控制器调用 `ensure_injection()` 检查注入状态，失效则重新注入
 2. 控制器写入坐标到共享内存
 3. 控制器设置 `enabled = true`
-4. 控制器发送 WM_LBUTTONDOWN
-5. 游戏调用 GetForegroundWindow → Hook 返回游戏句柄
+4. 控制器发送 `SendMessage(hwnd, WM_ACTIVATE, WA_ACTIVE, 0)` 伪造激活
+5. 控制器发送 WM_LBUTTONDOWN
 6. 游戏调用 GetCursorPos → Hook 返回伪造坐标
 7. 游戏处理点击
 8. 控制器发送 WM_LBUTTONUP
@@ -184,7 +182,7 @@ MSA/
 │   │
 │   ├── dll/                        # Hook DLL
 │   │   ├── dllmain.cpp
-│   │   ├── hooks.cpp               # GetCursorPos/GetForegroundWindow Hook
+│   │   ├── hooks.cpp               # GetCursorPos Hook
 │   │   └── shared_memory.cpp       # 共享内存（DLL端）
 │   │
 │   ├── common/
@@ -210,7 +208,6 @@ MSA/
 
 - MinHook 集成
 - GetCursorPos Hook（含客户区→屏幕坐标转换）
-- GetForegroundWindow Hook
 - 共享内存通信（DLL 端）
 - **验收**：手动注入后，用测试程序发送消息能触发游戏点击
 
