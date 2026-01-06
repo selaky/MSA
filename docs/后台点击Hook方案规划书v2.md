@@ -1,17 +1,14 @@
 # MSA 后台点击 Hook 方案规划书 v2
 
-> 版本：2.0
+> 版本：2.1
 > 日期：2026-01-06
 > 状态：待实施
-> 前置文档：`后台点击Hook方案规划书.md`（已归档）
 
 ---
 
-## 一、方案变更说明
+## 一、方案概述
 
-原方案第四阶段（自定义控制器集成到 GUI）无法实施，原因：MFAAvalonia 不支持自定义控制器。
-
-新方案：通过 Proxy DLL 替换 MAA Framework 的 `MaaWin32ControlUnit.dll`，修改 `SendMessage` 输入方法的实现。
+通过 Proxy DLL 替换 MAA Framework 的 `MaaWin32ControlUnit.dll`，在用户选择 `SendMessage` 输入方式时，使用自定义控制单元实现后台点击。
 
 ---
 
@@ -24,47 +21,68 @@
 │                      MSA 后台点击架构 v2                     │
 ├─────────────────────────────────────────────────────────────┤
 │  Proxy DLL (MaaWin32ControlUnit.dll)                        │
-│    - 动态加载原版 DLL (MaaWin32ControlUnit_original.dll)    │
-│    - 透传所有函数，仅修改 SendMessage 输入方法              │
-│    - 点击时：检查注入 → 写入共享内存 → 发送消息             │
+│    - 加载原版 DLL (MaaWin32ControlUnit_original.dll)        │
+│    - SendMessage 模式：返回自定义控制单元                   │
+│    - 其他模式：透传原版控制单元                             │
+├─────────────────────────────────────────────────────────────┤
+│  自定义控制单元                                              │
+│    - 截图：委托给原版控制单元                               │
+│    - 输入：注入 Hook DLL → 写入共享内存 → 发送消息          │
 ├─────────────────────────────────────────────────────────────┤
 │  Hook DLL (msa_hook.dll) - 注入到游戏进程                   │
 │    - Hook GetCursorPos → 返回共享内存中的坐标               │
 ├─────────────────────────────────────────────────────────────┤
-│  共享内存 - Proxy DLL 与 Hook DLL 的通信桥梁                │
+│  共享内存 - 自定义控制单元与 Hook DLL 的通信桥梁            │
 │    - 目标坐标、窗口句柄、启用标志                           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ### 2.2 Proxy DLL
 
-**职责**：
+**导出函数**：
 
-- 加载原版 DLL（`MaaWin32ControlUnit_original.dll`）
-- 导出与原版相同的函数
-- 大部分函数直接转发到原版
-- `SendMessage` 输入方法替换为自定义实现
+| 函数 | 行为 |
+|------|------|
+| `MaaWin32ControlUnitGetVersion` | 透传原版 |
+| `MaaWin32ControlUnitCreate` | 见下方逻辑 |
+| `MaaWin32ControlUnitDestroy` | 清理资源 |
 
-**SendMessage 输入方法修改**：
+**Create 逻辑**：
 
-- 点击前检查注入状态，失效则重新注入
-- 写入坐标到共享内存
-- 设置 `enabled = true`
-- 发送 `WM_ACTIVATE` 伪造激活
-- 发送 `WM_LBUTTONDOWN` / `WM_LBUTTONUP`
-- 设置 `enabled = false`
+```
+MaaWin32ControlUnitCreate(hWnd, screencap, mouse, keyboard):
+    加载原版 DLL
+    调用原版 Create 获取原版控制单元
 
-### 2.3 Hook DLL
+    if mouse == SendMessage:
+        创建自定义控制单元包装器
+        包装器.截图 = 原版控制单元
+        包装器.输入 = 自定义实现
+        return 包装器
+    else:
+        return 原版控制单元
+```
+
+### 2.3 自定义控制单元
+
+**截图**：委托给原版控制单元。
+
+**点击流程**：
+
+1. 检查注入状态，失效则重新注入
+2. 写入坐标到共享内存
+3. 设置 `enabled = true`
+4. 发送 `WM_ACTIVATE` 伪造激活
+5. 发送 `WM_LBUTTONDOWN` / `WM_LBUTTONUP`
+6. 设置 `enabled = false`
+
+### 2.4 Hook DLL
 
 与原方案一致，参考 `后台点击Hook方案规划书.md` 第 2.3 节。
 
-### 2.4 通信机制
+### 2.5 通信机制
 
 与原方案一致，参考 `后台点击Hook方案规划书.md` 第 2.4 节。
-
-### 2.5 截图方法
-
-不修改，使用 MAA Framework 自带的 `FramePool`。
 
 ---
 
@@ -85,27 +103,27 @@ MSA/
 ├── hook/                            # 后台点击模块
 │   ├── CMakeLists.txt
 │   │
-│   ├── proxy/                      # Proxy DLL（新增）
-│   │   ├── dllmain.cpp             # DLL 入口，加载原版 DLL
-│   │   ├── exports.cpp             # 导出函数转发
-│   │   ├── input_hook.cpp          # SendMessage 输入方法修改
-│   │   ├── injector.cpp            # 注入逻辑
-│   │   └── shared_memory.cpp       # 共享内存（Proxy 端）
+│   ├── proxy/                       # Proxy DLL
+│   │   ├── dllmain.cpp              # DLL 入口，加载原版 DLL
+│   │   ├── exports.cpp              # 导出函数实现
+│   │   ├── control_unit.cpp         # 自定义控制单元实现
+│   │   ├── control_unit.h
+│   │   ├── injector.cpp             # 注入逻辑
+│   │   └── shared_memory.cpp        # 共享内存（控制单元端）
 │   │
-│   ├── dll/                        # Hook DLL（已有）
+│   ├── dll/                         # Hook DLL（已完成）
 │   │   ├── dllmain.cpp
 │   │   ├── hooks.cpp
 │   │   └── shared_memory.cpp
 │   │
 │   ├── common/
-│   │   └── protocol.h              # 共享内存结构定义
+│   │   └── protocol.h               # 共享内存结构定义
 │   │
 │   └── third_party/
 │       └── minhook/
 │
 └── tools/
-    ├── install.py                  # 修改：打包时处理 DLL 替换
-    └── dump_exports.py             # 新增：读取 DLL 导出函数表
+    └── install.py                   # 修改：打包时处理 DLL 替换
 ```
 
 **构建产物**：
@@ -120,23 +138,24 @@ MSA/
 
 ### 阶段一：Hook DLL（已完成）
 
-参考原方案，Hook DLL 已开发完成。
+Hook DLL 已开发完成并通过测试。
 
-### 阶段二：导出函数分析
+### 阶段二：分析 MAA 控制单元接口
 
-- 编写 `dump_exports.py` 脚本，存入 `my_tools` 文件夹, 读取 `MaaWin32ControlUnit.dll` 导出函数表
-- 分析需要转发的函数列表
-- **验收**：脚本能正确输出所有导出函数名和序号
+- 分析 `MaaWin32ControlUnit.dll` 的导出函数签名
+- 分析控制单元内部接口（截图、输入等）
+- **验收**：明确需要实现的接口列表
 
-### 阶段三：Proxy DLL 框架
+### 阶段三：Proxy DLL 框架 + 截图
 
-- 实现 DLL 加载和函数转发框架
-- 所有函数透传到原版 DLL
-- **验收**：替换 DLL 后，MAA 功能正常（行为与原版一致）
+- 实现 DLL 加载和导出函数转发
+- 实现自定义控制单元框架
+- 截图功能委托给原版控制单元
+- **验收**：替换 DLL 后，MAA 截图功能正常
 
-### 阶段四：SendMessage 输入方法修改
+### 阶段四：自定义输入实现
 
-- 修改 SendMessage 输入方法实现
+- 实现点击/触摸输入
 - 集成注入逻辑和共享内存通信
 - **验收**：选择 SendMessage 方式时，能实现后台点击
 
@@ -166,17 +185,5 @@ MSA/
 | 风险 | 缓解措施 |
 |------|---------|
 | 杀软误报 | 使用标准 API，代码开源 |
-| MAA 更新导致接口变化 | 定期检查上游更新，更新导出函数表 |
+| MAA 更新导致接口变化 | 定期检查上游更新 |
 | 多开场景 | 默认注入第一个进程 |
-
----
-
-## 八、与原方案差异对照
-
-| 项目 | 原方案 | 新方案 |
-|------|--------|--------|
-| 控制器类型 | 自定义控制器 | Proxy DLL 替换原版 |
-| 截图实现 | Windows Graphics Capture | 使用 MAA 自带 FramePool |
-| 输入方法 | 完全自定义 | 仅修改 SendMessage |
-| GUI 集成 | 新增控制器选项 | 复用现有选项 |
-| 回退方案 | 切换到原生控制器 | 切换到 SendMessageWithCursorPos |
