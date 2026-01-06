@@ -15,7 +15,10 @@
       "WebFetch(domain:maafw.xyz)",
       "mcp__mcp-router__search",
       "Bash(git submodule:*)",
-      "Bash(cmake --build:*)"
+      "Bash(cmake --build:*)",
+      "mcp__mcp-router__deepwiki_fetch",
+      "Bash(dumpbin:*)",
+      "Bash(objdump:*)"
     ],
     "deny": [],
     "ask": []
