@@ -15,7 +15,8 @@
       "WebFetch(domain:maafw.xyz)",
       "mcp__mcp-router__search",
       "Bash(git submodule:*)",
-      "Bash(cmake --build:*)"
+      "Bash(cmake --build:*)",
+      "Bash(cmake:*)"
     ],
     "deny": [],
     "ask": []

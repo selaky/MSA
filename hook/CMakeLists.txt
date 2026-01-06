@@ -13,11 +13,16 @@ if(WIN32)
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 
-    # 定义 Windows 版本（Windows 10）
+    # 定义 Windows 版本（Windows 10 1903+，支持 Windows Graphics Capture）
     add_definitions(-D_WIN32_WINNT=0x0A00)
     add_definitions(-DWINVER=0x0A00)
     add_definitions(-DUNICODE -D_UNICODE)
+
+    # C++/WinRT 编译选项（C++20 默认支持协程，不需要 /await）
 endif()
+
+# MAA Framework 路径
+set(MAA_FRAMEWORK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../deps")
 
 # 添加 MinHook 子项目
 add_subdirectory(third_party/minhook)
@@ -44,7 +49,34 @@ set_target_properties(msa_hook PROPERTIES
     PREFIX ""
 )
 
-# ==================== 测试程序 ====================
+# ==================== 自定义控制器静态库 ====================
+set(CONTROLLER_SOURCES
+    controller/controller.cpp
+    controller/shared_memory.cpp
+    controller/screencap.cpp
+)
+
+add_library(msa_controller STATIC ${CONTROLLER_SOURCES})
+
+target_include_directories(msa_controller PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${MAA_FRAMEWORK_DIR}/include
+)
+
+# 链接 MAA Framework 和 Windows 库
+target_link_libraries(msa_controller PUBLIC
+    ${MAA_FRAMEWORK_DIR}/lib/MaaFramework.lib
+    d3d11
+    dxgi
+    user32
+    kernel32
+)
+
+# C++/WinRT 需要链接 windowsapp.lib
+target_link_libraries(msa_controller PUBLIC windowsapp)
+
+# ==================== 第一阶段测试程序（点击测试） ====================
 set(TEST_SOURCES
     test/click_test.cpp
 )
@@ -63,15 +95,54 @@ set_target_properties(click_test PROPERTIES
     WIN32_EXECUTABLE FALSE
 )
 
+# ==================== 第二阶段测试程序（截图测试） ====================
+set(SCREENCAP_TEST_SOURCES
+    test/screencap_test.cpp
+)
+
+add_executable(screencap_test ${SCREENCAP_TEST_SOURCES})
+
+target_include_directories(screencap_test PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${MAA_FRAMEWORK_DIR}/include
+)
+
+# 链接控制器库和 MAA Framework
+target_link_libraries(screencap_test PRIVATE
+    msa_controller
+    ${MAA_FRAMEWORK_DIR}/lib/MaaFramework.lib
+    user32
+    kernel32
+)
+
+# 设置测试程序为 Windows 控制台应用
+set_target_properties(screencap_test PROPERTIES
+    WIN32_EXECUTABLE FALSE
+)
+
 # ==================== 安装配置 ====================
 # 将 DLL 和测试程序输出到同一目录
-set_target_properties(msa_hook click_test PROPERTIES
+set_target_properties(msa_hook msa_controller click_test screencap_test PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
 # 安装目标
-install(TARGETS msa_hook click_test
+install(TARGETS msa_hook msa_controller click_test screencap_test
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION bin
+    ARCHIVE DESTINATION lib
+)
+
+# 复制 MAA Framework DLL 到输出目录
+add_custom_command(TARGET screencap_test POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${MAA_FRAMEWORK_DIR}/bin/MaaFramework.dll"
+        "$<TARGET_FILE_DIR:screencap_test>"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${MAA_FRAMEWORK_DIR}/bin/MaaToolkit.dll"
+        "$<TARGET_FILE_DIR:screencap_test>"
+    COMMENT "Copying MAA Framework DLLs..."
 )
