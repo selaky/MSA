@@ -1,3 +1,6 @@
 [submodule "assets/MaaCommonAssets"]
 	path = assets/MaaCommonAssets
 	url = https://github.com/MaaXYZ/MaaCommonAssets
+[submodule "hook/third_party/minhook"]
+	path = hook/third_party/minhook
+	url = https://github.com/TsudaKageyu/minhook.git

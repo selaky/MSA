@@ -18,7 +18,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 
 ### 1.3 技术原理
 
-《星纪元》(StarEra) 通过 `GetCursorPos` 验证鼠标位置，通过 `WM_ACTIVATE` 消息状态判断窗口激活。解决方案：DLL 注入 Hook `GetCursorPos` 伪造鼠标位置，控制器发送 `WM_ACTIVATE` 伪造激活状态。
+《星纪元》(StarEra) 通过 `GetCursorPos` 验证鼠标位置(已通过 api monitor 验证)，通过 `WM_ACTIVATE` 消息状态判断窗口激活(已验证)。解决方案：控制器发送 `WM_ACTIVATE` 伪造激活状态,DLL 注入 Hook `GetCursorPos` 伪造鼠标位置。
 
 ---
 
@@ -80,6 +80,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 **坐标转换**：
 
 `GetCursorPos` Hook 负责将共享内存中的客户区坐标转换为屏幕坐标：
+
 - 读取共享内存中的 `(target_x, target_y)` 客户区坐标
 - 使用 `ClientToScreen(game_hwnd, &point)` 转换为屏幕坐标
 - 返回转换后的屏幕坐标

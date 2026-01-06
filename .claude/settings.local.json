@@ -12,7 +12,10 @@
       "mcp__mcp-router__fetch_content",
       "Bash(curl:*)",
       "Bash(cat:*)",
-      "WebFetch(domain:maafw.xyz)"
+      "WebFetch(domain:maafw.xyz)",
+      "mcp__mcp-router__search",
+      "Bash(git submodule:*)",
+      "Bash(cmake --build:*)"
     ],
     "deny": [],
     "ask": []
