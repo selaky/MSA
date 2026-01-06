@@ -1,6 +1,6 @@
 # MSA 后台点击 Hook 方案规划书 v2
 
-> 版本：2.1
+> 版本：2.2
 > 日期：2026-01-06
 > 状态：待实施
 
@@ -39,6 +39,12 @@
 
 ### 2.2 Proxy DLL
 
+**技术约束**：
+
+`MaaWin32ControlUnitHandle` 实际是 C++ 类指针（`Win32ControlUnitAPI*`），自定义控制单元必须继承该类并保持 ABI 兼容：
+- 编译器：MSVC 2022（与 MAA Framework 一致）
+- 接口涉及 `cv::Mat`、`std::string` 等 C++ 类型
+
 **导出函数**：
 
 | 函数 | 行为 |
@@ -65,7 +71,21 @@ MaaWin32ControlUnitCreate(hWnd, screencap, mouse, keyboard):
 
 ### 2.3 自定义控制单元
 
-**截图**：委托给原版控制单元。
+自定义控制单元需实现 `Win32ControlUnitAPI` 的所有虚函数：
+
+| 方法 | 实现方式 |
+|------|---------|
+| `connect()` | 委托原版 + 初始化注入 |
+| `request_uuid(std::string&)` | 委托原版 |
+| `get_features()` | 委托原版 |
+| `screencap(cv::Mat&)` | 委托原版 |
+| `click(int, int)` | 自定义 |
+| `swipe(...)` | 自定义 |
+| `touch_down/move/up(...)` | 自定义 |
+| `click_key(int)` | 委托原版 |
+| `input_text(const std::string&)` | 委托原版 |
+| `key_down/up(int)` | 委托原版 |
+| `scroll(int, int)` | 委托原版 |
 
 **点击流程**：
 
@@ -78,11 +98,46 @@ MaaWin32ControlUnitCreate(hWnd, screencap, mouse, keyboard):
 
 ### 2.4 Hook DLL
 
-与原方案一致，参考 `后台点击Hook方案规划书.md` 第 2.3 节。
+**Hook 目标**：
+
+| API | 作用 |
+|-----|------|
+| `GetCursorPos` | 返回共享内存中的目标坐标（需做客户区→屏幕坐标转换） |
+
+**坐标转换**：
+
+`GetCursorPos` Hook 负责将共享内存中的客户区坐标转换为屏幕坐标：
+
+- 读取共享内存中的 `(target_x, target_y)` 客户区坐标
+- 使用 `ClientToScreen(game_hwnd, &point)` 转换为屏幕坐标
+- 返回转换后的屏幕坐标
+
+**技术选型**：
+
+- 注入方式：`CreateRemoteThread` + `LoadLibraryW`
+- Hook 库：MinHook
 
 ### 2.5 通信机制
 
-与原方案一致，参考 `后台点击Hook方案规划书.md` 第 2.4 节。
+自定义控制单元与 Hook DLL 通过命名共享内存通信：
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| enabled | bool | Hook 是否生效 |
+| target_x | int | 目标 X 坐标（客户区） |
+| target_y | int | 目标 Y 坐标（客户区） |
+| game_hwnd | HWND | 游戏窗口句柄 |
+| injected_pid | DWORD | 被注入进程的 PID，用于检测进程是否存活 |
+| version | DWORD | 协议版本 |
+
+**Hook 行为**：
+
+`enabled` 标志控制 `GetCursorPos` Hook 的行为：
+
+| enabled | GetCursorPos |
+|---------|--------------|
+| true | 返回 `(target_x, target_y)` 转换后的屏幕坐标 |
+| false | 透传原始 API，返回真实鼠标位置 |
 
 ---
 
@@ -136,9 +191,9 @@ MSA/
 
 ## 五、开发阶段
 
-### 阶段一：Hook DLL（已完成）
+### 阶段一：Hook DLL（已完成，复用自 v1 方案）
 
-Hook DLL 已开发完成并通过测试。
+Hook DLL 在 v1 方案中已开发完成并通过测试，本方案直接复用。
 
 ### 阶段二：分析 MAA 控制单元接口
 
@@ -187,3 +242,14 @@ Hook DLL 已开发完成并通过测试。
 | 杀软误报 | 使用标准 API，代码开源 |
 | MAA 更新导致接口变化 | 定期检查上游更新 |
 | 多开场景 | 默认注入第一个进程 |
+| C++ ABI 不兼容 | 使用 MSVC 2022 编译，与 MAA Framework 保持一致 |
+
+---
+
+## 八、构建依赖
+
+| 依赖 | 来源 |
+|------|------|
+| MAA Framework 头文件 | `source/include/ControlUnit/ControlUnitAPI.h` |
+| OpenCV | MAA Framework 使用的版本 |
+| MinHook | 已集成 |
