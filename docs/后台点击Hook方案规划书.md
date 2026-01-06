@@ -52,7 +52,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 
 | 回调 | 实现方式 |
 |------|---------|
-| `connect` | 初始化共享内存，返回成功 |
+| `connect` | 查找游戏进程，初始化共享内存，执行首次注入，设置 DPI 感知 |
 | `screencap` | 使用 Windows Graphics Capture API|
 | `click` | 写入坐标到共享内存 → 发送窗口消息 |
 | `touch_down/move/up` | 同上，支持更精细的控制 |
@@ -141,7 +141,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 
 | 回调 | 行为 |
 |------|------|
-| `connect` | 查找游戏进程，执行首次注入 |
+| `connect` | 查找游戏进程，初始化共享内存，执行首次注入，设置 DPI 感知 |
 | `click` / `touch_down` | 检查注入状态，失效则重新注入 |
 
 **状态检测**：
