@@ -88,6 +88,7 @@ MSA 当前使用 MAA Framework 内置的 `Seize` 模式，需要游戏窗口前�
 | target_x | int | 目标 X 坐标（客户区） |
 | target_y | int | 目标 Y 坐标（客户区） |
 | game_hwnd | HWND | 游戏窗口句柄 |
+| injected_pid | DWORD | 被注入进程的 PID，用于检测进程是否存活 |
 | version | DWORD | 协议版本 |
 
 **Hook 行为**：
@@ -140,12 +141,6 @@ bool ensure_injection() {
     // 通过则直接返回，失败则重新注入
 }
 ```
-
-**共享内存扩展字段**：
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| injected_pid | DWORD | 被注入进程的 PID，用于检测进程是否存活 |
 
 ### 3.3 用户操作流程
 
@@ -253,7 +248,6 @@ MSA/
 ## 八、后续扩展
 
 - 键盘 Hook（如果游戏增加键盘操作）
-- 滑动操作支持
 - 多开支持
 
 ---
