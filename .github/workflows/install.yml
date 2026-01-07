@@ -196,24 +196,24 @@ jobs:
           echo "Python packages installed successfully."
 
       - name: Install
-        shell: bash
+        shell: pwsh
         run: |
-          if [ -d "MFA" ]; then
-            echo "Copying MFA files to install directory..."
-            mkdir -p install
-            rsync -av --ignore-existing MFA/ install/
+          if (Test-Path "MFA") {
+            Write-Host "Copying MFA files to install directory..."
+            New-Item -ItemType Directory -Force -Path install | Out-Null
+            Copy-Item -Path "MFA\*" -Destination "install" -Recurse -Force
 
             # 强制把自己的 logo 复制到 GUI 的资源目录里覆盖默认文件
-            cp assets/logo.ico install/Assets/logo.ico || echo "Logo copy failed!"
+            Copy-Item -Path "assets\logo.ico" -Destination "install\Assets\logo.ico" -Force -ErrorAction SilentlyContinue
 
-            echo "MFA files copied successfully."
-          else
-            echo "MFA directory not found, skipping copy."
-          fi
+            Write-Host "MFA files copied successfully."
+          } else {
+            Write-Host "MFA directory not found, skipping copy."
+          }
 
-          cd tools/
-          python -m pip install -r ./requirements.txt
-          python ./install.py ${{ needs.meta.outputs.tag }} win ${{ matrix.arch }}
+          cd tools
+          python -m pip install -r .\requirements.txt
+          python .\install.py ${{ needs.meta.outputs.tag }} win ${{ matrix.arch }}
           cd ..
 
       - name: Customize exe icon and name
