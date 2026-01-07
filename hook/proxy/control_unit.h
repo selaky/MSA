@@ -7,10 +7,15 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include <windows.h>
 
 // MAA Framework 类型定义
 #include "MaaFramework/MaaDef.h"
+
+// 前向声明
+class SharedMemoryManager;
+class Injector;
 
 // OpenCV Mat 前向声明
 namespace cv {
@@ -111,12 +116,38 @@ public:
     MAA_CTRL_UNIT_NS::Win32ControlUnitAPI* get_original() const { return original_; }
 
 private:
+    /**
+     * 确保注入已完成
+     * @return 是否成功
+     */
+    bool ensure_injected();
+
+    /**
+     * 执行后台点击
+     * @param x X 坐标（客户区）
+     * @param y Y 坐标（客户区）
+     * @return 是否成功
+     */
+    bool do_background_click(int x, int y);
+
+    /**
+     * 获取 Hook DLL 的完整路径
+     * @return DLL 路径
+     */
+    std::wstring get_hook_dll_path();
+
     // 原版控制单元
     MAA_CTRL_UNIT_NS::Win32ControlUnitAPI* original_;
 
     // 游戏窗口句柄
     HWND hwnd_;
 
-    // 注入状态（阶段四使用）
-    bool injected_ = false;
+    // 共享内存管理器
+    std::unique_ptr<SharedMemoryManager> shared_memory_;
+
+    // DLL 注入器
+    std::unique_ptr<Injector> injector_;
+
+    // 注入状态
+    bool injected_;
 };

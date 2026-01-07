@@ -57,6 +57,8 @@ set(PROXY_DLL_SOURCES
     proxy/dllmain.cpp
     proxy/exports.cpp
     proxy/control_unit.cpp
+    proxy/shared_memory.cpp
+    proxy/injector.cpp
 )
 
 add_library(msa_proxy SHARED ${PROXY_DLL_SOURCES})
