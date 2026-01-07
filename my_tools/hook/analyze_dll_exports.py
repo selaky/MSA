@@ -5,7 +5,7 @@ DLL 导出函数分析工具
 分析 Windows DLL 文件的导出函数、架构信息等。
 
 使用方法:
-    python analyze_dll_exports.py <dll_path> [options]
+    python my_tools/hook/analyze_dll_exports.py <dll_path> [options]
 
 选项:
     -e, --expect <func1,func2,...>  验证指定函数是否存在
@@ -15,10 +15,10 @@ DLL 导出函数分析工具
     -h, --help                      显示帮助信息
 
 示例:
-    python analyze_dll_exports.py MaaWin32ControlUnit.dll
-    python analyze_dll_exports.py some.dll -e "Create,Destroy,GetVersion"
-    python analyze_dll_exports.py some.dll -f "Control"
-    python analyze_dll_exports.py some.dll -j > exports.json
+    python my_tools/hook/analyze_dll_exports.py deps/bin/MaaWin32ControlUnit.dll
+    python my_tools/hook/analyze_dll_exports.py some.dll -e "Create,Destroy,GetVersion"
+    python my_tools/hook/analyze_dll_exports.py some.dll -f "Control"
+    python my_tools/hook/analyze_dll_exports.py some.dll -j > exports.json
 """
 
 import sys
