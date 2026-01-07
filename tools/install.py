@@ -86,6 +86,54 @@ def install_deps():
     )
 
 
+def install_hook_dlls():
+    """安装后台点击 Hook 相关 DLL
+
+    处理逻辑：
+    1. 将原版 MaaWin32ControlUnit.dll 重命名为 MaaWin32ControlUnit_original.dll
+    2. 将 Proxy DLL (MaaWin32ControlUnit.dll) 复制到安装目录
+    3. 复制 msa_hook.dll 到安装目录
+    """
+    if os_name != "win":
+        # 后台点击功能仅支持 Windows
+        return
+
+    native_dir = install_path / "runtimes" / get_dotnet_platform_tag() / "native"
+    hook_build_dir = working_dir / "hook" / "build" / "bin" / "Release"
+
+    # 检查构建产物是否存在
+    proxy_dll = hook_build_dir / "MaaWin32ControlUnit.dll"
+    hook_dll = hook_build_dir / "msa_hook.dll"
+
+    if not proxy_dll.exists():
+        print(f"Warning: Proxy DLL not found at {proxy_dll}")
+        print("Skipping hook DLL installation. Run CMake build first.")
+        return
+
+    # 1. 重命名原版 DLL（如果尚未重命名）
+    original_dll = native_dir / "MaaWin32ControlUnit.dll"
+    renamed_dll = native_dir / "MaaWin32ControlUnit_original.dll"
+
+    if original_dll.exists() and not renamed_dll.exists():
+        print("Renaming original MaaWin32ControlUnit.dll to MaaWin32ControlUnit_original.dll")
+        shutil.move(str(original_dll), str(renamed_dll))
+    elif not renamed_dll.exists():
+        print("Warning: Original MaaWin32ControlUnit.dll not found")
+
+    # 2. 复制 Proxy DLL
+    print(f"Installing Proxy DLL: {proxy_dll.name}")
+    shutil.copy2(proxy_dll, native_dir / "MaaWin32ControlUnit.dll")
+
+    # 3. 复制 Hook DLL
+    if hook_dll.exists():
+        print(f"Installing Hook DLL: {hook_dll.name}")
+        shutil.copy2(hook_dll, native_dir / "msa_hook.dll")
+    else:
+        print(f"Warning: Hook DLL not found at {hook_dll}")
+
+    print("Hook DLLs installed successfully.")
+
+
 def install_resource():
 
     configure_ocr_model()
@@ -133,5 +181,6 @@ if __name__ == "__main__":
     install_resource()
     install_chores()
     install_agent()
+    install_hook_dlls()
 
     print(f"Install to {install_path} successfully.")

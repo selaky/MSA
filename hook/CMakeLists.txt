@@ -19,6 +19,14 @@ if(WIN32)
     add_definitions(-DUNICODE -D_UNICODE)
 endif()
 
+# ==================== 依赖配置 ====================
+
+# MAA Framework 路径（相对于项目根目录）
+set(MAA_DEPS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../deps")
+
+# OpenCV 头文件路径（使用本地副本）
+set(OPENCV_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/opencv/include")
+
 # 添加 MinHook 子项目
 add_subdirectory(third_party/minhook)
 
@@ -43,6 +51,53 @@ set_target_properties(msa_hook PROPERTIES
     OUTPUT_NAME "msa_hook"
     PREFIX ""
 )
+
+# ==================== Proxy DLL ====================
+set(PROXY_DLL_SOURCES
+    proxy/dllmain.cpp
+    proxy/exports.cpp
+    proxy/control_unit.cpp
+)
+
+add_library(msa_proxy SHARED ${PROXY_DLL_SOURCES})
+
+target_include_directories(msa_proxy PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/common
+    ${CMAKE_CURRENT_SOURCE_DIR}/proxy
+    ${MAA_DEPS_DIR}/include
+    ${OPENCV_INCLUDE_DIR}
+)
+
+# 链接库
+target_link_libraries(msa_proxy PRIVATE user32 kernel32)
+
+# 注意：不需要链接 OpenCV 库，因为我们只使用 cv::Mat 的引用传递
+# 实际的 cv::Mat 操作由原版控制单元完成
+
+# 设置 DLL 输出名称为 MaaWin32ControlUnit.dll
+set_target_properties(msa_proxy PROPERTIES
+    OUTPUT_NAME "MaaWin32ControlUnit"
+    PREFIX ""
+)
+
+# 启用 RTTI（用于 dynamic_cast）
+if(MSVC)
+    target_compile_options(msa_proxy PRIVATE /GR)
+endif()
+
+# 输出目录
+set_target_properties(msa_proxy PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
+
+# 安装目标
+install(TARGETS msa_proxy
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION bin
+)
+
+message(STATUS "Proxy DLL (MaaWin32ControlUnit.dll) will be built")
 
 # ==================== 测试程序 ====================
 set(TEST_SOURCES

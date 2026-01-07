@@ -18,7 +18,9 @@
       "Bash(cmake --build:*)",
       "mcp__mcp-router__deepwiki_fetch",
       "Bash(dumpbin:*)",
-      "Bash(objdump:*)"
+      "Bash(objdump:*)",
+      "Bash(where:*)",
+      "Bash(\"C:/Program Files \\(x86\\)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/dumpbin.exe\":*)"
     ],
     "deny": [],
     "ask": []
