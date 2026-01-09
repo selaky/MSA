@@ -632,7 +632,6 @@
             ],
             "pipeline_override": {
                 "跑图循环开始": {
-                    "timeout": "{timeout}",
                     "rate_limit": "{rate_limit}"
                 }
             }
