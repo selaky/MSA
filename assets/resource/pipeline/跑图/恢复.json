@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\恢复.json",
       "filename": "恢复",
-      "lastSyncTime": 1767938655110,
+      "lastSyncTime": 1767938785859,
       "prefix": "",
       "savedViewport": {
-        "x": 346,
-        "y": -73,
-        "zoom": 0.43
+        "x": -593,
+        "y": -194,
+        "zoom": 0.65
       },
       "version": "v0.14.2"
     }
@@ -46,7 +46,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "roi": [
@@ -79,7 +79,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "roi": [
@@ -117,7 +117,7 @@
       "BC药不足，关闭恢复界面",
       "BC药不足，放弃战斗"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "roi": [
@@ -262,7 +262,7 @@
       "关闭恢复界面",
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "roi": [
@@ -301,7 +301,7 @@
       },
       "使用大恢复药"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion"
@@ -332,7 +332,7 @@
       },
       "使用大恢复药"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion"
@@ -363,7 +363,7 @@
       },
       "使用小恢复药"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion"
@@ -394,7 +394,7 @@
       },
       "使用小恢复药"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion"
@@ -417,7 +417,7 @@
     "next": [
       "行动力耗尽"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -440,7 +440,7 @@
     "next": [
       "BC药不足，关闭恢复界面"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -469,7 +469,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "roi": [
@@ -503,7 +503,7 @@
         "name": "意外处理"
       }
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -544,7 +544,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "expected": [
@@ -579,7 +579,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "expected": [
@@ -613,7 +613,7 @@
       "判断使用小AP药",
       "判断停止使用AP药"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "expected": [
@@ -650,7 +650,7 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
+    "rate_limit": 100,
     "recognition": {
       "param": {
         "expected": [
