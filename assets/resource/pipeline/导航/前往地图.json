@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\导航/前往地图.json",
       "filename": "前往地图",
-      "lastSyncTime": 1767876690751,
+      "lastSyncTime": 1767922630017,
       "prefix": "",
       "savedViewport": {
-        "x": 29,
-        "y": -427,
+        "x": 19,
+        "y": -410,
         "zoom": 0.58
       },
       "version": "v0.14.2"
@@ -137,7 +137,8 @@
     "next": [
       "前往活动地图",
       "前往日常地图",
-      "前往普通地图"
+      "前往普通地图",
+      "重复点击直到进入地图"
     ],
     "rate_limit": 10,
     "recognition": {
@@ -208,7 +209,7 @@
       "type": "DoNothing"
     },
     "focus": {
-      "Node.Action.Succeeded": "已进入指定地图"
+      "Node.Recognition.Succeeded": "已进入指定地图"
     },
     "recognition": {
       "param": {
@@ -248,8 +249,8 @@
         "jump_back": true,
         "name": "意外处理"
       },
-      "重复点击直到进入地图",
-      "确认已进入地图"
+      "确认已进入地图",
+      "重复点击直到进入地图"
     ],
     "rate_limit": 200,
     "recognition": {
