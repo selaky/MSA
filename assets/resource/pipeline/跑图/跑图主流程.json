@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1767922919259,
+      "lastSyncTime": 1767930238348,
       "prefix": "",
       "savedViewport": {
-        "x": 322,
-        "y": 180,
-        "zoom": 0.57
+        "x": 217,
+        "y": 157,
+        "zoom": 0.86
       },
       "version": "v0.14.2"
     }
@@ -125,33 +125,6 @@
       "type": "DirectHit"
     }
   },
-  "初始化吃药数据": {
-    "$__mpe_code": {
-      "position": {
-        "x": 300,
-        "y": 14
-      }
-    },
-    "action": {
-      "param": {
-        "custom_action": "init_potion_data",
-        "custom_action_param": {
-          "ap_big": 0,
-          "ap_small": 0,
-          "bc_big": 0,
-          "bc_small": 0
-        }
-      },
-      "type": "Custom"
-    },
-    "next": [
-      "跑图循环开始"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
   "前进": {
     "$__mpe_code": {
       "position": {
@@ -212,7 +185,34 @@
       "type": "DoNothing"
     },
     "next": [
-      "初始化吃药数据"
+      "读取吃药设置"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "读取吃药设置": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 14
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "load_potion_data",
+        "custom_action_param": {
+          "ap_big": 0,
+          "ap_small": 0,
+          "bc_big": 0,
+          "bc_small": 0
+        }
+      },
+      "type": "Custom"
+    },
+    "next": [
+      "跑图循环开始"
     ],
     "recognition": {
       "param": {},

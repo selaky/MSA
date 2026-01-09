@@ -9,13 +9,21 @@ from . import recover_helper
 import logging
 import json
 
-@AgentServer.custom_action("init_potion_data")
-class InitPotionData(CustomAction):
-    """初始化药水数据"""
-    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
-        logging.info(f"[初始化吃药数据] 正在重置已使用药水数量")
-        recover_helper.potion_stats.reset_usage()
 
+@AgentServer.custom_action("reset_potion_data")
+class ResetPotionData(CustomAction):
+    """重置药水数据"""
+    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
+        recover_helper.potion_stats.reset_usage()
+        logging.info(f"[重置吃药数据] 重置已使用药水数量")
+        return True
+
+
+
+@AgentServer.custom_action("load_potion_data")
+class LoadPotionData(CustomAction):
+    """读取药水设置"""
+    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
         try:
             # 读取参数
             params = json.loads(argv.custom_action_param)
@@ -28,7 +36,7 @@ class InitPotionData(CustomAction):
             stats.ap.set_limit(ap_big,ap_small)
             stats.bc.set_limit(bc_big,bc_small)
             logging.info(
-                f"[初始化吃药数据] 药品使用上限载入\n"
+                f"[读取吃药数据] 药品使用上限载入\n"
                 f"大行动力恢复药: {stats.ap.big.limit}\n"
                 f"小行动力恢复药: {stats.ap.small.limit}\n"
                 f"大战斗力恢复药: {stats.bc.big.limit}\n"
@@ -39,7 +47,7 @@ class InitPotionData(CustomAction):
             
             return True
         except Exception as e:
-            logging.error(f"[初始化吃药数据]参数解析失败或设置出错:{e}")
+            logging.error(f"[读取吃药数据]参数解析失败或设置出错:{e}")
             return False
 
 @AgentServer.custom_action("store_potion_storage")

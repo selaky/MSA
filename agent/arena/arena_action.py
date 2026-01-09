@@ -11,24 +11,29 @@ import json
 
 stats = arena_helper.arena_stats # 简写
 
-@AgentServer.custom_action("init_arena_data")
-class InitArenaData(CustomAction):
-    """初始化竞技场数据"""
+@AgentServer.custom_action("reset_arena_data")
+class ResetArenaData(CustomAction):
+    """重置竞技场数据"""
     def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
-        logging.info(f"[初始化竞技场数据] 正在重置战斗数据")
+        logging.info(f"[重置竞技场数据] 重置竞技场已战斗数据")
         arena_helper.arena_stats.reset_arena()
+        return True
 
+@AgentServer.custom_action("load_arena_data")
+class LoadArenaData(CustomAction):
+    """读取竞技场设置"""
+    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
         try:
             # 读取参数
             params = json.loads(argv.custom_action_param)
             target_points = int(params.get("target_points",0))
             # 记录目标积分
             stats.target_points = target_points
-            logging.info(f"[初始化竞技场数据] 将目标分数记录为 {stats.target_points}")
+            logging.info(f"[读取竞技场设置] 将目标分数记录为 {stats.target_points}")
 
             return True
         except Exception as e:
-            logging.error(f"[初始化竞技场数据]初始化失败: {e}")
+            logging.error(f"[读取竞技场设置]初始化失败: {e}")
             return False
         
 @AgentServer.custom_action("store_current_arena_points")

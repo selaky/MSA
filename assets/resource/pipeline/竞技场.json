@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\竞技场.json",
       "filename": "竞技场",
-      "lastSyncTime": 1767525970354,
+      "lastSyncTime": 1767930788059,
       "prefix": "",
       "savedViewport": {
-        "x": -154,
-        "y": 81,
-        "zoom": 0.66
+        "x": 215,
+        "y": -615,
+        "zoom": 0.86
       },
       "version": "v0.14.2"
     }
@@ -59,30 +59,6 @@
       "type": "DirectHit"
     }
   },
-  "初始化竞技场数据": {
-    "$__mpe_code": {
-      "position": {
-        "x": 300,
-        "y": 974
-      }
-    },
-    "action": {
-      "param": {
-        "custom_action": "init_arena_data",
-        "custom_action_param": {
-          "target_points": 100
-        }
-      },
-      "type": "Custom"
-    },
-    "next": [
-      "竞技场循环开始"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
   "判断继续竞技场": {
     "$__mpe_code": {
       "position": {
@@ -121,7 +97,7 @@
       "type": "DoNothing"
     },
     "next": [
-      "初始化竞技场数据"
+      "读取竞技场设置"
     ],
     "recognition": {
       "param": {},
@@ -373,6 +349,30 @@
     },
     "next": [
       "输出竞技场数据统计"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "读取竞技场设置": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 974
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "load_arena_data",
+        "custom_action_param": {
+          "target_points": 100
+        }
+      },
+      "type": "Custom"
+    },
+    "next": [
+      "竞技场循环开始"
     ],
     "recognition": {
       "param": {},

@@ -1,0 +1,80 @@
+{
+  "$__mpe_config_重置统计数据": {
+    "$__mpe_code": {
+      "filename": "重置统计数据",
+      "prefix": "",
+      "savedViewport": {
+        "x": 188,
+        "y": -276,
+        "zoom": 0.86
+      },
+      "version": "v0.14.2"
+    }
+  },
+  "开始重置统计数据": {
+    "$__mpe_code": {
+      "position": {
+        "x": 176,
+        "y": 663
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "重置吃药数据"
+      },
+      {
+        "jump_back": true,
+        "name": "重置竞技场数据"
+      }
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "重置吃药数据": {
+    "$__mpe_code": {
+      "position": {
+        "x": 595,
+        "y": 439
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "reset_potion_data"
+      },
+      "type": "Custom"
+    },
+    "enabled": false,
+    "max_hit": 1,
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "重置竞技场数据": {
+    "$__mpe_code": {
+      "position": {
+        "x": 592,
+        "y": 734
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "reset_arena_data"
+      },
+      "type": "Custom"
+    },
+    "enabled": false,
+    "max_hit": 1,
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  }
+}
