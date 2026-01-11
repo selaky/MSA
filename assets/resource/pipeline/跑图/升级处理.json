@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\升级处理.json",
       "filename": "升级处理",
-      "lastSyncTime": 1768101078936,
+      "lastSyncTime": 1768108635996,
       "prefix": "",
       "savedViewport": {
-        "x": 318,
-        "y": 88,
+        "x": 382,
+        "y": 72,
         "zoom": 0.76
       },
       "version": "v0.14.2"
@@ -249,17 +249,24 @@
     ],
     "recognition": {
       "param": {
+        "lower": [
+          0,
+          224,
+          245
+        ],
         "roi": [
           782,
           348,
           85,
           82
         ],
-        "template": [
-          "升级/分配属性-加号.png"
+        "upper": [
+          10,
+          244,
+          255
         ]
       },
-      "type": "TemplateMatch"
+      "type": "ColorMatch"
     }
   },
   "未成功分配领导力": {
@@ -278,17 +285,24 @@
     ],
     "recognition": {
       "param": {
+        "lower": [
+          0,
+          224,
+          245
+        ],
         "roi": [
           783,
           432,
           79,
           72
         ],
-        "template": [
-          "升级/分配属性-加号.png"
+        "upper": [
+          10,
+          244,
+          255
         ]
       },
-      "type": "TemplateMatch"
+      "type": "ColorMatch"
     }
   }
 }
