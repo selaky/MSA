@@ -1,0 +1,677 @@
+{
+  "$__mpe_config_世界BOSS": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/世界BOSS.json",
+      "filename": "世界BOSS",
+      "lastSyncTime": 1768134890731,
+      "prefix": "",
+      "savedViewport": {
+        "x": 89,
+        "y": 216,
+        "zoom": 0.53
+      },
+      "version": "v0.14.2"
+    }
+  },
+  "BOSS大恢复药": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3600,
+        "y": 106
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          896,
+          395,
+          56,
+          27
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束BOSS吃药"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "BOSS小恢复药1": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3300,
+        "y": 1114
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          896,
+          510,
+          56,
+          28
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "BOSS小恢复药2"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "BOSS小恢复药2": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3600,
+        "y": 1114
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          896,
+          510,
+          56,
+          28
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束BOSS吃药"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "BOSS战斗失败": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3300,
+        "y": 262
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "BOSS计数增加"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          693,
+          3,
+          588,
+          277
+        ],
+        "template": [
+          "战斗/战斗失败.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "BOSS界面重试": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4500,
+        "y": 1200
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          515,
+          385,
+          246,
+          63
+        ],
+        "template": [
+          "意外/重试.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "BOSS计数增加": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3600,
+        "y": 295
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "BOSS跳过": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3000,
+        "y": 678
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "BOSS战斗失败",
+      {
+        "jump_back": true,
+        "name": "BOSS界面重试"
+      }
+    ],
+    "on_error": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          1169,
+          534,
+          114,
+          109
+        ],
+        "template": [
+          "战斗/跳过.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "关闭BOSS吃药弹窗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4200,
+        "y": 1343
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "未进入BOSS战",
+      {
+        "jump_back": true,
+        "name": "BOSS界面重试"
+      },
+      "关闭BOSS吃药弹窗"
+    ],
+    "on_error": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          980,
+          248,
+          48,
+          45
+        ],
+        "template": [
+          "恢复/关闭恢复界面.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "关闭BOSS弹窗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2700,
+        "y": 696
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          612,
+          412,
+          59,
+          15
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "开始BOSS吃药",
+      "未进入BOSS战",
+      {
+        "jump_back": true,
+        "name": "BOSS界面重试"
+      },
+      "BOSS跳过"
+    ],
+    "on_error": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "判断BOSS操作": {
+    "$__mpe_code": {
+      "position": {
+        "x": 900,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "BOSS界面重试"
+      },
+      "进入BOSS分支"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          45,
+          196,
+          112,
+          58
+        ],
+        "template": [
+          "BOSS/我的排名.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "开始BOSS吃药": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3000,
+        "y": 89
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "BOSS大恢复药",
+      "BOSS小恢复药1"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          309,
+          143,
+          201,
+          282
+        ],
+        "template": [
+          "恢复/恢复看板娘.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "开始BOSS循环": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "开始世界BOSS": {
+    "$__mpe_code": {
+      "position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "读取BOSS设置"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "开始选择BOSS卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 522
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "点击BOSS卡组一",
+      "点击BOSS卡组二",
+      "点击BOSS卡组三",
+      "点击BOSS卡组四"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "暂停BOSS战": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1500,
+        "y": 329
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "未进入BOSS战": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4500,
+        "y": 1536
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "开始选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          45,
+          196,
+          112,
+          58
+        ],
+        "template": [
+          "BOSS/我的排名.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "点击BOSS卡组一": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 507
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          1187,
+          96,
+          66,
+          54
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击BOSS卡组三": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 885
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          1188,
+          296,
+          66,
+          57
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击BOSS卡组二": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 696
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          1186,
+          193,
+          68,
+          63
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击BOSS卡组四": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2100,
+        "y": 1074
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          1185,
+          392,
+          72,
+          60
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "结束选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "结束BOSS吃药": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3900,
+        "y": 1129
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "关闭BOSS吃药弹窗",
+      {
+        "jump_back": true,
+        "name": "BOSS界面重试"
+      }
+    ],
+    "on_error": [
+      "判断BOSS操作"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "结束BOSS战": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1500,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "结束选择BOSS卡组": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2400,
+        "y": 711
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "关闭BOSS弹窗"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "继续BOSS战": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1493,
+        "y": 519
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "开始选择BOSS卡组"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "读取BOSS设置": {
+    "$__mpe_code": {
+      "position": {
+        "x": 297,
+        "y": -16
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "load_boss_data",
+        "custom_action_param": {
+          "max_battles": -1,
+          "target_rank": -1
+        }
+      },
+      "type": "Custom"
+    },
+    "next": [
+      "开始BOSS循环"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "进入BOSS分支": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "继续BOSS战",
+      "暂停BOSS战",
+      "结束BOSS战"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  }
+}
