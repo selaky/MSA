@@ -452,3 +452,5 @@ tools/ImageCropper/**/*.png
 
 config
 debug
+# Claude Code 临时文件
+tmpclaude-*
