@@ -7,7 +7,6 @@ from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import boss_manager
 import logging
-from .. import utils
 
 
 @AgentServer.custom_recognition("should_boss_stop")
