@@ -4,6 +4,7 @@ from maa.context import Context
 from . import boss_manager
 import logging
 import json
+from utils import common_func
 
 @AgentServer.custom_action("reset_boss_data")
 class ResetPotionData(CustomAction):
@@ -25,8 +26,14 @@ class AddBossBattles(CustomAction):
         context: Context,
         argv: CustomAction.RunArg,
     ) -> CustomAction.RunResult:
+        # 增加战斗次数
         boss_manager.boss_stats.current_battles += 1
         logging.info(f"[{argv.node_name}] BOSS战斗计数 +1，当前: {boss_manager.boss_stats.current_battles}")
+
+        # 设定战斗计数通知
+        focus_msg = f"已完成第 {boss_manager.boss_stats.current_battles} 场BOSS战"
+        common_func.dynamic_set_focus(context,target_node="输出BOSS计数",trigger="RECO_OK",focus_msg=focus_msg)
+
         return CustomAction.RunResult(success=True)
 
 
