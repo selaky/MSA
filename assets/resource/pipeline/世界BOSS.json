@@ -3,14 +3,15 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\世界BOSS.json",
       "filename": "世界BOSS",
-      "lastSyncTime": 1768390646806,
+      "isDeleted": true,
+      "lastSyncTime": 1768476606481,
       "prefix": "",
       "savedViewport": {
-        "x": -155,
-        "y": 7,
-        "zoom": 0.61
+        "x": -986,
+        "y": -602,
+        "zoom": 0.53
       },
-      "version": "v0.15.2"
+      "version": "v0.15.3"
     }
   },
   "$__mpe_external_开始返回主界面_世界BOSS": {
@@ -42,7 +43,7 @@
     "next": [
       "结束BOSS吃药"
     ],
-    "rate_limit": 500,
+    "rate_limit": 250,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -69,7 +70,7 @@
     "next": [
       "BOSS小恢复药2"
     ],
-    "rate_limit": 500,
+    "rate_limit": 250,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -96,7 +97,7 @@
     "next": [
       "结束BOSS吃药"
     ],
-    "rate_limit": 500,
+    "rate_limit": 250,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -119,6 +120,7 @@
     "next": [
       "BOSS计数增加"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -176,6 +178,7 @@
     "next": [
       "开始BOSS循环"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -202,6 +205,7 @@
     "on_error": [
       "开始BOSS循环"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -272,8 +276,8 @@
   "关闭BOSS吃药弹窗": {
     "$__mpe_code": {
       "position": {
-        "x": 3847,
-        "y": 2917
+        "x": 3756,
+        "y": 2976
       }
     },
     "action": {
@@ -310,8 +314,8 @@
   "关闭BOSS弹窗": {
     "$__mpe_code": {
       "position": {
-        "x": 2400,
-        "y": 2033
+        "x": 2376,
+        "y": 2055
       }
     },
     "action": {
@@ -337,7 +341,7 @@
     "on_error": [
       "开始BOSS循环"
     ],
-    "rate_limit": 100,
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -346,20 +350,23 @@
   "准点进入 boss 界面": {
     "$__mpe_code": {
       "position": {
-        "x": 0,
-        "y": 279
+        "x": -11,
+        "y": 271
       }
     },
     "action": {
       "param": {},
       "type": "DoNothing"
     },
+    "focus": {
+      "Node.Recognition.Succeeded": "三年之期已到，恭迎龙王归来——"
+    },
     "next": [
+      "前往世界BOSS",
       {
         "jump_back": true,
         "name": "BOSS界面重试"
-      },
-      "前往世界BOSS"
+      }
     ],
     "rate_limit": 100,
     "recognition": {
@@ -376,8 +383,8 @@
   "判断停止BOSS战": {
     "$__mpe_code": {
       "position": {
-        "x": 1213,
-        "y": 759
+        "x": 1210,
+        "y": 771
       }
     },
     "action": {
@@ -406,9 +413,6 @@
       "type": "DoNothing"
     },
     "enabled": true,
-    "on_error": [
-      "开始前往主界面等待BOSS"
-    ],
     "pre_delay": 500,
     "recognition": {
       "param": {
@@ -443,7 +447,7 @@
   "前往世界BOSS": {
     "$__mpe_code": {
       "position": {
-        "x": 302,
+        "x": 292,
         "y": 560
       }
     },
@@ -478,8 +482,8 @@
   "开始BOSS吃药": {
     "$__mpe_code": {
       "position": {
-        "x": 2707,
-        "y": 2014
+        "x": 2728,
+        "y": 1929
       }
     },
     "action": {
@@ -490,7 +494,7 @@
       "BOSS大恢复药",
       "BOSS小恢复药1"
     ],
-    "rate_limit": 100,
+    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -509,8 +513,8 @@
   "开始BOSS循环": {
     "$__mpe_code": {
       "position": {
-        "x": 860,
-        "y": 912
+        "x": 808,
+        "y": 986
       }
     },
     "action": {
@@ -526,7 +530,7 @@
       "判断达到BOSS时限",
       "继续BOSS战"
     ],
-    "rate_limit": 100,
+    "rate_limit": 50,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -580,8 +584,8 @@
   "开始等待世界BOSS": {
     "$__mpe_code": {
       "position": {
-        "x": 1836,
-        "y": 320
+        "x": 1867,
+        "y": 306
       }
     },
     "action": {
@@ -627,8 +631,8 @@
   "未进入BOSS战": {
     "$__mpe_code": {
       "position": {
-        "x": 4190,
-        "y": 3088
+        "x": 4216,
+        "y": 3064
       }
     },
     "action": {
@@ -676,6 +680,7 @@
     "next": [
       "结束选择BOSS卡组"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -702,6 +707,7 @@
     "next": [
       "结束选择BOSS卡组"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -728,6 +734,7 @@
     "next": [
       "结束选择BOSS卡组"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -754,6 +761,7 @@
     "next": [
       "结束选择BOSS卡组"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -762,8 +770,8 @@
   "确认进入世界BOSS": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 586
+        "x": 572,
+        "y": 607
       }
     },
     "action": {
@@ -776,6 +784,7 @@
     "on_error": [
       "开始前往主界面等待BOSS"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -810,8 +819,8 @@
   "结束BOSS吃药": {
     "$__mpe_code": {
       "position": {
-        "x": 3600,
-        "y": 2048
+        "x": 3587,
+        "y": 2067
       }
     },
     "action": {
@@ -828,7 +837,7 @@
     "on_error": [
       "开始BOSS循环"
     ],
-    "rate_limit": 100,
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -837,13 +846,16 @@
   "结束前往主界面等待BOSS": {
     "$__mpe_code": {
       "position": {
-        "x": 1200,
-        "y": 1019
+        "x": 1193,
+        "y": 543
       }
     },
     "action": {
       "param": {},
       "type": "DoNothing"
+    },
+    "focus": {
+      "Node.Recognition.Succeeded": "停留在主界面等待7点到来"
     },
     "next": [
       "读取BOSS设置"
@@ -876,8 +888,8 @@
   "继续BOSS战": {
     "$__mpe_code": {
       "position": {
-        "x": 1191,
-        "y": 1155
+        "x": 1204,
+        "y": 1117
       }
     },
     "action": {
@@ -895,7 +907,7 @@
         "name": "判断暂停BOSS战"
       }
     ],
-    "rate_limit": 100,
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -904,8 +916,8 @@
   "读取BOSS设置": {
     "$__mpe_code": {
       "position": {
-        "x": 1500,
-        "y": 996
+        "x": 1551,
+        "y": 542
       }
     },
     "action": {
