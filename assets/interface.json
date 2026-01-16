@@ -82,8 +82,8 @@
             "option": [
                 "自动前往下一区",
                 "自动进行战斗",
-                "自动使用每日免费回复",
                 "恢复药使用上限",
+                "自动使用每日免费回复",
                 "升级自动加点",
                 "设定停止时间",
                 "高级设置"
@@ -419,15 +419,21 @@
         "自动使用每日免费回复": {
             "type": "switch",
             "label": "自动使用每日免费回复",
-            "description": "开启后，会自动使用每日免费的行动力和战斗力回复（功能开发中）",
+            "description": "开启后，会自动使用每日免费的行动力和战斗力回复",
             "default_case": "Yes",
             "cases": [
                 {
                     "name": "Yes",
                     "label": "开启",
                     "pipeline_override": {
-                        "免费恢复": {
-                            "enabled": true
+                        "读取免费恢复": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "free_recover": true
+                                    }
+                                }
+                            }
                         }
                     }
                 },
@@ -435,8 +441,14 @@
                     "name": "No",
                     "label": "关闭",
                     "pipeline_override": {
-                        "免费恢复": {
-                            "enabled": false
+                        "读取吃药设置": {
+                            "action": {
+                                "param": {
+                                    "custom_action_param": {
+                                        "free_recover": false
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -445,7 +457,7 @@
         "恢复药使用上限": {
             "type": "input",
             "label": "恢复药使用上限",
-            "description": "设置各类恢复药的使用上限。输入 0 表示不使用，输入 -1 表示无限使用（功能开发中）",
+            "description": "设置各类恢复药的使用上限。输入 0 表示不使用，输入 -1 表示无限使用",
             "inputs": [
                 {
                     "name": "大行动力恢复药",
@@ -485,14 +497,15 @@
                 }
             ],
             "pipeline_override": {
-                "读取吃药设置": {
+                "读取吃药上限": {
                     "action": {
                         "param": {
                             "custom_action_param": {
                                 "ap_big": "{大行动力恢复药}",
                                 "ap_small": "{小行动力恢复药}",
                                 "bc_big": "{大战斗力恢复药}",
-                                "bc_small": "{小战斗力恢复药}"
+                                "bc_small": "{小战斗力恢复药}",
+                                "free_recover": false
                             }
                         }
                     }

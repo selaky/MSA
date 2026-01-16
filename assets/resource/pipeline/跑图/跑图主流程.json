@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1768539337975,
+      "lastSyncTime": 1768562302899,
       "prefix": "",
       "savedViewport": {
-        "x": 181,
-        "y": 211,
+        "x": 213,
+        "y": 316,
         "zoom": 0.87
       },
       "version": "v0.15.3"
@@ -16,7 +16,7 @@
   "$__mpe_external_升级_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 905,
+        "x": 1205,
         "y": 746
       }
     }
@@ -24,7 +24,7 @@
   "$__mpe_external_开始恢复_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 905,
+        "x": 1205,
         "y": 636
       }
     }
@@ -32,7 +32,7 @@
   "$__mpe_external_开始战斗_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 905,
+        "x": 1205,
         "y": 1672
       }
     }
@@ -40,15 +40,15 @@
   "$__mpe_external_意外处理_跑图主流程": {
     "$__mpe_code": {
       "position": {
-        "x": 905,
-        "y": 526
+        "x": 1205,
+        "y": 248
       }
     }
   },
   "下一区": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
+        "x": 1200,
         "y": 856
       }
     },
@@ -78,8 +78,8 @@
   "保底点击-前进": {
     "$__mpe_code": {
       "position": {
-        "x": 1200,
-        "y": 308
+        "x": 1500,
+        "y": 30
       }
     },
     "action": {
@@ -101,8 +101,8 @@
   "保底点击-确定": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 278
+        "x": 1200,
+        "y": 0
       }
     },
     "action": {
@@ -128,8 +128,8 @@
   "判断达到跑图时限": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 0
+        "x": 1200,
+        "y": 358
       }
     },
     "action": {
@@ -151,7 +151,7 @@
   "前进": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
+        "x": 1200,
         "y": 1169
       }
     },
@@ -177,7 +177,7 @@
   "地图探索完毕": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
+        "x": 1200,
         "y": 1394
       }
     },
@@ -200,7 +200,7 @@
     "$__mpe_code": {
       "position": {
         "x": 0,
-        "y": 60
+        "y": 45
       }
     },
     "action": {
@@ -208,29 +208,58 @@
       "type": "DoNothing"
     },
     "next": [
-      "读取吃药设置"
+      "读取吃药上限"
     ],
     "recognition": {
       "param": {},
       "type": "DirectHit"
     }
   },
-  "读取吃药设置": {
+  "读取免费恢复": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 45
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "跑图循环开始"
+    ],
+    "recognition": {
+      "param": {
+        "custom_recognition": "load_free_recover",
+        "custom_recognition_param": {
+          "free_recover": true
+        }
+      },
+      "type": "Custom"
+    }
+  },
+  "读取吃药上限": {
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 30
+        "y": 15
       }
     },
     "action": {
       "param": {
-        "custom_action": "load_potion_data",
-        "custom_action_param": "{\"ap_big\":0,\"ap_small\":0,\"bc_big\":0,\"bc_small\":0,\"free_recover\":true}"
+        "custom_action": "load_potion_limit",
+        "custom_action_param": {
+          "ap_big": 0,
+          "ap_small": 0,
+          "bc_big": 0,
+          "bc_small": 0
+        }
       },
       "type": "Custom"
     },
     "next": [
-      "跑图循环开始"
+      "读取免费恢复"
     ],
     "recognition": {
       "param": {},
@@ -240,8 +269,8 @@
   "跑图循环开始": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 32
+        "x": 900,
+        "y": 17
       }
     },
     "action": {
@@ -284,7 +313,7 @@
   "跑图获得卡牌": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
+        "x": 1200,
         "y": 1782
       }
     },
