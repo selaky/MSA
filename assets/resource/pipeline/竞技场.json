@@ -3,29 +3,37 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\竞技场.json",
       "filename": "竞技场",
-      "lastSyncTime": 1767930788059,
+      "lastSyncTime": 1768534935173,
       "prefix": "",
       "savedViewport": {
-        "x": 215,
-        "y": -615,
-        "zoom": 0.86
+        "x": -643,
+        "y": 7,
+        "zoom": 0.66
       },
-      "version": "v0.14.2"
+      "version": "v0.15.3"
+    }
+  },
+  "$__mpe_external_开始返回主界面_竞技场": {
+    "$__mpe_code": {
+      "position": {
+        "x": 616,
+        "y": 150
+      }
     }
   },
   "$__mpe_external_意外处理_竞技场": {
     "$__mpe_code": {
       "position": {
-        "x": 2705,
-        "y": 603
+        "x": 3605,
+        "y": 1388
       }
     }
   },
   "一轮竞技场结束": {
     "$__mpe_code": {
       "position": {
-        "x": 300,
-        "y": 0
+        "x": 1200,
+        "y": 14
       }
     },
     "action": {
@@ -40,30 +48,11 @@
       "type": "DirectHit"
     }
   },
-  "不在竞技场界面": {
-    "$__mpe_code": {
-      "position": {
-        "x": 900,
-        "y": 819
-      }
-    },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
-    },
-    "focus": {
-      "Node.Action.Starting": "当前不在竞技场界面，请切换到竞技场界面，再开始此任务。"
-    },
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
   "判断继续竞技场": {
     "$__mpe_code": {
       "position": {
-        "x": 1200,
-        "y": 171
+        "x": 2100,
+        "y": 956
       }
     },
     "action": {
@@ -85,11 +74,56 @@
       "type": "Custom"
     }
   },
+  "开始前往主界面进入竞技场": {
+    "$__mpe_code": {
+      "position": {
+        "x": 300,
+        "y": 300
+      }
+    },
+    "action": {
+      "param": {
+        "custom_action": "set_next",
+        "custom_action_param": {
+          "next_node": "开始前往对战",
+          "pre_node": "导航后续路线"
+        }
+      },
+      "type": "Custom"
+    },
+    "next": [
+      "开始返回主界面",
+      "结束前往主界面进入竞技场"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
   "开始竞技场": {
     "$__mpe_code": {
       "position": {
         "x": 0,
-        "y": 1004
+        "y": 337
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "开始前往主界面进入竞技场"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "开始竞技场任务": {
+    "$__mpe_code": {
+      "position": {
+        "x": 900,
+        "y": 337
       }
     },
     "action": {
@@ -99,6 +133,7 @@
     "next": [
       "读取竞技场设置"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -107,8 +142,8 @@
   "星币提升体力": {
     "$__mpe_code": {
       "position": {
-        "x": 1500,
-        "y": 109
+        "x": 2400,
+        "y": 1130
       }
     },
     "action": {
@@ -145,8 +180,8 @@
   "点击匹配": {
     "$__mpe_code": {
       "position": {
-        "x": 2100,
-        "y": 153
+        "x": 3000,
+        "y": 938
       }
     },
     "action": {
@@ -179,8 +214,8 @@
   "竞技场失败": {
     "$__mpe_code": {
       "position": {
-        "x": 2700,
-        "y": 378
+        "x": 3600,
+        "y": 938
       }
     },
     "action": {
@@ -208,8 +243,8 @@
   "竞技场失败记录": {
     "$__mpe_code": {
       "position": {
-        "x": 3000,
-        "y": 398
+        "x": 3900,
+        "y": 0
       }
     },
     "action": {
@@ -229,8 +264,8 @@
   "竞技场循环开始": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
-        "y": 187
+        "x": 1500,
+        "y": 317
       }
     },
     "action": {
@@ -245,7 +280,7 @@
       "记录竞技场积分"
     ],
     "on_error": [
-      "不在竞技场界面"
+      "开始前往主界面进入竞技场"
     ],
     "recognition": {
       "param": {},
@@ -255,8 +290,8 @@
   "竞技场胜利": {
     "$__mpe_code": {
       "position": {
-        "x": 2700,
-        "y": 153
+        "x": 3600,
+        "y": 1163
       }
     },
     "action": {
@@ -284,8 +319,8 @@
   "竞技场胜利记录": {
     "$__mpe_code": {
       "position": {
-        "x": 3000,
-        "y": 6
+        "x": 3900,
+        "y": 186
       }
     },
     "action": {
@@ -302,11 +337,33 @@
       "type": "DirectHit"
     }
   },
+  "结束前往主界面进入竞技场": {
+    "$__mpe_code": {
+      "position": {
+        "x": 600,
+        "y": 270
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "focus": {
+      "Node.Recognition.Succeeded": "停留在主界面，准备进入竞技场"
+    },
+    "next": [
+      "开始竞技场任务"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
   "记录竞技场积分": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 141
+        "x": 1800,
+        "y": 503
       }
     },
     "action": {
@@ -337,8 +394,8 @@
   "设置竞技场数据统计": {
     "$__mpe_code": {
       "position": {
-        "x": 3000,
-        "y": 760
+        "x": 2700,
+        "y": 535
       }
     },
     "action": {
@@ -358,8 +415,8 @@
   "读取竞技场设置": {
     "$__mpe_code": {
       "position": {
-        "x": 300,
-        "y": 974
+        "x": 1200,
+        "y": 307
       }
     },
     "action": {
@@ -374,6 +431,7 @@
     "next": [
       "竞技场循环开始"
     ],
+    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -382,8 +440,8 @@
   "跳过竞技场战斗": {
     "$__mpe_code": {
       "position": {
-        "x": 2400,
-        "y": 153
+        "x": 3300,
+        "y": 938
       }
     },
     "action": {
@@ -416,8 +474,8 @@
   "输出竞技场数据统计": {
     "$__mpe_code": {
       "position": {
-        "x": 3300,
-        "y": 774
+        "x": 3000,
+        "y": 549
       }
     },
     "action": {
@@ -432,8 +490,8 @@
   "进入竞技场结束流程": {
     "$__mpe_code": {
       "position": {
-        "x": 2400,
-        "y": 774
+        "x": 2100,
+        "y": 549
       }
     },
     "action": {
@@ -456,8 +514,8 @@
   "选择竞技场战斗卡组": {
     "$__mpe_code": {
       "position": {
-        "x": 1800,
-        "y": 153
+        "x": 2700,
+        "y": 938
       }
     },
     "action": {
@@ -489,8 +547,8 @@
   "选择竞技场防御卡组": {
     "$__mpe_code": {
       "position": {
-        "x": 2700,
-        "y": 713
+        "x": 2400,
+        "y": 638
       }
     },
     "action": {

@@ -3,14 +3,14 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\导航\\前往竞技场.json",
       "filename": "前往竞技场",
-      "lastSyncTime": 1768292723429,
+      "lastSyncTime": 1768533917553,
       "prefix": "",
       "savedViewport": {
-        "x": -357,
-        "y": -468,
-        "zoom": 0.66
+        "x": -383,
+        "y": -356,
+        "zoom": 0.57
       },
-      "version": "v0.15.2"
+      "version": "v0.15.3"
     }
   },
   "$__mpe_external_意外处理_前往竞技场": {
@@ -18,6 +18,14 @@
       "position": {
         "x": 1520,
         "y": 895
+      }
+    }
+  },
+  "$__mpe_external_结束前往主界面进入竞技场_前往竞技场": {
+    "$__mpe_code": {
+      "position": {
+        "x": 2664,
+        "y": 1205
       }
     }
   },
@@ -126,6 +134,9 @@
     "focus": {
       "Node.Action.Succeeded": "已进入竞技场"
     },
+    "next": [
+      "结束前往主界面进入竞技场"
+    ],
     "recognition": {
       "param": {
         "roi": [

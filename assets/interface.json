@@ -69,9 +69,9 @@
             "name": "前往指定界面",
             "entry": "开始前往指定界面",
             "default_check": false,
-            "description": "### 前往指定的板块页面,例如自动前往星海1或竞技场",
+            "description": "### 前往指定的地图界面",
             "option": [
-                "目标界面"
+                "地图类型"
             ]
         },
         {
@@ -168,77 +168,6 @@
                 }
             ]
         },
-        "目标界面": {
-            "type": "select",
-            "label": "目标界面",
-            "description": "选择要前往的游戏界面",
-            "default_case": "主界面",
-            "cases": [
-                {
-                    "name": "主界面",
-                    "label": "主界面",
-                    "pipeline_override": {
-                        "导航后续路线": {
-                            "next": [
-                                {
-                                    "jump_back": true,
-                                    "name": "意外处理"
-                                },
-                                "无后续路线"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "地图",
-                    "label": "地图",
-                    "option": [
-                        "地图类型"
-                    ],
-                    "pipeline_override": {
-                        "导航后续路线": {
-                            "next": [
-                                {
-                                    "jump_back": true,
-                                    "name": "意外处理"
-                                },
-                                "开始前往地图"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "竞技场",
-                    "label": "竞技场",
-                    "pipeline_override": {
-                        "导航后续路线": {
-                            "next": [
-                                {
-                                    "jump_back": true,
-                                    "name": "意外处理"
-                                },
-                                "开始前往对战"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "世界Boss",
-                    "label": "世界 Boss",
-                    "pipeline_override": {
-                        "导航后续路线": {
-                            "next": [
-                                {
-                                    "jump_back": true,
-                                    "name": "意外处理"
-                                },
-                                "开始前往世界BOSS"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
         "地图类型": {
             "type": "select",
             "label": "地图类型",
@@ -249,6 +178,15 @@
                     "name": "日常地图",
                     "label": "日常地图",
                     "pipeline_override": {
+                        "导航后续路线": {
+                            "next": [
+                                {
+                                    "jump_back": true,
+                                    "name": "意外处理"
+                                },
+                                "开始前往地图"
+                            ]
+                        },
                         "地图分流": {
                             "next": [
                                 "前往日常地图",
@@ -261,6 +199,15 @@
                     "name": "星海1",
                     "label": "星海1",
                     "pipeline_override": {
+                        "导航后续路线": {
+                            "next": [
+                                {
+                                    "jump_back": true,
+                                    "name": "意外处理"
+                                },
+                                "开始前往地图"
+                            ]
+                        },
                         "地图分流": {
                             "next": [
                                 "前往普通地图",
