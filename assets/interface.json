@@ -441,7 +441,7 @@
                     "name": "No",
                     "label": "关闭",
                     "pipeline_override": {
-                        "读取吃药设置": {
+                        "读取免费恢复": {
                             "action": {
                                 "param": {
                                     "custom_action_param": {

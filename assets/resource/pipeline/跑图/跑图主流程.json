@@ -223,20 +223,20 @@
       }
     },
     "action": {
-      "param": {},
-      "type": "DoNothing"
+      "param": {
+        "custom_action": "load_free_recover",
+        "custom_action_param": {
+          "free_recover": true
+        }
+      },
+      "type": "Custom"
     },
     "next": [
       "跑图循环开始"
     ],
     "recognition": {
-      "param": {
-        "custom_recognition": "load_free_recover",
-        "custom_recognition_param": {
-          "free_recover": true
-        }
-      },
-      "type": "Custom"
+      "param": {},
+      "type": "DirectHit"
     }
   },
   "读取吃药上限": {
