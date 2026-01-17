@@ -30,7 +30,11 @@ class SinglePotion:
     
     def usage_report(self):
         """构造可以直接显示给用户的单次使用报告"""
-        msg = f"使用第 {self.usage}/{self.limit} 瓶 {self.name},剩余库存量 {self.stock}"
+        if self.limit == -1:
+            limit_report = "∞"
+        else:
+            limit_report = self.limit
+        msg = f"使用第 {self.usage}/{limit_report} 瓶 {self.name},剩余库存量 {self.stock}"
         return msg
     
     def should_use(self):
