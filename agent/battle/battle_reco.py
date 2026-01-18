@@ -14,12 +14,11 @@ class ExtractEnemyInfo(CustomRecognition):
         argv: CustomRecognition.AnalyzeArg,
     ) -> CustomRecognition.AnalyzeResult:
         reco_detail = context.run_recognition("EnemyInfo",argv.image)
-        if reco_detail and reco_detail.hit:
-            ocr_text = reco_detail.best_result.text
-        else:
-            msg = f"[{argv.node_name}] 未识别到有效 OCR 结果"
-            logging.info(msg)
-            raise ValueError(msg)
+        if not reco_detail or not reco_detail.hit:
+            logging.warning(f"[{argv.node_name}] 未识别到有效 OCR 结果")
+            return None
+
+        ocr_text = reco_detail.best_result.text
         
         # 提取感染者姓名、状态和等级
         # ocr 识别结果示例:
@@ -31,8 +30,8 @@ class ExtractEnemyInfo(CustomRecognition):
         match = re.search(pattern,clean_text,re.IGNORECASE)
 
         if not match:
-            msg = f"[{argv.node_name}] OCR 数据格式错误，无法解析: '{ocr_text}'"
-            raise ValueError(msg)
+            logging.warning(f"[{argv.node_name}] OCR 数据格式错误，无法解析: '{ocr_text}'")
+            return None
         
         # 提取原始数据
         raw_name = match.group(1)
@@ -46,7 +45,7 @@ class ExtractEnemyInfo(CustomRecognition):
         # 把"暴走的"从名字里去掉
         final_name = raw_name.replace("暴走的", "")
         # 记录当前模式
-        mode = "暴走" if is_rampage else "一般"
+        mode = "暴走" if is_rampage else "普通"
 
         # 登记感染者信息,更新战斗上下文。
         battle_manager.update_encounter_context(final_name,mode,level)

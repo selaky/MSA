@@ -19,11 +19,11 @@ class SetEnemyNext(CustomAction):
 
         # 根据是否放生重定向后续节点
         if action.is_release_op:
-            common_func.dynamic_set_next(context,pre_node="放生分流",next_node="战斗失败处理")
-            msg = f"[{argv.node_name}] 已将放生分流重定向为战斗失败"
-        else:
-            common_func.dynamic_set_next(pre_node="放生分流",next_node="放生-放弃感染")
+            common_func.dynamic_set_next(context, pre_node="放生分流", next_node="放生-放弃感染")
             msg = f"[{argv.node_name}] 已将放生分流重定向为放生分支"
+        else:
+            common_func.dynamic_set_next(context, pre_node="放生分流", next_node="战斗失败处理")
+            msg = f"[{argv.node_name}] 已将放生分流重定向为战斗失败"
 
         logging.info(msg)
         return CustomAction.RunResult(success=True)
@@ -68,8 +68,12 @@ class BattleRelease(CustomAction):
         # 归档放生信息
         battle_manager.archive_battle_result("放生")
 
+        # 从档案中获取累计放生次数
+        profile = battle_manager.archives.get(current.name)
+        release_count = profile.get_record_by_mode(current.mode).release if profile else 1
+
         # 整理用户需要看到的信息
-        focus_msg = f"[👋 放生] {current.level}级 {current.category}感染者 {current.name} | 累计放生: {current.release}"
+        focus_msg = f"[👋 放生] {current.level}级 {current.category}感染者 {current.name} | 累计放生: {release_count}"
         common_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",focus_msg)
 
         # 整理公屏需要发送的信息(虽然用户可能会关闭发送公屏设置，但是来都来了,也生成一下吧)
