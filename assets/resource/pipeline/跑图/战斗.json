@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图/战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1768726813239,
+      "lastSyncTime": 1768726825103,
       "prefix": "",
       "savedViewport": {
-        "x": -581,
-        "y": -456,
+        "x": -654,
+        "y": -463,
         "zoom": 0.65
       },
       "version": "v0.16.0"
@@ -163,7 +163,7 @@
     ],
     "recognition": {
       "param": {
-        "custom_recognition": ""
+        "custom_recognition": "enter_battle"
       },
       "type": "Custom"
     }
@@ -448,7 +448,7 @@
     ],
     "recognition": {
       "param": {
-        "custom_recognition": ""
+        "custom_recognition": "enter_battle"
       },
       "type": "Custom"
     }

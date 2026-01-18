@@ -53,3 +53,21 @@ class ExtractEnemyInfo(CustomRecognition):
 
         msg = f"[{argv.node_name}] 识别到 {level}级 {mode} 感染者 {final_name}"
         return CustomRecognition.AnalyzeResult(box=(0, 0, 0, 0), detail=msg)
+    
+@AgentServer.custom_recognition("enter_battle")
+class EnterBattle(CustomRecognition):
+    """返回应该点击的卡组位置,进入战斗界面"""
+    def analyze(
+        self,
+        context: Context,
+        argv: CustomRecognition.AnalyzeArg,
+    ) -> CustomRecognition.AnalyzeResult:
+        # 获取当前决策
+        info = battle_manager.active_context
+        action = battle_manager.get_battle_action(info.name,info.mode)
+
+        # 获取需要点击的 roi
+        click_roi = battle_manager.BATTLE_ROI[action.deck_name]
+
+        msg = f"[{argv.node_name}] 选择卡组为 {action.deck_name}, 点击坐标为 {click_roi}"
+        return CustomRecognition.AnalyzeResult(box=click_roi, detail=msg)
