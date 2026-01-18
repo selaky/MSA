@@ -1,0 +1,139 @@
+{
+  "$__mpe_config_公屏发送": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/公屏发送.json",
+      "filename": "公屏发送",
+      "lastSyncTime": 1768635115063,
+      "prefix": "",
+      "savedViewport": {
+        "x": -1833,
+        "y": -467,
+        "zoom": 0.66
+      },
+      "version": "v0.16.0"
+    }
+  },
+  "开始公屏发送": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3019,
+        "y": 1159
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "打开公屏"
+      },
+      "激活光标"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "打开公屏": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3409,
+        "y": 941
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          0,
+          663,
+          70,
+          57
+        ],
+        "template": [
+          "公屏/打开公屏.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "激活光标": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3441,
+        "y": 1255
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          130,
+          690,
+          16,
+          13
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      "输入文字"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击发送消息": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4164,
+        "y": 1208
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "enabled": false,
+    "recognition": {
+      "param": {
+        "roi": [
+          130,
+          690,
+          16,
+          13
+        ],
+        "template": [
+          "公屏/发送消息.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "输入文字": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3767,
+        "y": 1267
+      }
+    },
+    "action": {
+      "param": {
+        "input_text": "这是一条测试信息"
+      },
+      "type": "InputText"
+    },
+    "next": [
+      "点击发送消息"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  }
+}
