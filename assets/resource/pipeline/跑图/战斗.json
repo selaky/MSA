@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图/战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1768788578060,
+      "lastSyncTime": 1768788729792,
       "prefix": "",
       "savedViewport": {
-        "x": -600,
-        "y": -721,
-        "zoom": 0.57
+        "x": -586,
+        "y": -153,
+        "zoom": 0.38
       },
       "version": "v0.16.1"
     }
@@ -34,6 +34,14 @@
       "position": {
         "x": 2105,
         "y": 1055
+      }
+    }
+  },
+  "$__mpe_external_跑图循环开始_战斗": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3049,
+        "y": 775
       }
     }
   },
@@ -222,7 +230,7 @@
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 0
+        "y": 2
       }
     },
     "action": {
@@ -233,6 +241,9 @@
     "focus": {
       "Node.Action.Succeeded": "遭遇感染者，自动放弃"
     },
+    "next": [
+      "跑图循环开始"
+    ],
     "recognition": {
       "param": {
         "roi": [
@@ -409,6 +420,9 @@
       "param": {},
       "type": "DoNothing"
     },
+    "next": [
+      "跑图循环开始"
+    ],
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -472,7 +486,7 @@
   "进入战斗": {
     "$__mpe_code": {
       "position": {
-        "x": 600,
+        "x": 639,
         "y": 646
       }
     },
