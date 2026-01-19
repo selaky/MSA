@@ -107,8 +107,7 @@
             "default_check": false,
             "description": "### 可自动重复打世界 boss，需提前前往 boss 界面。\n**注意：程序自动操作有风险，可能会出现逻辑错误、程序卡死等情况，建议能手打还是手打，此任务主要提供给有事出门回不来的人作为备用方案。**",
             "option": [
-                "BOSS最大战斗次数",
-                "BOSS目标排名",
+                "BOSS战斗设置",
                 "BOSS战斗卡组",
                 "BOSS吃药类型",
                 "BOSS强制截止时间"
@@ -921,42 +920,24 @@
                 }
             ]
         },
-        "BOSS最大战斗次数": {
+        "BOSS战斗设置": {
             "type": "input",
-            "label": "最大战斗次数",
-            "description": "boss 战战斗次数不会超过设定上限。如果填 -1，则为无限战斗。",
+            "label": "战斗设置",
+            "description": "设置 boss 战的战斗次数上限和目标排名",
             "inputs": [
                 {
                     "name": "max_battles",
                     "label": "最大战斗次数",
-                    "description": "填入自然数或 -1（-1 表示无限战斗）",
+                    "description": "boss 战战斗次数不会超过设定上限。填 -1 表示无限战斗。",
                     "default": "-1",
                     "pipeline_type": "int",
                     "verify": "^-?\\d+$",
                     "pattern_msg": "请输入自然数或 -1"
-                }
-            ],
-            "pipeline_override": {
-                "读取BOSS设置": {
-                    "action": {
-                        "param": {
-                            "custom_action_param": {
-                                "max_battles": "{max_battles}"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "BOSS目标排名": {
-            "type": "input",
-            "label": "目标排名",
-            "description": "如果当前排名没达到目标排名会继续战斗，如果已达到目标排名，则暂停等待排名变动。建议把目标排名设的比心理预期略高一点。填 -1 表示不限制排名。",
-            "inputs": [
+                },
                 {
                     "name": "target_rank",
                     "label": "目标排名",
-                    "description": "填入自然数或 -1（-1 表示不限制排名）",
+                    "description": "未达到目标排名会继续战斗，已达到则暂停等待。建议设的比心理预期略高。填 -1 表示不限制排名。",
                     "default": "-1",
                     "pipeline_type": "int",
                     "verify": "^-?\\d+$",
@@ -968,6 +949,7 @@
                     "action": {
                         "param": {
                             "custom_action_param": {
+                                "max_battles": "{max_battles}",
                                 "target_rank": "{target_rank}"
                             }
                         }
