@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1768884349901,
+      "lastSyncTime": 1768886541562,
       "prefix": "",
       "savedViewport": {
-        "x": 335,
-        "y": -32,
+        "x": -119,
+        "y": -165,
         "zoom": 0.66
       },
       "version": "v0.16.1"
@@ -209,11 +209,7 @@
         "name": "意外处理"
       },
       "战斗胜利",
-      "战斗胜利处理",
-      {
-        "jump_back": true,
-        "name": "开始获得卡牌"
-      }
+      "战斗胜利处理"
     ],
     "rate_limit": 10,
     "recognition": {
@@ -457,8 +453,8 @@
   "跳过战斗": {
     "$__mpe_code": {
       "position": {
-        "x": 900,
-        "y": 919
+        "x": 895,
+        "y": 925
       }
     },
     "action": {
@@ -472,7 +468,11 @@
       },
       "跳过战斗",
       "战斗胜利",
-      "战斗失败"
+      "战斗失败",
+      {
+        "jump_back": true,
+        "name": "开始获得卡牌"
+      }
     ],
     "recognition": {
       "param": {
