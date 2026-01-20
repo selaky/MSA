@@ -4,11 +4,11 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
       "isModifiedExternally": true,
-      "lastSyncTime": 1768894075294,
+      "lastSyncTime": 1768896095986,
       "prefix": "",
       "savedViewport": {
-        "x": 169,
-        "y": 257,
+        "x": -158,
+        "y": 167,
         "zoom": 0.76
       },
       "version": "v0.16.1"
@@ -76,29 +76,6 @@
       "type": "TemplateMatch"
     }
   },
-  "保底点击-前进": {
-    "$__mpe_code": {
-      "position": {
-        "x": 1500,
-        "y": 30
-      }
-    },
-    "action": {
-      "param": {
-        "target": [
-          1162,
-          286,
-          6,
-          28
-        ]
-      },
-      "type": "Click"
-    },
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
   "保底点击-确定": {
     "$__mpe_code": {
       "position": {
@@ -117,9 +94,6 @@
       },
       "type": "Click"
     },
-    "next": [
-      "保底点击-前进"
-    ],
     "recognition": {
       "param": {},
       "type": "DirectHit"
