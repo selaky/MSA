@@ -3,14 +3,15 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1768562302899,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1768894075294,
       "prefix": "",
       "savedViewport": {
-        "x": 213,
-        "y": 316,
-        "zoom": 0.87
+        "x": 169,
+        "y": 257,
+        "zoom": 0.76
       },
-      "version": "v0.15.3"
+      "version": "v0.16.1"
     }
   },
   "$__mpe_external_升级_跑图主流程": {
@@ -119,7 +120,6 @@
     "next": [
       "保底点击-前进"
     ],
-    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -208,47 +208,8 @@
       "type": "DoNothing"
     },
     "next": [
-      "检查战斗配置"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
-  "检查战斗配置": {
-    "$__mpe_code": {
-      "position": {
-        "x": 150,
-        "y": 45
-      }
-    },
-    "action": {
-      "param": {
-        "custom_action": "check_battle_config"
-      },
-      "type": "Custom"
-    },
-    "next": [
       "读取吃药上限"
     ],
-    "on_error": ["战斗配置未完成"],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
-  "战斗配置未完成": {
-    "$__mpe_code": {
-      "position": {
-        "x": 150,
-        "y": 150
-      }
-    },
-    "action": {
-      "param": {},
-      "type": "StopTask"
-    },
-    "focus": "请先执行【跑图战斗设置】任务进行战斗配置！",
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -343,6 +304,7 @@
         "name": "保底点击-确定"
       }
     ],
+    "post_delay": 400,
     "rate_limit": 200,
     "recognition": {
       "param": {},

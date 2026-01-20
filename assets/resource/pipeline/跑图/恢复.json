@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\恢复.json",
       "filename": "恢复",
-      "lastSyncTime": 1768889738004,
+      "lastSyncTime": 1768893862386,
       "prefix": "",
       "savedViewport": {
-        "x": 239,
-        "y": -124,
-        "zoom": 0.44
+        "x": 165,
+        "y": -227,
+        "zoom": 0.77
       },
       "version": "v0.16.1"
     }
@@ -137,7 +137,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -242,7 +241,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "lower": [
@@ -282,7 +280,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 100,
     "recognition": {
       "param": {
         "lower": [
@@ -327,7 +324,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -357,7 +353,6 @@
     "next": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -386,7 +381,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -410,7 +404,6 @@
         "name": "意外处理"
       }
     ],
-    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion",
@@ -439,7 +432,6 @@
         "name": "意外处理"
       }
     ],
-    "rate_limit": 100,
     "recognition": {
       "param": {
         "custom_recognition": "should_use_potion",
@@ -469,7 +461,6 @@
         "name": "意外处理"
       }
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [

@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1768893431077,
+      "lastSyncTime": 1768893464671,
       "prefix": "",
       "savedViewport": {
-        "x": 244,
-        "y": 86,
+        "x": 376,
+        "y": 176,
         "zoom": 0.58
       },
       "version": "v0.16.1"
@@ -127,7 +127,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -162,7 +161,6 @@
       "战斗失败",
       "放生分流"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -222,7 +220,6 @@
       "战斗胜利",
       "战斗胜利处理"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -315,7 +312,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "custom_recognition": "extract_enemy_info"
@@ -379,7 +375,6 @@
     "on_error": [
       "跑图循环开始"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -401,7 +396,6 @@
     "next": [
       "放生广播分流"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -422,7 +416,6 @@
       "开始公屏发送",
       "放生结束"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -442,7 +435,6 @@
     "next": [
       "输出战斗信息"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -523,7 +515,6 @@
     "next": [
       "结束战斗"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
