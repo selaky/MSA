@@ -43,10 +43,10 @@ class BattleWin(CustomAction):
         current = battle_manager.active_context
         if current.battle_count == 1:
             # 一次性获得胜利
-            msg = f"[🗡️击杀] {current.name} LV.{current.level} {current.mode} "
+            msg = f"[🗡️击败] {current.name} LV.{current.level} {current.mode} "
         else:
             # 多次战斗获得胜利
-            msg = f"[⚔️击杀] {current.name} LV.{current.level} {current.mode} | 击杀花费次数: {current.battle_count}"
+            msg = f"[⚔️击败] {current.name} LV.{current.level} {current.mode} | 击杀花费次数: {current.battle_count}"
 
         common_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",msg)
         return CustomAction.RunResult(success=True)
