@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\公屏发送.json",
       "filename": "公屏发送",
-      "lastSyncTime": 1768916560575,
+      "lastSyncTime": 1768919534898,
       "prefix": "",
       "savedViewport": {
-        "x": -2105,
-        "y": -506,
-        "zoom": 0.76
+        "x": -2842,
+        "y": -698,
+        "zoom": 0.87
       },
       "version": "v0.16.1"
     }
@@ -139,10 +139,10 @@
     "recognition": {
       "param": {
         "roi": [
-          130,
-          690,
-          16,
-          13
+          288,
+          667,
+          81,
+          53
         ],
         "template": [
           "公屏/发送消息.png"
