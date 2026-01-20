@@ -1,14 +1,14 @@
 {
   "$__mpe_config_战斗": {
     "$__mpe_code": {
-      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图/战斗.json",
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\战斗.json",
       "filename": "战斗",
-      "lastSyncTime": 1768788729792,
+      "lastSyncTime": 1768884349901,
       "prefix": "",
       "savedViewport": {
-        "x": -586,
-        "y": -153,
-        "zoom": 0.38
+        "x": 335,
+        "y": -32,
+        "zoom": 0.66
       },
       "version": "v0.16.1"
     }
@@ -69,6 +69,32 @@
         ]
       },
       "type": "OCR"
+    }
+  },
+  "GiveUp": {
+    "$__mpe_code": {
+      "position": {
+        "x": -3,
+        "y": 563
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          1158,
+          522,
+          122,
+          77
+        ],
+        "template": [
+          "战斗/放弃.png"
+        ]
+      },
+      "type": "TemplateMatch"
     }
   },
   "开始战斗": {
@@ -504,30 +530,9 @@
     ],
     "recognition": {
       "param": {
-        "all_of": [
-          {
-            "param": {
-              "custom_recognition": "enter_battle"
-            },
-            "type": "Custom"
-          },
-          {
-            "param": {
-              "roi": [
-                1128,
-                495,
-                152,
-                120
-              ],
-              "template": [
-                "战斗/放弃.png"
-              ]
-            },
-            "type": "TemplateMatch"
-          }
-        ]
+        "custom_recognition": "enter_battle"
       },
-      "type": "And"
+      "type": "Custom"
     }
   }
 }

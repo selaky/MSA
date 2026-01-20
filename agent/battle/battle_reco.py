@@ -62,6 +62,13 @@ class EnterBattle(CustomRecognition):
         context: Context,
         argv: CustomRecognition.AnalyzeArg,
     ) -> CustomRecognition.AnalyzeResult:
+        # 判断当前是否在战斗页面
+        reco_detail = context.run_recognition("GiveUp",argv.image)
+        if not reco_detail or not reco_detail.hit:
+            msg = f"[{argv.node_name}] 当前不在战斗页面"
+            logging.info(msg)
+            return CustomRecognition.AnalyzeResult(box=None, detail=msg)
+
         # 获取当前决策
         info = battle_manager.active_context
         action = battle_manager.get_battle_action(info.name,info.mode)
