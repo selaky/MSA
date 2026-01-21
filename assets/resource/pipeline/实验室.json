@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/实验室.json",
       "filename": "实验室",
-      "lastSyncTime": 1769000773579,
+      "lastSyncTime": 1769001856037,
       "prefix": "",
       "savedViewport": {
-        "x": -2740,
-        "y": -595,
-        "zoom": 0.86
+        "x": -1632,
+        "y": -6,
+        "zoom": 0.57
       },
       "version": "v0.16.1"
     }
@@ -65,8 +65,110 @@
     ],
     "recognition": {
       "param": {
+        "roi": [
+          577,
+          535,
+          121,
+          41
+        ],
         "template": [
           "实验室/确定-实验室.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "低星产物确定-收尾": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4365,
+        "y": 171
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "低星产物确定-收尾",
+      "结束低星实验"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          577,
+          535,
+          121,
+          41
+        ],
+        "template": [
+          "实验室/确定-实验室.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "低星实验-收尾": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3600,
+        "y": 154
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      },
+      "低星开始实验-收尾"
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          785,
+          300,
+          79,
+          77
+        ],
+        "template": [
+          "实验室/实验室空白.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "低星开始实验-收尾": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3971,
+        "y": 145
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "next": [
+      "低星产物确定-收尾",
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      }
+    ],
+    "recognition": {
+      "param": {
+        "roi": [
+          1050,
+          118,
+          140,
+          131
+        ],
+        "template": [
+          "实验室/开始实验.png"
         ]
       },
       "type": "TemplateMatch"
@@ -132,7 +234,7 @@
         "name": "意外处理"
       },
       "低星确定选卡",
-      "结束低星实验",
+      "低星实验-收尾",
       "低星点击开始实验"
     ],
     "recognition": {
@@ -464,8 +566,8 @@
   "结束低星实验": {
     "$__mpe_code": {
       "position": {
-        "x": 3600,
-        "y": 154
+        "x": 4687,
+        "y": 173
       }
     },
     "action": {
@@ -473,18 +575,8 @@
       "type": "DoNothing"
     },
     "recognition": {
-      "param": {
-        "roi": [
-          785,
-          300,
-          79,
-          77
-        ],
-        "template": [
-          "实验室/实验室空白.png"
-        ]
-      },
-      "type": "TemplateMatch"
+      "param": {},
+      "type": "DirectHit"
     }
   }
 }
