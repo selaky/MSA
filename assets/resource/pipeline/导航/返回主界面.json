@@ -3,14 +3,14 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\导航\\返回主界面.json",
       "filename": "返回主界面",
-      "lastSyncTime": 1767923752872,
+      "lastSyncTime": 1768894137797,
       "prefix": "",
       "savedViewport": {
-        "x": 250,
-        "y": -300,
-        "zoom": 0.57
+        "x": -196,
+        "y": -612,
+        "zoom": 0.76
       },
-      "version": "v0.14.2"
+      "version": "v0.16.1"
     }
   },
   "$__mpe_external_意外处理_返回主界面": {
@@ -60,7 +60,6 @@
       },
       "无后续路线"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -83,7 +82,6 @@
     "next": [
       "导航后续路线"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {
         "roi": [
@@ -113,7 +111,6 @@
     "next": [
       "开始返回主界面"
     ],
-    "rate_limit": 10,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -148,7 +145,6 @@
       },
       "已回到主界面"
     ],
-    "rate_limit": 200,
     "recognition": {
       "param": {},
       "type": "DirectHit"

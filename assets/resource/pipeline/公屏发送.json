@@ -1,0 +1,158 @@
+{
+  "$__mpe_config_公屏发送": {
+    "$__mpe_code": {
+      "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\公屏发送.json",
+      "filename": "公屏发送",
+      "lastSyncTime": 1768971292344,
+      "prefix": "",
+      "savedViewport": {
+        "x": -1560,
+        "y": -437,
+        "zoom": 0.66
+      },
+      "version": "v0.16.1"
+    }
+  },
+  "$__mpe_external_意外处理_公屏发送": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3408,
+        "y": 785
+      }
+    }
+  },
+  "公屏输入文字": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3767,
+        "y": 1267
+      }
+    },
+    "action": {
+      "param": {
+        "input_text": "这是一条测试信息"
+      },
+      "type": "InputText"
+    },
+    "next": [
+      "点击发送消息",
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      }
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "开始公屏发送": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3019,
+        "y": 1159
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      },
+      {
+        "jump_back": true,
+        "name": "打开公屏"
+      },
+      "激活光标"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "打开公屏": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3409,
+        "y": 941
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          0,
+          663,
+          70,
+          57
+        ],
+        "template": [
+          "公屏/打开公屏.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  },
+  "激活光标": {
+    "$__mpe_code": {
+      "position": {
+        "x": 3441,
+        "y": 1255
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          130,
+          690,
+          16,
+          13
+        ]
+      },
+      "type": "Click"
+    },
+    "next": [
+      {
+        "jump_back": true,
+        "name": "意外处理"
+      },
+      "公屏输入文字"
+    ],
+    "recognition": {
+      "param": {},
+      "type": "DirectHit"
+    }
+  },
+  "点击发送消息": {
+    "$__mpe_code": {
+      "position": {
+        "x": 4164,
+        "y": 1208
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          288,
+          667,
+          81,
+          53
+        ],
+        "template": [
+          "公屏/发送消息.png"
+        ]
+      },
+      "type": "TemplateMatch"
+    }
+  }
+}

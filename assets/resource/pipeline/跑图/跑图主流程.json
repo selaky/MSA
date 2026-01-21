@@ -3,14 +3,15 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
-      "lastSyncTime": 1768562302899,
+      "isModifiedExternally": true,
+      "lastSyncTime": 1768901039568,
       "prefix": "",
       "savedViewport": {
-        "x": 213,
-        "y": 316,
-        "zoom": 0.87
+        "x": -395,
+        "y": 161,
+        "zoom": 1
       },
-      "version": "v0.15.3"
+      "version": "v0.16.1"
     }
   },
   "$__mpe_external_升级_跑图主流程": {
@@ -75,29 +76,6 @@
       "type": "TemplateMatch"
     }
   },
-  "保底点击-前进": {
-    "$__mpe_code": {
-      "position": {
-        "x": 1500,
-        "y": 30
-      }
-    },
-    "action": {
-      "param": {
-        "target": [
-          1162,
-          286,
-          6,
-          28
-        ]
-      },
-      "type": "Click"
-    },
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
-  },
   "保底点击-确定": {
     "$__mpe_code": {
       "position": {
@@ -116,10 +94,6 @@
       },
       "type": "Click"
     },
-    "next": [
-      "保底点击-前进"
-    ],
-    "rate_limit": 100,
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -304,7 +278,8 @@
         "name": "保底点击-确定"
       }
     ],
-    "rate_limit": 200,
+    "post_delay": 500,
+    "rate_limit": 500,
     "recognition": {
       "param": {},
       "type": "DirectHit"
