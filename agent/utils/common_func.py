@@ -149,16 +149,22 @@ def extract_number_from_ocr(context: Context, image, task_name: str) -> int:
     if not reco_detail or not reco_detail.hit:
         raise ValueError(f"OCR任务 [{task_name}] 未命中或识别失败")
     
-    # 获取最佳结果
-    best = getattr(reco_detail,"best_result",None)
-    if not best:
-        raise ValueError(f"OCR任务 [{task_name}] 命中但无 best_result")
+    # 提取区域内所有识别到的结果,并按照横坐标排序拼在一起变成完整提取文本
+    all_blocks = reco_detail.filtered_results
+    try:
+        # 排序
+        all_blocks.sort(key=lambda block: block.box[0])
+    except Exception as e:
+        # 如果连坐标都读不出来，说明数据结构异常，报错
+        logging.error(f"排序 OCR 结果块时发生严重错误: {e}")
+        return None
+        # 组合文本,即使只识别到一个文本也没有问题
+    ocr_text = "".join([b.text for b in all_blocks])
     
-    # 提取文本并清洗出数字
-    text = getattr(best,"text","")
-    digits = "".join(ch for ch in (text or "") if ch.isdigit())
+    # 清洗出数字
+    digits = "".join(ch for ch in (ocr_text or "") if ch.isdigit())
 
     if not digits:
-        raise ValueError(f"OCR任务 [{task_name}] 识别到了文本 '{text}' 但其中不包含数字")
+        raise ValueError(f"OCR任务 [{task_name}] 识别到了文本 '{ocr_text}' 但其中不包含数字")
     
     return int(digits)

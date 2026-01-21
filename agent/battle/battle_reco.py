@@ -79,7 +79,7 @@ class EnterBattle(CustomRecognition):
         reco_detail = context.run_recognition("GiveUp",argv.image)
         if not reco_detail or not reco_detail.hit:
             msg = f"[{argv.node_name}] 当前不在战斗页面"
-            logging.info(msg)
+            # logging.info(msg) 还是别发日志了，这条识别有点太骚扰人了
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)
 
         # 获取当前决策
