@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/实验室.json",
       "filename": "实验室",
-      "lastSyncTime": 1768998820753,
+      "lastSyncTime": 1769000773579,
       "prefix": "",
       "savedViewport": {
-        "x": -937,
-        "y": 31,
-        "zoom": 0.57
+        "x": -2740,
+        "y": -595,
+        "zoom": 0.86
       },
       "version": "v0.16.1"
     }
@@ -17,7 +17,7 @@
     "$__mpe_code": {
       "position": {
         "x": 605,
-        "y": 195
+        "y": 24
       }
     }
   },
@@ -25,7 +25,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3905,
-        "y": 843
+        "y": 573
       }
     }
   },
@@ -33,7 +33,7 @@
     "$__mpe_code": {
       "position": {
         "x": 4200,
-        "y": 454
+        "y": 1204
       }
     },
     "action": {
@@ -52,7 +52,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3900,
-        "y": 436
+        "y": 1186
       }
     },
     "action": {
@@ -60,6 +60,7 @@
       "type": "Click"
     },
     "next": [
+      "低星产物确定",
       "一轮低星结束"
     ],
     "recognition": {
@@ -75,7 +76,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3600,
-        "y": 420
+        "y": 988
       }
     },
     "action": {
@@ -88,6 +89,9 @@
         "name": "意外处理"
       },
       "低星产物确定"
+    ],
+    "on_error": [
+      "开始实验室"
     ],
     "recognition": {
       "param": {
@@ -108,7 +112,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3300,
-        "y": 438
+        "y": 502
       }
     },
     "action": {
@@ -127,19 +131,30 @@
         "jump_back": true,
         "name": "意外处理"
       },
+      "低星确定选卡",
       "结束低星实验",
       "低星点击开始实验"
     ],
     "recognition": {
-      "param": {},
-      "type": "DirectHit"
+      "param": {
+        "roi": [
+          1124,
+          98,
+          127,
+          137
+        ],
+        "template": [
+          "实验室/确定-选卡.png"
+        ]
+      },
+      "type": "TemplateMatch"
     }
   },
   "低星选择卡牌": {
     "$__mpe_code": {
       "position": {
         "x": 2100,
-        "y": 438
+        "y": 775
       }
     },
     "action": {
@@ -169,7 +184,7 @@
     "$__mpe_code": {
       "position": {
         "x": 2400,
-        "y": 438
+        "y": 1004
       }
     },
     "action": {
@@ -199,7 +214,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3000,
-        "y": 438
+        "y": 879
       }
     },
     "action": {
@@ -220,6 +235,9 @@
       },
       "低星确定选卡"
     ],
+    "on_error": [
+      "开始实验室"
+    ],
     "recognition": {
       "param": {},
       "type": "DirectHit"
@@ -229,7 +247,7 @@
     "$__mpe_code": {
       "position": {
         "x": 2700,
-        "y": 438
+        "y": 1004
       }
     },
     "action": {
@@ -259,7 +277,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1200,
-        "y": 454
+        "y": 686
       }
     },
     "action": {
@@ -281,7 +299,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1500,
-        "y": 410
+        "y": 642
       }
     },
     "action": {
@@ -302,7 +320,7 @@
     "$__mpe_code": {
       "position": {
         "x": 1800,
-        "y": 454
+        "y": 686
       }
     },
     "action": {
@@ -325,7 +343,7 @@
     "$__mpe_code": {
       "position": {
         "x": 0,
-        "y": 34
+        "y": 0
       }
     },
     "action": {
@@ -352,7 +370,7 @@
     "$__mpe_code": {
       "position": {
         "x": 600,
-        "y": 305
+        "y": 397
       }
     },
     "action": {
@@ -385,7 +403,7 @@
     "$__mpe_code": {
       "position": {
         "x": 300,
-        "y": 0
+        "y": 275
       }
     },
     "action": {
@@ -418,7 +436,7 @@
     "$__mpe_code": {
       "position": {
         "x": 900,
-        "y": 421
+        "y": 653
       }
     },
     "action": {
@@ -447,7 +465,7 @@
     "$__mpe_code": {
       "position": {
         "x": 3600,
-        "y": 645
+        "y": 154
       }
     },
     "action": {
