@@ -83,7 +83,7 @@ class BattleRelease(CustomAction):
             common_func.dynamic_set_next(context,"放生广播分流","开始公屏发送")
 
             # 整理公屏需要发送的信息
-            broadcast_msg = f"[感染者] {current.name} LV.{current.level} {current.mode} {battle_manager.current_config.broadcast_addition}"
+            broadcast_msg = f"[感染者] {current.name} {current.mode} {battle_manager.current_config.broadcast_addition}"
             context.override_pipeline({
                 "公屏输入文字":{
                     "input_text":broadcast_msg
