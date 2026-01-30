@@ -7,6 +7,7 @@ from typing import Dict, List, Any
 import json
 import logging
 from maa.context import Context
+import random
 
 def is_after_target_time(target_hour:int,target_minute:int) -> bool:
     """
@@ -180,17 +181,29 @@ def group_click(context: Context, roi_collection):
         else:
             raise ValueError(f"ROI 清单格式不对，必须为字典或列表,当前收到的内容为: {roi_collection}")
         
-        # 开始循环点击
-        for roi in targets_to_click:
-            context.run_task(
-                "Click",
-                {
-                    "Click": {
-                        "action": "Click",
-                        "target": roi,
-                        "post_delay": 500,
-                    }
-                },
-            )
+        for index, item in enumerate(targets_to_click):
+            target_x, target_y = 0, 0
+            
+            # item 可能是列表或元组，这里检查长度
+            # 假设 ROI 是 [x, y, w, h]，坐标是 [x, y]
+            if len(item) == 4:
+                x, y, w, h = item
+                # 在 ROI 范围内进行均匀随机
+                # 虽然游戏本身不检测点击,这里的随机没啥必要,但反正也不麻烦,顺手做一下
+                # 这里使用了 int() 确保坐标是整数
+                target_x = random.randint(int(x), int(x + w))
+                target_y = random.randint(int(y), int(y + h))
+                
+            elif len(item) == 2:
+                x, y = item
+                # 如果是坐标，直接使用
+                target_x, target_y = int(x), int(y)
+                
+            else:
+                # 快速失败：遇到格式不对的数据直接停下来，方便定位是哪个数据写错了
+                raise ValueError(f"数据格式错误: 第 {index+1} 个数据长度异常 (期望 2 或 4，实际 {len(item)})。内容: {item}")
+            # 执行点击
+            # 传入计算好的 target_x, target_y
+            context.tasker.controller.post_click(target_x, target_y).wait()
 
         return True
