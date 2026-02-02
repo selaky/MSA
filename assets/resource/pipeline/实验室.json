@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/实验室.json",
       "filename": "实验室",
-      "lastSyncTime": 1770015461820,
+      "lastSyncTime": 1770015514776,
       "prefix": "",
       "savedViewport": {
-        "x": -1389,
-        "y": -140,
-        "zoom": 0.53
+        "x": 126,
+        "y": 201,
+        "zoom": 0.61
       },
       "version": "v1.0.2"
     }
@@ -367,9 +367,6 @@
       "type": "Custom"
     },
     "enabled": false,
-    "next": [
-      "结束蓝粉狼选择"
-    ],
     "recognition": {
       "param": {
         "roi": [
@@ -621,14 +618,7 @@
       }
     },
     "action": {
-      "param": {
-        "target": [
-          259,
-          55,
-          75,
-          33
-        ]
-      },
+      "param": {},
       "type": "Click"
     },
     "next": [
