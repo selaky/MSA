@@ -367,6 +367,9 @@
       "type": "Custom"
     },
     "enabled": false,
+    "next": [
+      "结束蓝粉狼选择"
+    ],
     "recognition": {
       "param": {
         "roi": [

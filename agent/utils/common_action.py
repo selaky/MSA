@@ -46,6 +46,8 @@ class ClickAllCustomReco(CustomAction):
             logging.info(f"[{argv.node_name}] 没有需要点击的按钮，跳过。")
             return CustomAction.RunResult(success=True)
         logging.info(f"[{argv.node_name}] 开始执行点击，共 {len(click_targets)} 个目标。")
-        common_func.group_click(context,click_targets)
+        # 从字典列表中提取 ROI 列表
+        roi_list = [target["roi"] for target in click_targets]
+        common_func.group_click(context, roi_list)
 
         return CustomAction.RunResult(success=True)
