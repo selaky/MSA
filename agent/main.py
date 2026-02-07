@@ -10,8 +10,6 @@ if script_dir not in sys.path:
 from maa.agent.agent_server import AgentServer
 from maa.toolkit import Toolkit
 
-import my_action
-import my_reco
 from recover import recover_action
 from recover import recover_reco
 from arena import arena_action

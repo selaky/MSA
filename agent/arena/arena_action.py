@@ -5,18 +5,18 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
-from . import arena_helper
+from . import arena_manager
 import logging
 import json
 
-stats = arena_helper.arena_stats # 简写
+stats = arena_manager.arena_stats # 简写
 
 @AgentServer.custom_action("reset_arena_data")
 class ResetArenaData(CustomAction):
     """重置竞技场数据"""
     def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
         logging.info(f"[重置竞技场数据] 重置竞技场已战斗数据")
-        arena_helper.arena_stats.reset_arena()
+        arena_manager.arena_stats.reset_arena()
         return True
 
 @AgentServer.custom_action("load_arena_data")

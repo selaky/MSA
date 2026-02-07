@@ -5,10 +5,10 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
-from . import arena_helper
+from . import arena_manager
 import logging
 
-stats = arena_helper.arena_stats # 简写
+stats = arena_manager.arena_stats # 简写
 
 @AgentServer.custom_recognition("should_continue_arena")
 class ShouldContinueArena(CustomRecognition):
