@@ -29,7 +29,7 @@ class CheckLabFilter(CustomRecognition):
         "filter_hide_deployed":    True,
         "filter_hide_sirius":      False,
         "filter_hide_locked":      True,
-        "filter_hide_high_rarity": True,
+        "filter_hide_high_rarity": False,
     }
 
     def analyze(
