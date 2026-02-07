@@ -6,11 +6,11 @@
       "lastSyncTime": 1770034069145,
       "prefix": "",
       "savedViewport": {
-        "x": -3093,
-        "y": -410,
+        "x": -2425,
+        "y": -548,
         "zoom": 0.8
       },
-      "version": "v1.0.2"
+      "version": "v1.0.3"
     }
   },
   "$__mpe_external_开始返回主界面_实验室": {
@@ -281,7 +281,7 @@
       "type": "Click"
     },
     "next": [
-      "结束蓝粉狼选择"
+      "结束天狼星选择"
     ],
     "post_delay": 200,
     "recognition": {
@@ -318,7 +318,7 @@
       }
     },
     "next": [
-      "结束蓝粉狼选择"
+      "结束天狼星选择"
     ]
   },
   "实验循环开始": {
@@ -362,7 +362,7 @@
     },
     "enabled": false,
     "next": [
-      "结束蓝粉狼选择"
+      "结束天狼星选择"
     ],
     "recognition": {
       "param": {
@@ -423,7 +423,7 @@
     },
     "enabled": true,
     "next": [
-      "结束蓝粉狼选择"
+      "结束天狼星选择"
     ],
     "recognition": {
       "param": {
@@ -798,7 +798,7 @@
       "type": "TemplateMatch"
     }
   },
-  "结束蓝粉狼选择": {
+  "结束天狼星选择": {
     "$__mpe_code": {
       "position": {
         "x": 4096,
