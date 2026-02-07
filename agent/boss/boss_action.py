@@ -2,7 +2,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import boss_manager
-import logging
+from utils.logger import logger
 import json
 from utils.common_func import dynamic_set_focus
 
@@ -15,7 +15,7 @@ class ResetBossData(CustomAction):
         argv: CustomAction.RunArg,
     ) -> CustomAction.RunResult:
         boss_manager.boss_stats.current_battles = 0
-        logging.info(f"[{argv.node_name}] 重置BOSS已战斗次数")
+        logger.debug(f"[{argv.node_name}] 重置BOSS已战斗次数")
         return CustomAction.RunResult(success=True)
     
 @AgentServer.custom_action("add_boss_battles")
@@ -28,7 +28,7 @@ class AddBossBattles(CustomAction):
     ) -> CustomAction.RunResult:
         # 增加战斗次数
         boss_manager.boss_stats.current_battles += 1
-        logging.info(f"[{argv.node_name}] BOSS战斗计数 +1，当前: {boss_manager.boss_stats.current_battles}")
+        logger.debug(f"[{argv.node_name}] BOSS战斗计数 +1，当前: {boss_manager.boss_stats.current_battles}")
 
         # 设定战斗计数通知
         focus_msg = f"已完成第 {boss_manager.boss_stats.current_battles} 场BOSS战"
@@ -57,5 +57,5 @@ class LoadBossData(CustomAction):
         boss_manager.boss_stats.max_battles = max_battles
         boss_manager.boss_stats.target_rank = target_rank
 
-        logging.info(f"[{argv.node_name}] 加载BOSS配置: max_battles={max_battles}, target_rank={target_rank}")
+        logger.debug(f"[{argv.node_name}] 加载BOSS配置: max_battles={max_battles}, target_rank={target_rank}")
         return CustomAction.RunResult(success=True)

@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import boss_manager
-import logging
+from utils.logger import logger
 from utils.common_func import extract_number_from_ocr
 
 
@@ -30,11 +30,11 @@ class ShouldBossStop(CustomRecognition):
         # 判断是否继续
         if stats.should_stop:
             msg = f"战斗次数达到上限 {progress}，boss 战停止。"
-            logging.info(f"[{argv.node_name}] {msg}")
+            logger.debug(f"[{argv.node_name}] {msg}")
             return CustomRecognition.AnalyzeResult(box=(0, 0, 0, 0), detail=msg)
         else:
             msg = f"当前战斗次数 {progress},继续战斗。"
-            logging.info(f"[{argv.node_name}] {msg}")
+            logger.debug(f"[{argv.node_name}] {msg}")
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)        
         
 @AgentServer.custom_recognition("should_boss_pause")
@@ -60,7 +60,7 @@ class ShouldBossPause(CustomRecognition):
             current_rank = extract_number_from_ocr(context,argv.image,"CurrentRank")
         except ValueError as e:
             msg = f"[{argv.node_name}] 排名识别失败，使用默认值继续: {e}"
-            logging.error(msg)
+            logger.error(msg)
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)
 
         # 更新储存的当前排名

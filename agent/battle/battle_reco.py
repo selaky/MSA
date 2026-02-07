@@ -2,7 +2,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import battle_manager
-import logging
+from utils.logger import logger
 import re
 
 @AgentServer.custom_recognition("extract_enemy_info")
@@ -15,7 +15,7 @@ class ExtractEnemyInfo(CustomRecognition):
     ) -> CustomRecognition.AnalyzeResult:
         reco_detail = context.run_recognition("EnemyInfo",argv.image)
         if not reco_detail or not reco_detail.hit:
-            logging.warning(f"[{argv.node_name}] 未识别到有效 OCR 结果")
+            logger.warning(f"[{argv.node_name}] 未识别到有效 OCR 结果")
             return None
         
         # 少数情况下，感染者名称与等级可能被识别为两个独立区块。
@@ -27,7 +27,7 @@ class ExtractEnemyInfo(CustomRecognition):
             all_blocks.sort(key=lambda block: block.box[0])
         except Exception as e:
             # 如果连坐标都读不出来，说明数据结构异常，报错
-            logging.error(f"[{argv.node_name}] 排序 OCR 结果块时发生严重错误: {e}")
+            logger.error(f"[{argv.node_name}] 排序 OCR 结果块时发生严重错误: {e}")
             return None
         # 组合文本,即使只识别到一个文本也没有问题
         ocr_text = "".join([b.text for b in all_blocks])
@@ -43,7 +43,7 @@ class ExtractEnemyInfo(CustomRecognition):
         match = re.search(pattern,clean_text,re.IGNORECASE)
 
         if not match:
-            logging.warning(f"[{argv.node_name}] OCR 数据格式错误，无法解析: '{ocr_text}'")
+            logger.warning(f"[{argv.node_name}] OCR 数据格式错误，无法解析: '{ocr_text}'")
             return None
         
         # 提取原始数据
@@ -64,7 +64,7 @@ class ExtractEnemyInfo(CustomRecognition):
         battle_manager.update_encounter_context(final_name,mode,level)
 
         msg = f"[{argv.node_name}] 识别到 {level}级 {mode} 感染者 {final_name}"
-        logging.info(msg)
+        logger.debug(msg)
         return CustomRecognition.AnalyzeResult(box=(0, 0, 0, 0), detail=msg)
     
 @AgentServer.custom_recognition("enter_battle")

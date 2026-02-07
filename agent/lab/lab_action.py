@@ -2,7 +2,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import lab_manager
-import logging
+from utils.logger import logger
 import json
 from utils import common_func
 

@@ -5,9 +5,9 @@
 from datetime import datetime
 from typing import Dict, List, Any
 import json
-import logging
 from maa.context import Context
 import random
+from .logger import logger
 
 def is_after_target_time(target_hour:int,target_minute:int) -> bool:
     """
@@ -67,14 +67,14 @@ def parse_params(param_str:str,node_name:str,required_keys:List[str]=None)->Dict
         params = json.loads(param_str)
     except json.JSONDecodeError:
         error_msg = f"参数格式错误，不是标准 JSON。收到: {param_str}"
-        logging.error(f"[{node_name}] {error_msg}")
+        logger.error(f"[{node_name}] {error_msg}")
         raise ValueError(error_msg)
 
     # 检查必填项
     missing_keys = [k for k in required_keys if k not in params]
     if missing_keys:
         error_msg = f"缺少必要参数: {missing_keys}。当前参数: {params}"
-        logging.error(f"[{node_name}] {error_msg}")
+        logger.error(f"[{node_name}] {error_msg}")
         raise ValueError(error_msg)
     return params
 
@@ -116,11 +116,11 @@ def dynamic_set_focus(context: Context, target_node: str, trigger: str, focus_ms
     if real_trigger_str is None:
         # 打印出所有合法的变量名供调试参考
         valid_keys = [k for k in dir(FocusType) if not k.startswith("__")]
-        logging.error(f"[SetFocus] 参数错误: 找不到名为 '{search_key}' 的触发时机。可用值: {valid_keys}")
+        logger.error(f"[SetFocus] 参数错误: 找不到名为 '{search_key}' 的触发时机。可用值: {valid_keys}")
         return False
-        
+
     final_trigger = real_trigger_str # 只是为了让名字短点
-    logging.info(f"[SetFocus] 配置: {target_node} -> [{final_trigger}] -> Focus={focus_msg}")
+    logger.debug(f"[SetFocus] 配置: {target_node} -> [{final_trigger}] -> Focus={focus_msg}")
 
     # 将指定节点的 focus 改写
     context.override_pipeline({
@@ -157,7 +157,7 @@ def extract_number_from_ocr(context: Context, image, task_name: str) -> int:
         all_blocks.sort(key=lambda block: block.box[0])
     except Exception as e:
         # 如果连坐标都读不出来，说明数据结构异常，报错
-        logging.error(f"排序 OCR 结果块时发生严重错误: {e}")
+        logger.error(f"排序 OCR 结果块时发生严重错误: {e}")
         return None
         # 组合文本,即使只识别到一个文本也没有问题
     ocr_text = "".join([b.text for b in all_blocks])

@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import battle_manager
-import logging
+from utils.logger import logger
 import json
 from utils import common_func
 
@@ -26,9 +26,9 @@ class SetEnemyNext(CustomAction):
             common_func.dynamic_set_next(context, pre_node="放生分流", next_node="战斗失败处理")
             msg = f"[{argv.node_name}] 已将放生分流重定向为战斗失败"
 
-        logging.info(msg)
+        logger.debug(msg)
         return CustomAction.RunResult(success=True)
-    
+
 @AgentServer.custom_action("battle_win")
 class BattleWin(CustomAction):
     """战斗胜利时进行的相关处理,需要增加战斗次数、归档相关信息，并且输出反馈。"""
@@ -119,9 +119,9 @@ class SaveBattleConfig(CustomAction):
         # 调用 manager 的设置函数
         try:
             battle_manager.set_config_value(config_key, config_value)
-            logging.info(f"[{argv.node_name}] 已保存配置: {config_key} = {config_value}")
+            logger.debug(f"[{argv.node_name}] 已保存配置: {config_key} = {config_value}")
         except ValueError as e:
-            logging.error(f"[{argv.node_name}] 配置保存失败: {e}")
+            logger.error(f"[{argv.node_name}] 配置保存失败: {e}")
             return CustomAction.RunResult(success=False)
 
         return CustomAction.RunResult(success=True)
@@ -139,7 +139,7 @@ class FinalizeBattleConfig(CustomAction):
 
         # 输出配置摘要
         summary = battle_manager.get_config_summary()
-        logging.info(f"[{argv.node_name}] 战斗配置完成:\n{summary}")
+        logger.debug(f"[{argv.node_name}] 战斗配置完成:\n{summary}")
 
         # 设置 focus 消息显示给用户
         common_func.dynamic_set_focus(
@@ -161,7 +161,7 @@ class CheckBattleConfig(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
         if not battle_manager.check_configured():
             error_msg = "请先执行【跑图战斗设置】任务进行战斗配置！"
-            logging.error(f"[{argv.node_name}] {error_msg}")
+            logger.error(f"[{argv.node_name}] {error_msg}")
 
             # 设置 focus 消息提示用户
             common_func.dynamic_set_focus(
@@ -173,7 +173,7 @@ class CheckBattleConfig(CustomAction):
 
             return CustomAction.RunResult(success=False)
 
-        logging.info(f"[{argv.node_name}] 战斗配置检查通过")
+        logger.debug(f"[{argv.node_name}] 战斗配置检查通过")
         return CustomAction.RunResult(success=True)
 
 
@@ -182,5 +182,5 @@ class ResetBattleData(CustomAction):
     """重置战斗信息"""
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
         battle_manager.reset_enemy_data()
-        logging.info(f"[{argv.node_name}] 重置战斗统计信息（敌人档案、战绩记录）")
+        logger.debug(f"[{argv.node_name}] 重置战斗统计信息（敌人档案、战绩记录）")
         return CustomAction.RunResult(success=True)

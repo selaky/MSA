@@ -1,11 +1,12 @@
 import sys
 import os
-import logging
 
 # 将脚本所在目录添加到模块搜索路径，确保能找到同目录下的模块
 script_dir = os.path.dirname(os.path.abspath(__file__))
 if script_dir not in sys.path:
     sys.path.insert(0, script_dir)
+
+from utils.logger import logger
 
 from maa.agent.agent_server import AgentServer
 from maa.toolkit import Toolkit
@@ -23,8 +24,6 @@ from lab import lab_action,lab_reco
 
 
 def main():
-    logging.basicConfig(level=logging.INFO) # 输出日志，看看情况。
-
     Toolkit.init_option("./")
 
     if len(sys.argv) < 2:

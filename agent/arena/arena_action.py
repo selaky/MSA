@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import arena_manager
-import logging
+from utils.logger import logger
 import json
 
 stats = arena_manager.arena_stats # 简写
@@ -15,7 +15,7 @@ stats = arena_manager.arena_stats # 简写
 class ResetArenaData(CustomAction):
     """重置竞技场数据"""
     def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
-        logging.info(f"[重置竞技场数据] 重置竞技场已战斗数据")
+        logger.debug(f"[重置竞技场数据] 重置竞技场已战斗数据")
         arena_manager.arena_stats.reset_arena()
         return True
 
@@ -29,11 +29,11 @@ class LoadArenaData(CustomAction):
             target_points = int(params.get("target_points",0))
             # 记录目标积分
             stats.target_points = target_points
-            logging.info(f"[读取竞技场设置] 将目标分数记录为 {stats.target_points}")
+            logger.debug(f"[读取竞技场设置] 将目标分数记录为 {stats.target_points}")
 
             return True
         except Exception as e:
-            logging.error(f"[读取竞技场设置]初始化失败: {e}")
+            logger.error(f"[读取竞技场设置]初始化失败: {e}")
             return False
         
 @AgentServer.custom_action("store_current_arena_points")
@@ -43,15 +43,15 @@ class StoreCurrentArenaPoints(CustomAction):
         try:
             # 获取 OCR 结果
             ocr_res = int(argv.reco_detail.best_result.text)
-            logging.info(f"[记录竞技场积分] OCR 识别结果为 {ocr_res}")
+            logger.debug(f"[记录竞技场积分] OCR 识别结果为 {ocr_res}")
 
             # 储存 OCR 结果
             stats.current_points = ocr_res
-            logging.info(f"[记录竞技场积分]已保存当前竞技场积分为 {stats.current_points}")
+            logger.debug(f"[记录竞技场积分]已保存当前竞技场积分为 {stats.current_points}")
 
             return True
         except Exception as e:
-            logging.error(f"[记录竞技场积分] 出错: {e}")
+            logger.error(f"[记录竞技场积分] 出错: {e}")
             return False
 
 @AgentServer.custom_action("store_arena_result")
@@ -63,15 +63,15 @@ class StoreArenaResult(CustomAction):
 
             if "胜利" in node_name:
                 stats.win_count += 1
-                logging.info(f"竞技场获胜，当前胜利场数{stats.win_count}")
+                logger.debug(f"竞技场获胜，当前胜利场数{stats.win_count}")
             elif "失败" in node_name:
                 stats.loss_count += 1
-                logging.info(f"竞技场失败，当前失败场数{stats.loss_count}")
+                logger.debug(f"竞技场失败，当前失败场数{stats.loss_count}")
             else:
                 raise ValueError((f"致命错误：在名称 '{node_name}' 中未识别战斗结果(胜利/失败)！请确保你在正确的节点调用此动作，并且对节点规范命名。"))
             return True
         except Exception as e:
-            logging.error(f"竞技场战斗结果记录失败: {e}")
+            logger.error(f"竞技场战斗结果记录失败: {e}")
             return False
             
 @AgentServer.custom_action("set_arena_results")
@@ -107,6 +107,6 @@ class SetArenaResults(CustomAction):
 
             return True
         except Exception as e:
-            logging.error(f"[输出竞技场数据统计]出错:{e}")
+            logger.error(f"[输出竞技场数据统计]出错:{e}")
             return False
 

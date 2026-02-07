@@ -6,10 +6,8 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import recover_manager
-import logging
-from utils import common_func
-
-logging.basicConfig(level=logging.INFO) 
+from utils.logger import logger
+from utils import common_func 
 
 @AgentServer.custom_recognition("should_use_potion")
 class ShouldUsePotion(CustomRecognition):
@@ -39,7 +37,7 @@ class ShouldUsePotion(CustomRecognition):
         except ValueError as e:
             # 参数检查不通过，打印失败原因
             msg = f"[{argv.node_name}] 参数解析失败: {e}"
-            logging.error(msg)
+            logger.error(msg)
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)
         
         # 获取当前处理的药水种类
@@ -67,7 +65,7 @@ class ShouldUsePotion(CustomRecognition):
                 next_node = "顺利完成吃药"
                 common_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
                 common_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
-                logging.info(msg)
+                logger.debug(msg)
                 return CustomRecognition.AnalyzeResult(box=click_roi, detail=msg)
             
         # OCR 获取当前药水库存
@@ -114,7 +112,7 @@ class ShouldUsePotion(CustomRecognition):
         # 统一设定输出内容和后续走向
         common_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
         common_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
-        logging.info(msg)
+        logger.debug(msg)
         return CustomRecognition.AnalyzeResult(box=click_roi, detail=msg)
         
 

@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import arena_manager
-import logging
+from utils.logger import logger
 
 stats = arena_manager.arena_stats # 简写
 
@@ -19,13 +19,13 @@ class ShouldContinueArena(CustomRecognition):
             target_points = stats.target_points
             if current_points < target_points:
                 msg = f"[判断继续竞技场]当前积分{current_points}, 小于目标积分{target_points},继续战斗"
-                logging.info(msg)
+                logger.debug(msg)
                 return CustomRecognition.AnalyzeResult(box=(0, 0, 100, 100), detail=msg)
             else:
                 msg = f"[判断继续竞技场]当前积分{current_points}, 满足目标积分{target_points},停止战斗"
-                logging.info(msg)
+                logger.debug(msg)
                 return CustomRecognition.AnalyzeResult(box=None, detail=msg)
         except Exception as e:
             msg = f"[判断继续竞技场]出错: {e}"
-            logging.error(msg)
+            logger.error(msg)
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)

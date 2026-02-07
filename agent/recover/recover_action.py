@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import recover_manager
-import logging
+from utils.logger import logger
 import json
 from utils import common_func
 
@@ -16,7 +16,7 @@ class ResetPotionData(CustomAction):
     """重置药水数据"""
     def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
         recover_manager.potion_stats.reset_usage()
-        logging.info(f"[重置吃药数据] 重置已使用药水数量")
+        logger.debug(f"[重置吃药数据] 重置已使用药水数量")
         return True
 
 
@@ -34,7 +34,7 @@ class LoadPotionLimit(CustomAction):
             )
         except ValueError as e:
             # 参数检查不通过，打印失败原因
-            logging.error(f"[{argv.node_name}] 参数解析失败: {e}")
+            logger.error(f"[{argv.node_name}] 参数解析失败: {e}")
             return CustomAction.RunResult(success=False)
 
         # 提取出每个参数
@@ -53,7 +53,7 @@ class LoadPotionLimit(CustomAction):
             f"AP(大/小): {stats.ap.big.limit}/{stats.ap.small.limit} | "
             f"BC(大/小): {stats.bc.big.limit}/{stats.bc.small.limit} | "
         )
-        logging.info(msg)
+        logger.debug(msg)
         return CustomAction.RunResult(success=True)
     
 @AgentServer.custom_action("load_free_recover")
@@ -69,7 +69,7 @@ class LoadFreeRecover(CustomAction):
             )
         except ValueError as e:
             # 参数检查不通过，打印失败原因
-            logging.error(f"[{argv.node_name}] 参数解析失败: {e}")
+            logger.error(f"[{argv.node_name}] 参数解析失败: {e}")
             return CustomAction.RunResult(success=False)
 
         # 使用 str().lower() 是为了兼容 UI 传过来的可能是 JSON 的 true (bool) 
@@ -83,5 +83,5 @@ class LoadFreeRecover(CustomAction):
         msg = (
             f"免费吃药: {'是' if stats.use_free_recover else '否'}"
         )
-        logging.info(msg)
+        logger.debug(msg)
         return CustomAction.RunResult(success=True)

@@ -2,7 +2,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import lab_manager
-import logging
+from utils.logger import logger
 
 
 @AgentServer.custom_recognition("check_lab_filter")
@@ -70,7 +70,7 @@ class CheckLabFilter(CustomRecognition):
             # --- 当前 != 期望，则需要点击 ---
             if current_state != expected_state:
                 action = "勾选" if expected_state else "取消"
-                logging.info(f"[{argv.node_name}] 按钮 {name} 当前状态({current_state})不符合期望({expected_state})，加入点击列表以执行{action}。")
+                logger.debug(f"[{argv.node_name}] 按钮 {name} 当前状态({current_state})不符合期望({expected_state})，加入点击列表以执行{action}。")
                 
                 to_click_list.append({
                     "name": name,
