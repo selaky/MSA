@@ -1,8 +1,13 @@
+"""OCR 模型配置脚本
+
+从 MaaCommonAssets 复制 ppocr_v5 中文模型到资源目录。
+"""
+
 from pathlib import Path
 
 import shutil
 
-assets_dir = Path(__file__).parent.parent.resolve() / "assets"
+assets_dir = Path(__file__).parent.parent.parent.resolve() / "assets"
 
 
 def configure_ocr_model():

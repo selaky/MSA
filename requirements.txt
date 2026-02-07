@@ -1,0 +1,5 @@
+maafw
+loguru
+numpy
+strenum
+MaaAgentBinary

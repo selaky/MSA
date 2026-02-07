@@ -62,8 +62,8 @@ jobs:
       is_release: ${{ steps.set_tag.outputs.is_release }}
       is_prerelease: ${{ steps.set_tag.outputs.is_prerelease }}
 
-  # Windows 平台单独构建（需要编译 Hook DLL）
-  install-windows:
+  # Windows Base 版（前台模式，mouse=Seize）
+  install-windows-base:
     needs: meta
     runs-on: windows-latest
     strategy:
@@ -100,7 +100,92 @@ jobs:
         run: |
           ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
           rm -f "${ARCHIVE_FILE_PATH}"
-          echo "Archive cleanup command executed for MFAAvalonia."
+
+      - name: Remove built-in runtime in MFA
+        shell: bash
+        run: |
+          rm -rf MFA/runtimes
+
+      - name: Setup Embedded Python
+        shell: bash
+        run: |
+          python tools/ci/setup_embed_python.py ${{ (matrix.arch == 'x86_64' && 'amd64') || 'arm64' }}
+
+      - name: Download Python Dependencies
+        shell: bash
+        run: |
+          PLATFORM_TAG="${{ (matrix.arch == 'x86_64' && 'win-x64') || 'win-arm64' }}"
+          ./install/python/python.exe tools/ci/download_deps.py "${PLATFORM_TAG}" --deps-dir install/deps
+
+      - name: Copy MFA to install directory
+        shell: pwsh
+        run: |
+          if (Test-Path "MFA") {
+            Write-Host "Copying MFA files to install directory..."
+            New-Item -ItemType Directory -Force -Path install | Out-Null
+            Copy-Item -Path "MFA\*" -Destination "install" -Recurse -Force
+            Copy-Item -Path "assets\logo.ico" -Destination "install\Assets\logo.ico" -Force -ErrorAction SilentlyContinue
+            Write-Host "MFA files copied successfully."
+          }
+
+      - name: Install (Base)
+        shell: bash
+        run: |
+          PLATFORM_TAG="${{ (matrix.arch == 'x86_64' && 'win-x64') || 'win-arm64' }}"
+          pip install json-with-comments
+          python tools/ci/install.py ${{ needs.meta.outputs.tag }} "${PLATFORM_TAG}"
+
+      - name: Customize exe icon and name
+        shell: pwsh
+        run: |
+          $RCEDIT_VERSION = "v2.0.0"
+          Invoke-WebRequest -Uri "https://github.com/electron/rcedit/releases/download/${RCEDIT_VERSION}/rcedit-x64.exe" -OutFile "rcedit.exe"
+          .\rcedit.exe install\MFAAvalonia.exe --set-icon assets\logo.ico
+          Rename-Item -Path "install\MFAAvalonia.exe" -NewName "MSA天狼星小助手.exe"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MSA-win-${{ matrix.arch }}-Base
+          path: "install"
+
+  # Windows Background 版（后台模式，Hook DLL + mouse=SendMessage）
+  install-windows-background:
+    needs: meta
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x86_64]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-win-${{ matrix.arch }}*"
+          latest: true
+          out-file-path: "deps"
+          extract: true
+
+      - name: Download MFAAvalonia
+        id: download_mfa
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: SweetSmellFox/MFAAvalonia
+          fileName: "MFAAvalonia-*-win-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
+          latest: true
+          out-file-path: "MFA"
+          extract: true
+
+      - name: Clean up MFAAvalonia archive
+        shell: bash
+        run: |
+          ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
+          rm -f "${ARCHIVE_FILE_PATH}"
 
       - name: Remove built-in runtime in MFA
         shell: bash
@@ -110,16 +195,13 @@ jobs:
       - name: Download OpenCV headers
         shell: bash
         run: |
-          # 下载 OpenCV 4.10.0 源码获取头文件
           curl -sL "https://github.com/opencv/opencv/archive/refs/tags/4.10.0.zip" -o opencv.zip
           unzip -q opencv.zip
           mkdir -p hook/third_party/opencv/include
           cp -r opencv-4.10.0/modules/core/include/opencv2 hook/third_party/opencv/include/
-          # 创建 opencv_modules.hpp
           echo '#pragma once' > hook/third_party/opencv/include/opencv2/opencv_modules.hpp
           echo '#define HAVE_OPENCV_CORE' >> hook/third_party/opencv/include/opencv2/opencv_modules.hpp
           rm -rf opencv.zip opencv-4.10.0
-          echo "OpenCV headers downloaded successfully."
 
       - name: Build Hook DLLs
         shell: cmd
@@ -129,114 +211,50 @@ jobs:
           cd build
           cmake .. -A x64
           cmake --build . --config Release
-          echo "Hook DLLs built successfully."
 
-      - name: Download Embedded Python
+      - name: Setup Embedded Python
         shell: bash
         run: |
-          PYTHON_VERSION="3.12.8"
-          if [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-            PYTHON_ARCH="amd64"
-          else
-            PYTHON_ARCH="arm64"
-          fi
-          PYTHON_URL="https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-embed-${PYTHON_ARCH}.zip"
-          echo "Downloading Python from: ${PYTHON_URL}"
-          mkdir -p install/python
-          curl -L -o python-embed.zip "${PYTHON_URL}"
-          unzip -o python-embed.zip -d install/python
-          rm python-embed.zip
-          echo "Python embedded downloaded successfully."
+          python tools/ci/setup_embed_python.py ${{ (matrix.arch == 'x86_64' && 'amd64') || 'arm64' }}
 
-      - name: Configure Embedded Python and Install Packages
+      - name: Download Python Dependencies
         shell: bash
         run: |
-          # 配置 python312._pth 文件，添加 packages 目录
-          PTH_FILE="install/python/python312._pth"
-          printf '%s\n' \
-            "python312.zip" \
-            "." \
-            "packages" \
-            "" \
-            "# Uncomment to run site.main() automatically" \
-            "#import site" \
-            > "${PTH_FILE}"
+          PLATFORM_TAG="${{ (matrix.arch == 'x86_64' && 'win-x64') || 'win-arm64' }}"
+          ./install/python/python.exe tools/ci/download_deps.py "${PLATFORM_TAG}" --deps-dir install/deps
 
-          # 创建 packages 目录
-          mkdir -p install/python/packages
-
-          # 确定目标平台
-          if [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-            PLATFORM="win_amd64"
-          else
-            PLATFORM="win_arm64"
-          fi
-
-          # 下载纯 Python 包（不需要指定平台）
-          python -m pip download --no-deps -d temp_packages strenum MaaAgentBinary
-
-          # 下载平台特定的包（maafw 和 numpy 包含 native 代码）
-          python -m pip download --no-deps --only-binary=:all: \
-            --platform "${PLATFORM}" \
-            --python-version 312 \
-            -d temp_packages \
-            maafw numpy
-
-          # 解压 wheel 包到 packages 目录
-          for whl in temp_packages/*.whl; do
-            if [ -f "$whl" ]; then
-              echo "Extracting: $whl"
-              unzip -o "$whl" -d install/python/packages
-            fi
-          done
-
-          # 清理临时文件
-          rm -rf temp_packages
-
-          echo "Python packages installed successfully."
-
-      - name: Install
+      - name: Copy MFA to install directory
         shell: pwsh
         run: |
           if (Test-Path "MFA") {
             Write-Host "Copying MFA files to install directory..."
             New-Item -ItemType Directory -Force -Path install | Out-Null
             Copy-Item -Path "MFA\*" -Destination "install" -Recurse -Force
-
-            # 强制把自己的 logo 复制到 GUI 的资源目录里覆盖默认文件
             Copy-Item -Path "assets\logo.ico" -Destination "install\Assets\logo.ico" -Force -ErrorAction SilentlyContinue
-
             Write-Host "MFA files copied successfully."
-          } else {
-            Write-Host "MFA directory not found, skipping copy."
           }
 
-          cd tools
-          python -m pip install -r .\requirements.txt
-          python .\install.py ${{ needs.meta.outputs.tag }} win ${{ matrix.arch }}
-          cd ..
+      - name: Install (Background)
+        shell: bash
+        run: |
+          PLATFORM_TAG="${{ (matrix.arch == 'x86_64' && 'win-x64') || 'win-arm64' }}"
+          pip install json-with-comments
+          python tools/ci/install_background.py ${{ needs.meta.outputs.tag }} "${PLATFORM_TAG}"
 
       - name: Customize exe icon and name
         shell: pwsh
         run: |
-          # 下载 rcedit 工具
           $RCEDIT_VERSION = "v2.0.0"
           Invoke-WebRequest -Uri "https://github.com/electron/rcedit/releases/download/${RCEDIT_VERSION}/rcedit-x64.exe" -OutFile "rcedit.exe"
-
-          # 使用 rcedit 修改 exe 图标
           .\rcedit.exe install\MFAAvalonia.exe --set-icon assets\logo.ico
-
-          # 重命名 exe 文件
           Rename-Item -Path "install\MFAAvalonia.exe" -NewName "MSA天狼星小助手.exe"
-
-          Write-Host "Exe customization completed: icon changed and renamed to MSA天狼星小助手.exe"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MSA-win-${{ matrix.arch }}
+          name: MSA-win-${{ matrix.arch }}-Background
           path: "install"
 
-  # 非 Windows 平台在 Ubuntu 上构建
+  # 非 Windows 平台（仅 Base 版）
   install:
     needs: meta
     runs-on: ubuntu-latest
@@ -277,22 +295,12 @@ jobs:
         run: |
           ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
           rm -f "${ARCHIVE_FILE_PATH}"
-          echo "Archive cleanup command executed for MFAAvalonia."
 
       - name: Remove built-in runtime in MFA
         if: matrix.os != 'android'
         shell: bash
         run: |
           rm -rf MFA/runtimes
-
-      # 非 Windows 平台：修改 interface.json 使用系统 Python
-      - name: Fix interface.json for non-Windows platforms
-        if: matrix.os != 'android'
-        shell: bash
-        run: |
-          # 将 ./python/python.exe 替换为 python3
-          sed -i 's|"./python/python.exe"|"python3"|g' assets/interface.json
-          echo "interface.json updated for ${{ matrix.os }} platform."
 
       - name: Install
         shell: bash
@@ -302,22 +310,22 @@ jobs:
               echo "Copying MFA files to install directory..."
               mkdir -p install
               rsync -av --ignore-existing MFA/ install/
-
-              # 强制把自己的 logo 复制到 GUI 的资源目录里覆盖默认文件
               cp assets/logo.ico install/Assets/logo.ico || echo "Logo copy failed!"
-
               echo "MFA files copied successfully."
-            else
-              echo "MFA directory not found, skipping copy."
             fi
-          else
-            echo "Skipping copy MFA for Android."
           fi
 
-          cd tools/
-          python -m pip install -r ./requirements.txt
-          python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
-          cd ..
+          # 确定平台标签
+          case "${{ matrix.os }}-${{ matrix.arch }}" in
+            macos-x86_64)  PLATFORM_TAG="osx-x64" ;;
+            macos-aarch64) PLATFORM_TAG="osx-arm64" ;;
+            linux-x86_64)  PLATFORM_TAG="linux-x64" ;;
+            linux-aarch64) PLATFORM_TAG="linux-arm64" ;;
+            *)             PLATFORM_TAG="${{ matrix.os }}-${{ matrix.arch }}" ;;
+          esac
+
+          pip install json-with-comments
+          python tools/ci/install.py ${{ needs.meta.outputs.tag }} "${PLATFORM_TAG}"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -347,7 +355,7 @@ jobs:
 
   release:
     if: ${{ needs.meta.outputs.is_release == 'true' }}
-    needs: [meta, install, install-windows, changelog]
+    needs: [meta, install-windows-base, install-windows-background, install, changelog]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -359,7 +367,7 @@ jobs:
           for f in *; do
             (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
           done
-          
+
       - uses: softprops/action-gh-release@v2
         with:
           files: assets/*
