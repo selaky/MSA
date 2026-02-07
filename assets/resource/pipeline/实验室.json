@@ -3,11 +3,11 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/实验室.json",
       "filename": "实验室",
-      "lastSyncTime": 1770439156172,
+      "lastSyncTime": 1770439269238,
       "prefix": "",
       "savedViewport": {
-        "x": -1889,
-        "y": -118,
+        "x": -1479,
+        "y": -491,
         "zoom": 0.61
       },
       "version": "v1.0.3"
@@ -272,17 +272,14 @@
   "实验室天狼星下一页": {
     "$__mpe_code": {
       "position": {
-        "x": 3702,
-        "y": 1653
+        "x": 3707,
+        "y": 1663
       }
     },
     "action": {
       "param": {},
       "type": "Click"
     },
-    "next": [
-      "结束天狼星选择"
-    ],
     "post_delay": 200,
     "recognition": {
       "param": {
