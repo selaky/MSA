@@ -3,12 +3,12 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline/实验室.json",
       "filename": "实验室",
-      "lastSyncTime": 1770439269238,
+      "lastSyncTime": 1770443829102,
       "prefix": "",
       "savedViewport": {
-        "x": -1479,
-        "y": -491,
-        "zoom": 0.61
+        "x": -1491,
+        "y": -319,
+        "zoom": 0.7
       },
       "version": "v1.0.3"
     }
@@ -177,7 +177,7 @@
     "recognition": {
       "param": {
         "expected": [
-          "按星级从高到低排序"
+          "按星级从低到高排序"
         ],
         "roi": [
           952,
@@ -206,7 +206,7 @@
     "recognition": {
       "param": {
         "expected": [
-          "按星级从高到低排序"
+          "按星级从低到高排序"
         ],
         "roi": [
           952,
@@ -371,6 +371,9 @@
         ],
         "template": [
           "实验室/整页粉狼.png"
+        ],
+        "threshold": [
+          0.9
         ]
       },
       "type": "TemplateMatch"
@@ -390,6 +393,9 @@
       "type": "Custom"
     },
     "enabled": false,
+    "next": [
+      "结束天狼星选择"
+    ],
     "recognition": {
       "param": {
         "roi": [
@@ -400,6 +406,9 @@
         ],
         "template": [
           "实验室/整页红狼.png"
+        ],
+        "threshold": [
+          0.9
         ]
       },
       "type": "TemplateMatch"
@@ -432,6 +441,9 @@
         ],
         "template": [
           "实验室/整页蓝狼.png"
+        ],
+        "threshold": [
+          0.9
         ]
       },
       "type": "TemplateMatch"
