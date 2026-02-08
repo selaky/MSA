@@ -1,16 +1,13 @@
-name: install
-
 on:
   push:
     tags:
-      - "v*"
+      - "v[0-9]+.[0-9]+.[0-9]+*"
     branches:
       - "**"
     paths:
       - ".github/workflows/install.yml"
       - "assets/**"
       - "**.py"
-      - "hook/**"
   pull_request:
     branches:
       - "**"
@@ -18,8 +15,15 @@ on:
       - ".github/workflows/install.yml"
       - "assets/**"
       - "**.py"
-      - "hook/**"
   workflow_dispatch:
+
+env:
+  MAA_FRAMEWORK_VERSION: "v5.5.0"
+  MFAA_VERSION: "v2.6.0-beta.1"
+
+permissions:
+  contents: write
+  actions: write
 
 jobs:
   meta:
@@ -31,17 +35,22 @@ jobs:
       - id: set_tag
         run: |
           # 检查标签格式
-          is_release=${{ startsWith(github.ref, 'refs/tags/v') }}
-          tag=$(git describe --tags --match "v*" ${{ github.ref }} || true)
-          if [[ $tag != v* ]]; then
+          if [[ ${{ github.ref }} =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?$ ]]; then
+            is_release=true
+            tag=${GITHUB_REF#refs/tags/}
+            echo "Release tag format is valid: $tag"
+          else
+            is_release=false
+            # 获取最新的发布标签
             tag=$(curl -sX GET "https://api.github.com/repos/${{ github.repository }}/releases/latest" --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' | awk '/tag_name/{print $4}' FS='["]')
-            if [[ $tag != v* ]]; then
+            if [[ ! $tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+              echo "No valid release tag found, using v0.0.0"
               tag="v0.0.0"
             fi
             tag=$(date "+$tag-%y%m%d-$(git rev-parse --short HEAD)")
           fi
 
-          if ! $($is_release) ; then
+          if [ "$is_release" != "true" ] ; then
             prefix=${tag%-*-*}
             suffix=${tag#$prefix-}
             tag="$prefix-ci.$suffix"
@@ -62,26 +71,39 @@ jobs:
       is_release: ${{ steps.set_tag.outputs.is_release }}
       is_prerelease: ${{ steps.set_tag.outputs.is_prerelease }}
 
-  # Windows 平台单独构建（需要编译 Hook DLL）
-  install-windows:
+  windows:
     needs: meta
-    runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x86_64]
+        include:
+          - arch: x86_64
+            runner: windows-latest
+          - arch: aarch64
+            runner: windows-11-arm
       fail-fast: false
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
 
+      - name: Set platform variables
+        id: platform
+        shell: bash
+        run: |
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then
+            echo "tag=x64" >> $GITHUB_OUTPUT
+          else
+            echo "tag=arm64" >> $GITHUB_OUTPUT
+          fi
+
       - name: Download MaaFramework
         uses: robinraju/release-downloader@v1
         with:
           repository: MaaXYZ/MaaFramework
           fileName: "MAA-win-${{ matrix.arch }}*"
-          latest: true
+          tag: ${{ env.MAA_FRAMEWORK_VERSION }}
           out-file-path: "deps"
           extract: true
 
@@ -90,159 +112,116 @@ jobs:
         uses: robinraju/release-downloader@v1
         with:
           repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia-*-win-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
-          latest: true
+          fileName: "MFAAvalonia-*-win-${{ steps.platform.outputs.tag }}*"
+          tag: ${{ env.MFAA_VERSION }}
           out-file-path: "MFA"
           extract: true
 
-      - name: Clean up MFAAvalonia archive
+      - name: Clean up MFAAvalonia archive on Windows
         shell: bash
         run: |
           ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
           rm -f "${ARCHIVE_FILE_PATH}"
-          echo "Archive cleanup command executed for MFAAvalonia."
+          echo "Archive cleanup command executed for MFAAvalonia on Windows."
 
-      - name: Remove built-in runtime in MFA
+      - name: Convert PNG to ICO
+        if: matrix.arch == 'x86_64'
         shell: bash
         run: |
-          rm -rf MFA/runtimes
+          # 安装 ImageMagick
+          choco install imagemagick -y
 
-      - name: Download OpenCV headers
+          # 转换 PNG 到 ICO
+          magick convert assets/logo.png -define icon:auto-resize=256,128,64,48,32,24,16 m9a.ico
+
+      - name: Modify MFAAvalonia exe icon
+        if: matrix.arch == 'x86_64'
         shell: bash
         run: |
-          # 下载 OpenCV 4.10.0 源码获取头文件
-          curl -sL "https://github.com/opencv/opencv/archive/refs/tags/4.10.0.zip" -o opencv.zip
-          unzip -q opencv.zip
-          mkdir -p hook/third_party/opencv/include
-          cp -r opencv-4.10.0/modules/core/include/opencv2 hook/third_party/opencv/include/
-          # 创建 opencv_modules.hpp
-          echo '#pragma once' > hook/third_party/opencv/include/opencv2/opencv_modules.hpp
-          echo '#define HAVE_OPENCV_CORE' >> hook/third_party/opencv/include/opencv2/opencv_modules.hpp
-          rm -rf opencv.zip opencv-4.10.0
-          echo "OpenCV headers downloaded successfully."
+          # 下载 rcedit
+          curl -L https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -o rcedit.exe
 
-      - name: Build Hook DLLs
-        shell: cmd
-        run: |
-          cd hook
-          mkdir build
-          cd build
-          cmake .. -A x64
-          cmake --build . --config Release
-          echo "Hook DLLs built successfully."
+          # 修改 exe 图标
+          ./rcedit.exe "MFA/MFAAvalonia.exe" --set-icon "m9a.ico"
 
-      - name: Download Embedded Python
+          echo "MFAAvalonia icon modified successfully"
+
+      - name: Setup Embed Python on Windows
         shell: bash
         run: |
-          PYTHON_VERSION="3.12.8"
-          if [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-            PYTHON_ARCH="amd64"
-          else
-            PYTHON_ARCH="arm64"
-          fi
-          PYTHON_URL="https://www.python.org/ftp/python/${PYTHON_VERSION}/python-${PYTHON_VERSION}-embed-${PYTHON_ARCH}.zip"
-          echo "Downloading Python from: ${PYTHON_URL}"
-          mkdir -p install/python
-          curl -L -o python-embed.zip "${PYTHON_URL}"
-          unzip -o python-embed.zip -d install/python
-          rm python-embed.zip
-          echo "Python embedded downloaded successfully."
-
-      - name: Configure Embedded Python and Install Packages
+          python tools/ci/setup_embed_python.py
+          
+      - name: Download Python dependencies
         shell: bash
         run: |
-          # 配置 python312._pth 文件，添加 packages 目录
-          PTH_FILE="install/python/python312._pth"
-          printf '%s\n' \
-            "python312.zip" \
-            "." \
-            "packages" \
-            "" \
-            "# Uncomment to run site.main() automatically" \
-            "#import site" \
-            > "${PTH_FILE}"
+          ./install/python/python.exe tools/ci/download_deps.py --deps-dir install/deps
 
-          # 创建 packages 目录
-          mkdir -p install/python/packages
-
-          # 确定目标平台
-          if [[ "${{ matrix.arch }}" == "x86_64" ]]; then
-            PLATFORM="win_amd64"
-          else
-            PLATFORM="win_arm64"
-          fi
-
-          # 下载纯 Python 包（不需要指定平台）
-          python -m pip download --no-deps -d temp_packages strenum MaaAgentBinary
-
-          # 下载平台特定的包（maafw 和 numpy 包含 native 代码）
-          python -m pip download --no-deps --only-binary=:all: \
-            --platform "${PLATFORM}" \
-            --python-version 312 \
-            -d temp_packages \
-            maafw numpy
-
-          # 解压 wheel 包到 packages 目录
-          for whl in temp_packages/*.whl; do
-            if [ -f "$whl" ]; then
-              echo "Extracting: $whl"
-              unzip -o "$whl" -d install/python/packages
-            fi
-          done
-
-          # 清理临时文件
-          rm -rf temp_packages
-
-          echo "Python packages installed successfully."
+      - name: Download drop_core module
+        shell: bash
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: |
+          ./install/python/python.exe tools/ci/download_drop_core.py --os windows --arch ${{ matrix.arch }} || echo "drop_core download skipped"
 
       - name: Install
-        shell: pwsh
+        shell: bash
         run: |
-          if (Test-Path "MFA") {
-            Write-Host "Copying MFA files to install directory..."
-            New-Item -ItemType Directory -Force -Path install | Out-Null
-            Copy-Item -Path "MFA\*" -Destination "install" -Recurse -Force
+          PLATFORM_TAG="win-${{ steps.platform.outputs.tag }}"
+          ./install/python/python.exe ./tools/ci/install.py ${{ needs.meta.outputs.tag }} $PLATFORM_TAG
+          cp -rpvn tools/registry/. install/
 
-            # 强制把自己的 logo 复制到 GUI 的资源目录里覆盖默认文件
-            Copy-Item -Path "assets\logo.ico" -Destination "install\Assets\logo.ico" -Force -ErrorAction SilentlyContinue
-
-            Write-Host "MFA files copied successfully."
-          } else {
-            Write-Host "MFA directory not found, skipping copy."
-          }
-
-          cd tools
-          python -m pip install -r .\requirements.txt
-          python .\install.py ${{ needs.meta.outputs.tag }} win ${{ matrix.arch }}
-          cd ..
-
-      - name: Customize exe icon and name
-        shell: pwsh
+      - name: Create CLI version
+        shell: bash
         run: |
-          # 下载 rcedit 工具
-          $RCEDIT_VERSION = "v2.0.0"
-          Invoke-WebRequest -Uri "https://github.com/electron/rcedit/releases/download/${RCEDIT_VERSION}/rcedit-x64.exe" -OutFile "rcedit.exe"
+          ./install/python/python.exe ./tools/ci/install_cli.py ${{ needs.meta.outputs.tag }}
+          cp -rpvn tools/registry/. install-cli/
+          cp -rpvn install/python/. install-cli/python/
+          rm -rf install-cli/deps 2>/dev/null || true
 
-          # 使用 rcedit 修改 exe 图标
-          .\rcedit.exe install\MFAAvalonia.exe --set-icon assets\logo.ico
+      - name: Copy MFA files to main version
+        shell: bash
+        run: |
+          if [ -d "MFA" ]; then
+            echo "Copying MFA files to install directory..."
+            mkdir -p install
+            cp -rpvn MFA/. install/
+          else
+            echo "MFA directory not found, skipping copy."
+          fi
 
-          # 重命名 exe 文件
-          Rename-Item -Path "install\MFAAvalonia.exe" -NewName "MSA天狼星小助手.exe"
+      - name: Replace Assets with custom assets folder
+        shell: bash
+        run: |
+          # 删除大写的 Assets 文件夹
+          if [ -d "install/Assets" ]; then
+            rm -rf install/Assets
+            echo "Removed original Assets folder"
+          fi
 
-          Write-Host "Exe customization completed: icon changed and renamed to MSA天狼星小助手.exe"
+          # 创建小写的 assets 文件夹
+          mkdir -p install/assets
+
+          # 如果有自定义图标，复制并重命名为 logo.ico
+          if [ -f "m9a.ico" ]; then
+            cp m9a.ico install/assets/logo.ico
+            echo "Copied custom icon to assets/logo.ico"
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MSA-win-${{ matrix.arch }}
+          name: M9A-win-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Full
           path: "install"
 
-  # 非 Windows 平台在 Ubuntu 上构建
-  install:
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M9A-win-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Lite
+          path: "install-cli"
+
+  linux:
     needs: meta
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [macos, linux, android]
         arch: [aarch64, x86_64]
       fail-fast: false
 
@@ -251,81 +230,261 @@ jobs:
         with:
           submodules: true
 
-      - name: Download MaaFramework
+      - name: Set platform variables
+        id: platform
+        shell: bash
+        run: |
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then
+            echo "tag=x64" >> $GITHUB_OUTPUT
+          else
+            echo "tag=arm64" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download MaaFramework for Linux
         uses: robinraju/release-downloader@v1
         with:
           repository: MaaXYZ/MaaFramework
-          fileName: "MAA-${{ matrix.os }}-${{ matrix.arch }}*"
-          latest: true
+          fileName: "MAA-linux-${{ matrix.arch }}*"
+          tag: ${{ env.MAA_FRAMEWORK_VERSION }}
           out-file-path: "deps"
           extract: true
 
-      - name: Download MFAAvalonia
-        if: matrix.os != 'android'
+      - name: Download MFAAvalonia for Linux
         id: download_mfa
         uses: robinraju/release-downloader@v1
         with:
           repository: SweetSmellFox/MFAAvalonia
-          fileName: "MFAAvalonia-*-${{ (matrix.os == 'macos' && 'osx') || (matrix.os == 'linux' && 'linux') }}-${{ (matrix.arch == 'x86_64' && 'x64') || (matrix.arch == 'aarch64' && 'arm64') }}*"
-          latest: true
+          fileName: "MFAAvalonia-*-linux-${{ steps.platform.outputs.tag }}*"
+          tag: ${{ env.MFAA_VERSION }}
           out-file-path: "MFA"
           extract: true
 
-      - name: Clean up MFAAvalonia archive
-        if: matrix.os != 'android'
+      - name: Clean up MFAAvalonia archive on Linux
         shell: bash
         run: |
           ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
           rm -f "${ARCHIVE_FILE_PATH}"
-          echo "Archive cleanup command executed for MFAAvalonia."
+          echo "Archive cleanup command executed for MFAAvalonia on Linux."
 
-      - name: Remove built-in runtime in MFA
-        if: matrix.os != 'android'
+      - name: Convert PNG to ICO
         shell: bash
         run: |
-          rm -rf MFA/runtimes
+          # 安装 ImageMagick（如果未安装）
+          sudo apt-get update && sudo apt-get install -y imagemagick
 
-      # 非 Windows 平台：修改 interface.json 使用系统 Python
-      - name: Fix interface.json for non-Windows platforms
-        if: matrix.os != 'android'
+          # 转换 PNG 到 ICO
+          convert assets/logo.png -define icon:auto-resize=256,128,64,48,32,24,16 m9a.ico
+
+      - name: Download Python dependencies
         shell: bash
         run: |
-          # 将 ./python/python.exe 替换为 python3
-          sed -i 's|"./python/python.exe"|"python3"|g' assets/interface.json
-          echo "interface.json updated for ${{ matrix.os }} platform."
+          python tools/ci/download_deps.py --deps-dir install/deps
 
-      - name: Install
+      - name: Download drop_core module
+        shell: bash
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: |
+          python tools/ci/download_drop_core.py --os linux --arch ${{ matrix.arch }} || echo "drop_core download skipped"
+
+      - name: Install on Linux
         shell: bash
         run: |
-          if [[ "${{ matrix.os }}" != "android" ]]; then
-            if [ -d "MFA" ]; then
-              echo "Copying MFA files to install directory..."
-              mkdir -p install
-              rsync -av --ignore-existing MFA/ install/
+          PYTHON_EXECUTABLE="python"
+          PLATFORM_TAG="linux-${{ steps.platform.outputs.tag }}"
+          echo "Using Python executable: $PYTHON_EXECUTABLE for Linux"
+          $PYTHON_EXECUTABLE ./tools/ci/install.py ${{ needs.meta.outputs.tag }} $PLATFORM_TAG
 
-              # 强制把自己的 logo 复制到 GUI 的资源目录里覆盖默认文件
-              cp assets/logo.ico install/Assets/logo.ico || echo "Logo copy failed!"
+      - name: Create CLI version
+        shell: bash
+        run: |
+          python ./tools/ci/install_cli.py ${{ needs.meta.outputs.tag }}
+          if [ -d "install/python" ]; then
+            cp -rpvn install/python/. install-cli/python/
+          fi
+          rm -rf install-cli/deps 2>/dev/null || true
 
-              echo "MFA files copied successfully."
-            else
-              echo "MFA directory not found, skipping copy."
-            fi
+      - name: Copy MFA files to main version
+        shell: bash
+        run: |
+          if [ -d "MFA" ]; then
+            echo "Copying MFA files to install directory on Linux..."
+            mkdir -p install
+            rsync -av --ignore-existing MFA/ install/
           else
-            echo "Skipping copy MFA for Android."
+            echo "MFA directory not found on Linux, skipping copy."
           fi
 
-          cd tools/
-          python -m pip install -r ./requirements.txt
-          python ./install.py ${{ needs.meta.outputs.tag }} ${{ matrix.os }} ${{ matrix.arch }}
-          cd ..
+      - name: Replace Assets with custom assets folder
+        shell: bash
+        run: |
+          # 删除大写的 Assets 文件夹
+          if [ -d "install/Assets" ]; then
+            rm -rf install/Assets
+            echo "Removed original Assets folder"
+          fi
+
+          # 创建小写的 assets 文件夹
+          mkdir -p install/assets
+
+          # 如果有自定义图标，复制并重命名为 logo.ico
+          if [ -f "m9a.ico" ]; then
+            cp m9a.ico install/assets/logo.ico
+            echo "Copied custom icon to assets/logo.ico"
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: MSA-${{ matrix.os }}-${{ matrix.arch }}
+          name: M9A-linux-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Full
           path: "install"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M9A-linux-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Lite
+          path: "install-cli"
+
+  macos:
+    needs: meta
+    strategy:
+      matrix:
+        include:
+          - arch: x86_64
+            runner: macos-15-intel  # Intel-based macOS runner
+          - arch: aarch64
+            runner: macos-latest  # Apple Silicon macOS runner
+      fail-fast: false
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set platform variables
+        id: platform
+        shell: bash
+        run: |
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then
+            echo "tag=x64" >> $GITHUB_OUTPUT
+          else
+            echo "tag=arm64" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download MaaFramework for macOS
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          fileName: "MAA-macos-${{ matrix.arch }}*"
+          tag: ${{ env.MAA_FRAMEWORK_VERSION }}
+          out-file-path: "deps"
+          extract: true
+
+      - name: Download MFAAvalonia for macOS
+        id: download_mfa
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: SweetSmellFox/MFAAvalonia
+          fileName: "MFAAvalonia-*-osx-${{ steps.platform.outputs.tag }}*"
+          tag: ${{ env.MFAA_VERSION }}
+          out-file-path: "MFA"
+          extract: true
+
+      - name: Clean up MFAAvalonia archive on macOS
+        shell: bash
+        run: |
+          ARCHIVE_FILE_PATH="${{ fromJson(steps.download_mfa.outputs.downloaded_files)[0] }}"
+          rm -f "${ARCHIVE_FILE_PATH}"
+          echo "Archive cleanup command executed for MFAAvalonia on macOS."
+
+      - name: Convert PNG to ICO
+        shell: bash
+        run: |
+          # 安装 ImageMagick（如果未安装）
+          brew install imagemagick
+
+          # 转换 PNG 到 ICO
+          magick convert assets/logo.png -define icon:auto-resize=256,128,64,48,32,24,16 m9a.ico
+
+      - name: Setup Embed Python on macOS
+        shell: bash
+        run: |
+          python3 tools/ci/setup_embed_python.py
+          EMBED_PYTHON_PATH="./install/python/bin/python3"
+          if [ -f "$EMBED_PYTHON_PATH" ]; then
+            echo "Setting execute permission for $EMBED_PYTHON_PATH"
+            chmod +x "$EMBED_PYTHON_PATH"
+          else
+            echo "Warning: Embedded Python executable not found at $EMBED_PYTHON_PATH. Skipping chmod."
+          fi
+
+      - name: Download Python dependencies
+        shell: bash
+        run: |
+          ./install/python/bin/python3 tools/ci/download_deps.py --deps-dir install/deps
+
+      - name: Download drop_core module
+        shell: bash
+        env:
+          PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
+        run: |
+          ./install/python/bin/python3 tools/ci/download_drop_core.py --os darwin --arch ${{ matrix.arch }} || echo "drop_core download skipped"
+
+      - name: Install on macOS
+        shell: bash
+        run: |
+          PYTHON_EXECUTABLE="./install/python/bin/python3"
+          PLATFORM_TAG="osx-${{ steps.platform.outputs.tag }}"
+          echo "Using Python executable: $PYTHON_EXECUTABLE for macOS"
+          $PYTHON_EXECUTABLE ./tools/ci/install.py ${{ needs.meta.outputs.tag }} $PLATFORM_TAG
+
+      - name: Create CLI version
+        shell: bash
+        run: |
+          ./install/python/bin/python3 ./tools/ci/install_cli.py ${{ needs.meta.outputs.tag }}
+          cp -rpvn install/python/. install-cli/python/
+          rm -rf install-cli/deps 2>/dev/null || true
+
+      - name: Copy MFA files to main version
+        shell: bash
+        run: |
+          if [ -d "MFA" ]; then
+            echo "Copying MFA files to install directory on macOS..."
+            mkdir -p install
+            rsync -av --ignore-existing MFA/ install/ # Using rsync like on Linux
+          else
+            echo "MFA directory not found on macOS, skipping copy."
+          fi
+
+      - name: Replace Assets with custom assets folder
+        shell: bash
+        run: |
+          # 删除大写的 Assets 文件夹
+          if [ -d "install/Assets" ]; then
+            rm -rf install/Assets
+            echo "Removed original Assets folder"
+          fi
+
+          # 创建小写的 assets 文件夹
+          mkdir -p install/assets
+
+          # 如果有自定义图标，复制并重命名为 logo.ico
+          if [ -f "m9a.ico" ]; then
+            cp m9a.ico install/assets/logo.ico
+            echo "Copied custom icon to assets/logo.ico"
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M9A-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Full
+          path: "install"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: M9A-macos-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Lite
+          path: "install-cli"
 
   changelog:
     name: Generate changelog
+    needs: meta
     runs-on: ubuntu-latest
     outputs:
       release_body: ${{ steps.git-cliff.outputs.content }}
@@ -340,27 +499,63 @@ jobs:
         id: git-cliff
         with:
           config: .github/cliff.toml
-          args: -vv --latest --strip header
+          # 正式版：使用 tag-pattern 只匹配正式版标签，包含所有从上一个正式版以来的提交
+          # 预发布版：正常生成，只包含从上一个标签以来的提交
+          args: >-
+            -vv --latest --strip header
+            ${{ needs.meta.outputs.is_prerelease == 'false' && '--tag-pattern "^v[0-9]+\\.[0-9]+\\.[0-9]+$"' || '' }}
         env:
           OUTPUT: CHANGES.md
           GITHUB_REPO: ${{ github.repository }}
 
   release:
     if: ${{ needs.meta.outputs.is_release == 'true' }}
-    needs: [meta, install, install-windows, changelog]
+    needs: [meta, windows, linux, macos, changelog]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: assets
 
-      - run: |
+      - name: Process and package artifacts
+        run: |
           cd assets
           for f in *; do
-            (cd $f && zip -r ../$f-${{ needs.meta.outputs.tag }}.zip .)
+            if [[ $f == *"win"* ]]; then
+              (cd "$f" && zip -r "../$f.zip" .)
+            else
+              echo "Processing Unix artifact: $f"
+
+              if [[ -f "$f/MaaPiCli" ]]; then
+                chmod +x "$f/MaaPiCli"
+                echo "Set execute permission for $f/MaaPiCli"
+              fi
+
+              find "$f" -type f -name "MFAAvalonia*" -exec chmod +x {} \; 2>/dev/null || true
+              echo "Set execute permission for all MFAAvalonia files"
+
+              find "$f" -type f -name "MFAUpdater*" -exec chmod +x {} \; 2>/dev/null || true
+              echo "Set execute permission for all MFAUpdater files"
+
+              PYTHON_PATHS=(
+                "$f/python/bin/python3"
+                "$f/python/python"
+                "$f/python/bin/python"
+                "$f/python/python.exe"
+              )
+              for PYTHON_PATH in "${PYTHON_PATHS[@]}"; do
+                if [[ -f "$PYTHON_PATH" ]]; then
+                  chmod +x "$PYTHON_PATH"
+                  echo "Set execute permission for $PYTHON_PATH"
+                fi
+              done
+
+              tar -cpzf "$f.tar.gz" -C "$f" .
+              echo "Created archive with preserved permissions: $f.tar.gz"
+            fi
           done
-          
-      - uses: softprops/action-gh-release@v2
+
+      - uses: softprops/action-gh-release@v2.2.2
         with:
           files: assets/*
           tag_name: ${{ needs.meta.outputs.tag }}
@@ -368,14 +563,10 @@ jobs:
           draft: false
           prerelease: ${{ needs.meta.outputs.is_prerelease == 'true' }}
 
-        # Mirror酱为第三方分发服务，新项目默认关闭
-        # 若有需要请联系 Mirror酱 开通，直接自行开启是无法使用的
-        # https://mirrorchyan.com/
       - name: Trigger MirrorChyanUploading
-        if: false
         shell: bash
         run: |
-          gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan_release.yml -f tag=${{ needs.meta.outputs.tag }}
+          gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan.yml -f tag=${{ needs.meta.outputs.tag }}
           gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan_release_note.yml -f tag=${{ needs.meta.outputs.tag }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

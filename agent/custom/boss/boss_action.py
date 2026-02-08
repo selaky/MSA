@@ -2,9 +2,9 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import boss_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import json
-from utils.common_func import dynamic_set_focus
+from agent.custom.general.general_func import dynamic_set_focus
 
 @AgentServer.custom_action("reset_boss_data")
 class ResetBossData(CustomAction):

@@ -6,9 +6,9 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import battle_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import json
-from utils import common_func
+from agent.custom.general import general_func
 
 @AgentServer.custom_action("set_enemy_next")
 class SetEnemyNext(CustomAction):
@@ -20,10 +20,10 @@ class SetEnemyNext(CustomAction):
 
         # 根据是否放生重定向后续节点
         if action.is_release_op:
-            common_func.dynamic_set_next(context, pre_node="放生分流", next_node="放生-放弃感染")
+            general_func.dynamic_set_next(context, pre_node="放生分流", next_node="放生-放弃感染")
             msg = f"[{argv.node_name}] 已将放生分流重定向为放生分支"
         else:
-            common_func.dynamic_set_next(context, pre_node="放生分流", next_node="战斗失败处理")
+            general_func.dynamic_set_next(context, pre_node="放生分流", next_node="战斗失败处理")
             msg = f"[{argv.node_name}] 已将放生分流重定向为战斗失败"
 
         logger.debug(msg)
@@ -48,7 +48,7 @@ class BattleWin(CustomAction):
             # 多次战斗获得胜利
             msg = f"[⚔️击败] {current.name} LV.{current.level} {current.mode} | 击杀花费次数: {current.battle_count}"
 
-        common_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",msg)
+        general_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",msg)
         return CustomAction.RunResult(success=True)
     
 @AgentServer.custom_action("battle_lose")
@@ -75,12 +75,12 @@ class BattleRelease(CustomAction):
 
         # 整理用户需要看到的信息
         focus_msg = f"[👋 放生] {current.name} LV.{current.level} {current.mode} | 累计放生: {release_count}"
-        common_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",focus_msg)
+        general_func.dynamic_set_focus(context,"输出战斗信息","RECO_OK",focus_msg)
 
         # 如果需要发送公屏信息,进行相关处理
         if battle_manager.current_config.broadcast:
             # 将后续节点导向公屏模块
-            common_func.dynamic_set_next(context,"放生广播分流","开始公屏发送")
+            general_func.dynamic_set_next(context,"放生广播分流","开始公屏发送")
 
             # 整理公屏需要发送的信息
             broadcast_msg = f"[感染者] {current.name} {current.mode} {battle_manager.current_config.broadcast_addition}"
@@ -91,9 +91,9 @@ class BattleRelease(CustomAction):
             })
 
             # 执行完公屏模块之后，回到战斗模块(测试期间会关闭点击发送消息的点击行为,防止发送错误消息 )
-            common_func.dynamic_set_next(context,"点击发送消息","放生结束")
+            general_func.dynamic_set_next(context,"点击发送消息","放生结束")
         else:
-            common_func.dynamic_set_next(context,"放生广播分流","放生结束")
+            general_func.dynamic_set_next(context,"放生广播分流","放生结束")
 
         return CustomAction.RunResult(success=True)
 
@@ -107,7 +107,7 @@ class SaveBattleConfig(CustomAction):
     """
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
         # 解析参数
-        params = common_func.parse_params(
+        params = general_func.parse_params(
             param_str=argv.custom_action_param,
             node_name=argv.node_name,
             required_keys=["config_key", "config_value"]
@@ -142,7 +142,7 @@ class FinalizeBattleConfig(CustomAction):
         logger.debug(f"[{argv.node_name}] 战斗配置完成:\n{summary}")
 
         # 设置 focus 消息显示给用户
-        common_func.dynamic_set_focus(
+        general_func.dynamic_set_focus(
             context,
             "战斗设置完成",
             "RECO_OK",
@@ -164,7 +164,7 @@ class CheckBattleConfig(CustomAction):
             logger.error(f"[{argv.node_name}] {error_msg}")
 
             # 设置 focus 消息提示用户
-            common_func.dynamic_set_focus(
+            general_func.dynamic_set_focus(
                 context,
                 "检查战斗配置",
                 "RECO_OK",

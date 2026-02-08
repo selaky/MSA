@@ -1,8 +1,8 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
-from .logger import logger
-from . import common_func
+from ...utils.logger import logger
+from . import general_func
 
 @AgentServer.custom_recognition("check_deadline")
 class CheckDeadline(CustomRecognition):
@@ -14,7 +14,7 @@ class CheckDeadline(CustomRecognition):
     ) -> CustomRecognition.AnalyzeResult:
           
         # 获取用户参数
-        params = common_func.parse_params(
+        params = general_func.parse_params(
                 param_str=argv.custom_recognition_param, 
                 node_name=argv.node_name, 
                 required_keys=["target_hour", "target_minute"]
@@ -35,7 +35,7 @@ class CheckDeadline(CustomRecognition):
 
         # 调用判断
         try:
-            should_stop = common_func.is_after_target_time(target_hour, target_minute)
+            should_stop = general_func.is_after_target_time(target_hour, target_minute)
         except ValueError as e:
             error_msg = f"时间数值不合法 (例如小时>23或分钟>59): {target_hour}:{target_minute}"
             logger.error(f"[{argv.node_name}] {error_msg}")

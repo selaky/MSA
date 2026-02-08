@@ -6,7 +6,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import arena_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import json
 
 stats = arena_manager.arena_stats # 简写

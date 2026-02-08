@@ -2,7 +2,7 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import battle_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import re
 
 @AgentServer.custom_recognition("extract_enemy_info")

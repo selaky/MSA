@@ -6,9 +6,9 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import recover_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import json
-from utils import common_func
+from agent.custom.general import general_func
 
 
 @AgentServer.custom_action("reset_potion_data")
@@ -27,7 +27,7 @@ class LoadPotionLimit(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
         # 获取设置参数
         try:
-             params = common_func.parse_params(
+             params = general_func.parse_params(
                 param_str=argv.custom_action_param,
                 node_name=argv.node_name,
                 required_keys=["ap_big", "ap_small","bc_big","bc_small"]
@@ -62,7 +62,7 @@ class LoadFreeRecover(CustomAction):
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
         # 获取设置参数
         try:
-             params = common_func.parse_params(
+             params = general_func.parse_params(
                 param_str=argv.custom_action_param,
                 node_name=argv.node_name,
                 required_keys=["free_recover"]

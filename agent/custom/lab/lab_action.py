@@ -2,15 +2,15 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
 from . import lab_manager
-from utils.logger import logger
+from agent.utils.logger import logger
 import json
-from utils import common_func
+from agent.custom.general import general_func
 
 @AgentServer.custom_action("select_all_low_star")
 class SelectAllLowStar(CustomAction):
     """依次点击所有一二三星卡"""
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
-        common_func.group_click(context, lab_manager.batch_select_rois)
+        general_func.group_click(context, lab_manager.batch_select_rois)
         return CustomAction.RunResult(success=True)
     
     
@@ -20,7 +20,7 @@ class ClickAllCard(CustomAction):
     逐个点击当前页面上的全部六张卡牌
     """
     def run(self, context: Context, argv: CustomAction.RunArg) -> CustomAction.RunResult:
-        common_func.group_click(context,lab_manager.card_slots)
+        general_func.group_click(context,lab_manager.card_slots)
 
         return CustomAction.RunResult(success=True)
     

@@ -6,8 +6,8 @@ from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
 from . import recover_manager
-from utils.logger import logger
-from utils import common_func 
+from agent.utils.logger import logger
+from agent.custom.general import general_func 
 
 @AgentServer.custom_recognition("should_use_potion")
 class ShouldUsePotion(CustomRecognition):
@@ -29,7 +29,7 @@ class ShouldUsePotion(CustomRecognition):
 
         # 获取设置参数
         try:
-             params = common_func.parse_params(
+             params = general_func.parse_params(
                 param_str=argv.custom_recognition_param,
                 node_name=argv.node_name,
                 required_keys=["potion_type"]
@@ -63,15 +63,15 @@ class ShouldUsePotion(CustomRecognition):
                 click_roi = self.click_rois["free"]
                 msg = f"使用免费恢复"
                 next_node = "顺利完成吃药"
-                common_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
-                common_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
+                general_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
+                general_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
                 logger.debug(msg)
                 return CustomRecognition.AnalyzeResult(box=click_roi, detail=msg)
             
         # OCR 获取当前药水库存
         try:
-            big_stock = common_func.extract_number_from_ocr(context,argv.image,task_name="BigPotion")
-            small_stock = common_func.extract_number_from_ocr(context,argv.image,task_name="SmallPotion")
+            big_stock = general_func.extract_number_from_ocr(context,argv.image,task_name="BigPotion")
+            small_stock = general_func.extract_number_from_ocr(context,argv.image,task_name="SmallPotion")
         except ValueError as e:
             msg = f"[{argv.node_name}] {e}"
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)
@@ -110,8 +110,8 @@ class ShouldUsePotion(CustomRecognition):
             next_node = "BC药水不可用"
 
         # 统一设定输出内容和后续走向
-        common_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
-        common_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
+        general_func.dynamic_set_focus(context,target_node="输出恢复反馈",trigger="RECO_OK",focus_msg=msg)
+        general_func.dynamic_set_next(context,pre_node="输出恢复反馈",next_node=next_node)
         logger.debug(msg)
         return CustomRecognition.AnalyzeResult(box=click_roi, detail=msg)
         

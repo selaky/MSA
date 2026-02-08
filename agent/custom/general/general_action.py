@@ -1,8 +1,8 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
-from .logger import logger
-from . import common_func
+from ...utils.logger import logger
+from . import general_func
 
 @AgentServer.custom_action("set_next")
 class SetNext(CustomAction):
@@ -15,7 +15,7 @@ class SetNext(CustomAction):
         
         # 获取设置参数
         try:
-             params = common_func.parse_params(
+             params = general_func.parse_params(
                 param_str=argv.custom_action_param,
                 node_name=argv.node_name,
                 required_keys=["pre_node", "next_node"]
@@ -31,7 +31,7 @@ class SetNext(CustomAction):
         logger.debug(f"[{argv.node_name}] 正在将 {pre_node} 的路由重定向至 {next_node}")
 
         # 将指定节点的 next 改写为要求的 next 列表
-        common_func.dynamic_set_next(context,pre_node,next_node)
+        general_func.dynamic_set_next(context,pre_node,next_node)
         return CustomAction.RunResult(success=True)
     
 @AgentServer.custom_action("click_all_custom_reco")
@@ -48,6 +48,6 @@ class ClickAllCustomReco(CustomAction):
         logger.debug(f"[{argv.node_name}] 开始执行点击，共 {len(click_targets)} 个目标。")
         # 从字典列表中提取 ROI 列表
         roi_list = [target["roi"] for target in click_targets]
-        common_func.group_click(context, roi_list)
+        general_func.group_click(context, roi_list)
 
         return CustomAction.RunResult(success=True)

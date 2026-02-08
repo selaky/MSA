@@ -7,7 +7,7 @@ from typing import Dict, List, Any
 import json
 from maa.context import Context
 import random
-from .logger import logger
+from ...utils.logger import logger
 
 def is_after_target_time(target_hour:int,target_minute:int) -> bool:
     """
