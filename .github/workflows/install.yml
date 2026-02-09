@@ -133,6 +133,8 @@ jobs:
 
       - name: Convert PNG to ICO
         shell: bash
+        env:
+          PYTHONUTF8: "1"
         run: |
           python -m pip install --upgrade pip pillow
           python - <<'PY'
