@@ -2,12 +2,14 @@
 # output: 各类模块
 # pos: 为各个模块提供通用工具。
 
+import json
+import random
 from datetime import datetime
 from typing import Dict, List, Any
-import json
+
 from maa.context import Context
-import random
-from ...utils.logger import logger
+
+from utils.logger import logger
 
 def is_after_target_time(target_hour:int,target_minute:int) -> bool:
     """

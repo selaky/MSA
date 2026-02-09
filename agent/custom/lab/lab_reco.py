@@ -1,8 +1,10 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
+
+from utils.logger import logger
+
 from . import lab_manager
-from agent.utils.logger import logger
 
 
 @AgentServer.custom_recognition("check_lab_filter")

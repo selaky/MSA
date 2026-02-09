@@ -5,9 +5,11 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
+
+from utils.logger import logger
+from custom.general import general_func
+
 from . import recover_manager
-from agent.utils.logger import logger
-from agent.custom.general import general_func 
 
 @AgentServer.custom_recognition("should_use_potion")
 class ShouldUsePotion(CustomRecognition):

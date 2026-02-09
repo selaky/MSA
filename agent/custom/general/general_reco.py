@@ -1,7 +1,9 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
-from ...utils.logger import logger
+
+from utils.logger import logger
+
 from . import general_func
 
 @AgentServer.custom_recognition("check_deadline")

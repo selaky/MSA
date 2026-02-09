@@ -2,13 +2,16 @@
 # output: 暂无
 # pos: 战斗相关动作
 
+import json
+
 from maa.agent.agent_server import AgentServer
 from maa.custom_action import CustomAction
 from maa.context import Context
+
+from utils.logger import logger
+from custom.general import general_func
+
 from . import battle_manager
-from agent.utils.logger import logger
-import json
-from agent.custom.general import general_func
 
 @AgentServer.custom_action("set_enemy_next")
 class SetEnemyNext(CustomAction):

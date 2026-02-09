@@ -5,9 +5,11 @@
 from maa.agent.agent_server import AgentServer
 from maa.custom_recognition import CustomRecognition
 from maa.context import Context
+
+from utils.logger import logger
+from custom.general.general_func import extract_number_from_ocr
+
 from . import boss_manager
-from agent.utils.logger import logger
-from agent.custom.general.general_func import extract_number_from_ocr
 
 
 @AgentServer.custom_recognition("should_boss_stop")
