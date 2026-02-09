@@ -134,13 +134,22 @@ jobs:
       - name: Convert PNG to ICO
         shell: bash
         run: |
-          # 安装 ImageMagick
-          choco install imagemagick -y
+          python -m pip install --upgrade pip pillow
+          python - <<'PY'
+          from PIL import Image
 
-          # 生成原版图标（蓝色）
-          magick convert assets/logo/blue.png -define icon:auto-resize=256,128,64,48,32,24,16 msa-base.ico
-          # 生成后台版图标（粉色）
-          magick convert assets/logo/pink.png -define icon:auto-resize=256,128,64,48,32,24,16 msa-bg.ico
+          sizes = [(256, 256), (128, 128), (64, 64), (48, 48), (32, 32), (24, 24), (16, 16)]
+          targets = [
+              ("assets/logo/blue.png", "msa-base.ico"),
+              ("assets/logo/pink.png", "msa-bg.ico"),
+          ]
+
+          for source, output in targets:
+              img = Image.open(source).convert("RGBA")
+              img.save(output, format="ICO", sizes=sizes)
+
+          print("ICO 生成完成")
+          PY
 
       - name: Modify MFAAvalonia exe icon
         if: matrix.arch == 'x86_64'
