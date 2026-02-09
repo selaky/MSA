@@ -13,11 +13,12 @@ from configure import configure_ocr_model
 # from generate_manifest_cache import generate_manifest_cache  # 热更新暂停
 
 def load_jsonc(path):
-    """解析 JSONC 文件（去除 // 和 /* */ 注释后加载）"""
+    """解析 JSONC 文件（去除字符串外的 // 和 /* */ 注释后加载）"""
     with open(path, "r", encoding="utf-8") as f:
         text = f.read()
-    text = re.sub(r'//.*?$', '', text, flags=re.MULTILINE)
-    text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+    # 匹配字符串字面量或注释，保留字符串、去除注释
+    pattern = r'"(?:[^"\\]|\\.)*"|//.*?$|/\*.*?\*/'
+    text = re.sub(pattern, lambda m: m.group() if m.group().startswith('"') else '', text, flags=re.MULTILINE | re.DOTALL)
     return json.loads(text)
 
 
