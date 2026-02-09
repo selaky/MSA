@@ -3,6 +3,7 @@ from pathlib import Path
 import shutil
 import sys
 import json
+import re
 import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -10,6 +11,15 @@ sys.path.append(script_dir)
 
 from configure import configure_ocr_model
 # from generate_manifest_cache import generate_manifest_cache  # 热更新暂停
+
+def load_jsonc(path):
+    """解析 JSONC 文件（去除 // 和 /* */ 注释后加载）"""
+    with open(path, "r", encoding="utf-8") as f:
+        text = f.read()
+    text = re.sub(r'//.*?$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+    return json.loads(text)
+
 
 working_dir = Path(__file__).parent.parent.parent
 install_path = working_dir / Path("install")
@@ -67,8 +77,7 @@ def install_resource():
         install_path,
     )
 
-    with open(install_path / "interface.json", "r", encoding="utf-8") as f:
-        interface = json.load(f)
+    interface = load_jsonc(install_path / "interface.json")
 
     interface["version"] = version
     interface["custom_title"] = f"MSA {version} | 天狼星小助手"
@@ -104,8 +113,7 @@ def install_agent():
         dirs_exist_ok=True,
     )
 
-    with open(install_path / "interface.json", "r", encoding="utf-8") as f:
-        interface = json.load(f)
+    interface = load_jsonc(install_path / "interface.json")
 
     if sys.platform.startswith("win"):
         interface["agent"]["child_exec"] = r"./python/python.exe"
