@@ -226,6 +226,14 @@ jobs:
             echo "Copied custom icon to assets/logo.ico"
           fi
 
+      - name: Rename MFAAvalonia exe
+        shell: bash
+        run: |
+          if [ -f "install/MFAAvalonia.exe" ]; then
+            mv "install/MFAAvalonia.exe" "install/MSA天狼星小助手.exe"
+            echo "Renamed MFAAvalonia.exe -> MSA天狼星小助手.exe"
+          fi
+
       - uses: actions/upload-artifact@v4
         with:
           name: MSA-win-${{ matrix.arch }}-${{ needs.meta.outputs.tag }}-Base
@@ -240,6 +248,13 @@ jobs:
           ./install/python/python.exe ./tools/ci/create_background_variant.py \
             --hook-dir hook/build/bin/Release \
             --icon msa-bg.ico
+
+      - name: Modify Background variant exe icon
+        if: matrix.arch == 'x86_64'
+        shell: bash
+        run: |
+          ./rcedit.exe "install-bg/MSA天狼星小助手.exe" --set-icon "msa-bg.ico"
+          echo "Background variant exe icon modified successfully"
 
       - uses: actions/upload-artifact@v4
         if: matrix.arch == 'x86_64'
