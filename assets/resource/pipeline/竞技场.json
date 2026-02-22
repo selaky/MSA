@@ -356,27 +356,17 @@
       "type": "DirectHit"
     }
   },
-  "记录竞技场积分": {
+  "ArenaPoints": {
     "$__mpe_code": {
       "position": {
-        "x": 1800,
+        "x": 0,
         "y": 503
       }
     },
-    "action": {
-      "param": {
-        "custom_action": "store_current_arena_points"
-      },
-      "type": "Custom"
-    },
-    "next": [
-      "判断继续竞技场",
-      "进入竞技场结束流程"
-    ],
     "recognition": {
       "param": {
         "expected": [
-          "^(0|[1-9]\\d*)$"
+          ""
         ],
         "roi": [
           419,
@@ -386,6 +376,28 @@
         ]
       },
       "type": "OCR"
+    }
+  },
+  "记录竞技场积分": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1800,
+        "y": 503
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "DoNothing"
+    },
+    "next": [
+      "判断继续竞技场",
+      "进入竞技场结束流程"
+    ],
+    "recognition": {
+      "param": {
+        "custom_recognition": "store_arena_points"
+      },
+      "type": "Custom"
     }
   },
   "设置竞技场数据统计": {

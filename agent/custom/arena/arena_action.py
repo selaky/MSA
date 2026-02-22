@@ -39,24 +39,6 @@ class LoadArenaData(CustomAction):
             logger.error(f"[读取竞技场设置]初始化失败: {e}")
             return False
         
-@AgentServer.custom_action("store_current_arena_points")
-class StoreCurrentArenaPoints(CustomAction):
-    """储存 OCR 识别到的当前积分"""
-    def run(self,context:Context,argv:CustomAction.RunArg) -> bool:
-        try:
-            # 获取 OCR 结果
-            ocr_res = int(argv.reco_detail.best_result.text)
-            logger.debug(f"[记录竞技场积分] OCR 识别结果为 {ocr_res}")
-
-            # 储存 OCR 结果
-            stats.current_points = ocr_res
-            logger.debug(f"[记录竞技场积分]已保存当前竞技场积分为 {stats.current_points}")
-
-            return True
-        except Exception as e:
-            logger.error(f"[记录竞技场积分] 出错: {e}")
-            return False
-
 @AgentServer.custom_action("store_arena_result")
 class StoreArenaResult(CustomAction):
     """根据当前战斗结果是胜利还是失败，将相关统计数据加一"""

@@ -61,8 +61,9 @@ class ShouldBossPause(CustomRecognition):
         try:
             current_rank = extract_number_from_ocr(context,argv.image,"CurrentRank")
         except ValueError as e:
-            msg = f"[{argv.node_name}] 排名识别失败，使用默认值继续: {e}"
-            logger.error(msg)
+            msg = f"[{argv.node_name}] 排名识别失败: {e}"
+            logger.debug(msg)
+            logger.warning("未识别到当前 boss 战排名，可能是尚未开始第一次作战或识别失败，将默认继续战斗")
             return CustomRecognition.AnalyzeResult(box=None, detail=msg)
 
         # 更新储存的当前排名
