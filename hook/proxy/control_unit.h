@@ -144,6 +144,10 @@ private:
     // 游戏窗口句柄
     HWND hwnd_;
 
+    // 最后一次 touch_down/touch_move 的坐标（供 touch_up 使用）
+    int last_x_ = 0;
+    int last_y_ = 0;
+
     // 共享内存管理器
     std::unique_ptr<SharedMemoryManager> shared_memory_;
 

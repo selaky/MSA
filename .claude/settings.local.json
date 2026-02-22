@@ -31,7 +31,9 @@
       "WebFetch(domain:1999.fan)",
       "mcp__mcp-router__find_file",
       "Bash(test:*)",
-      "mcp__mcp-router__sequentialthinking"
+      "mcp__mcp-router__sequentialthinking",
+      "Bash(gh search:*)",
+      "mcp__mcp-router__find_symbol"
     ],
     "deny": [],
     "ask": []
