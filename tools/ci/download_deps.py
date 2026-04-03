@@ -12,8 +12,6 @@ import argparse
 import platform
 from pathlib import Path
 
-sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[attr-defined]
-
 
 def get_platform_tag():
     """自动检测当前平台并返回对应的平台标签"""
