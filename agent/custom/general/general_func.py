@@ -6,6 +6,7 @@ import json
 import random
 from datetime import datetime
 from typing import Dict, List, Any
+import time
 
 from maa.context import Context
 
@@ -143,7 +144,8 @@ def extract_number_from_ocr(context: Context, image, task_name: str) -> int:
         
     Returns:
         int: 提取到的数字
-        None: 如果没识别到、没文字、或文字里没有数字，则返回 None
+    Raises:
+        ValueError: OCR 未命中、结果异常、或文本中没有数字时抛出
     """
     # 执行 ocr 节点
     reco_detail = context.run_recognition(task_name,image)
@@ -155,13 +157,11 @@ def extract_number_from_ocr(context: Context, image, task_name: str) -> int:
     # 提取区域内所有识别到的结果,并按照横坐标排序拼在一起变成完整提取文本
     all_blocks = reco_detail.filtered_results
     try:
-        # 排序
         all_blocks.sort(key=lambda block: block.box[0])
     except Exception as e:
-        # 如果连坐标都读不出来，说明数据结构异常，报错
-        logger.error(f"排序 OCR 结果块时发生严重错误: {e}")
-        return None
-        # 组合文本,即使只识别到一个文本也没有问题
+        raise ValueError(f"OCR任务 [{task_name}] 的结果块结构异常，无法按坐标排序: {e}")
+    
+    # 组合文本,即使只识别到一个文本也没有问题
     ocr_text = "".join([b.text for b in all_blocks])
     
     # 清洗出数字
@@ -175,37 +175,39 @@ def extract_number_from_ocr(context: Context, image, task_name: str) -> int:
 
 def group_click(context: Context, roi_collection):
     # 如果传入的是字典，先转成列表
-        targets_to_click = []
-        if isinstance(roi_collection, dict):
-            targets_to_click = list(roi_collection.values())
-        elif isinstance(roi_collection,list):
-            targets_to_click = roi_collection
-        else:
-            raise ValueError(f"ROI 清单格式不对，必须为字典或列表,当前收到的内容为: {roi_collection}")
+    targets_to_click = []
+    if isinstance(roi_collection, dict):
+        targets_to_click = list(roi_collection.values())
+    elif isinstance(roi_collection,list):
+        targets_to_click = roi_collection
+    else:
+        raise ValueError(f"ROI 清单格式不对，必须为字典或列表,当前收到的内容为: {roi_collection}")
         
-        for index, item in enumerate(targets_to_click):
-            target_x, target_y = 0, 0
+    for index, item in enumerate(targets_to_click):
+        target_x, target_y = 0, 0
             
-            # item 可能是列表或元组，这里检查长度
-            # 假设 ROI 是 [x, y, w, h]，坐标是 [x, y]
-            if len(item) == 4:
-                x, y, w, h = item
-                # 在 ROI 范围内进行均匀随机
-                # 虽然游戏本身不检测点击,这里的随机没啥必要,但反正也不麻烦,顺手做一下
-                # 这里使用了 int() 确保坐标是整数
-                target_x = random.randint(int(x), int(x + w))
-                target_y = random.randint(int(y), int(y + h))
+        # item 可能是列表或元组，这里检查长度
+        # 假设 ROI 是 [x, y, w, h]，坐标是 [x, y]
+        if len(item) == 4:
+            x, y, w, h = item
+            # 在 ROI 范围内进行均匀随机
+            # 虽然游戏本身不检测点击,这里的随机没啥必要,但反正也不麻烦,顺手做一下
+            # 这里使用了 int() 确保坐标是整数
+            target_x = random.randint(int(x), int(x + w))
+            target_y = random.randint(int(y), int(y + h))
                 
-            elif len(item) == 2:
-                x, y = item
-                # 如果是坐标，直接使用
-                target_x, target_y = int(x), int(y)
+        elif len(item) == 2:
+            x, y = item
+            # 如果是坐标，直接使用
+            target_x, target_y = int(x), int(y)
                 
-            else:
-                # 快速失败：遇到格式不对的数据直接停下来，方便定位是哪个数据写错了
-                raise ValueError(f"数据格式错误: 第 {index+1} 个数据长度异常 (期望 2 或 4，实际 {len(item)})。内容: {item}")
-            # 执行点击
-            # 传入计算好的 target_x, target_y
-            context.tasker.controller.post_click(target_x, target_y).wait()
-
-        return True
+        else:
+            # 快速失败：遇到格式不对的数据直接停下来，方便定位是哪个数据写错了
+            raise ValueError(f"数据格式错误: 第 {index+1} 个数据长度异常 (期望 2 或 4，实际 {len(item)})。内容: {item}")
+        # 执行点击
+        # 传入计算好的 target_x, target_y
+        context.tasker.controller.post_click(target_x, target_y).wait()
+        # 每次点击后随机停顿 0.1 ~ 0.3 秒
+        if index < len(targets_to_click) - 1:  # 最后一次点击后不停顿
+            time.sleep(random.uniform(0.1, 0.3))
+    return True
