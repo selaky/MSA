@@ -3,14 +3,14 @@
     "$__mpe_code": {
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\导航\\返回主界面.json",
       "filename": "返回主界面",
-      "lastSyncTime": 1768894137797,
+      "lastSyncTime": 1770648039909,
       "prefix": "",
       "savedViewport": {
-        "x": -196,
-        "y": -612,
-        "zoom": 0.76
+        "x": 319,
+        "y": -374,
+        "zoom": 0.44
       },
-      "version": "v0.16.1"
+      "version": "v1.0.3"
     }
   },
   "$__mpe_external_意外处理_返回主界面": {
@@ -49,32 +49,20 @@
         "y": 1377
       }
     },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
-    },
     "next": [
       {
         "jump_back": true,
         "name": "意外处理"
       },
       "无后续路线"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
+    ]
   },
   "已回到主界面": {
     "$__mpe_code": {
       "position": {
-        "x": 716,
-        "y": 1330
+        "x": 736,
+        "y": 1419
       }
-    },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
     },
     "focus": {
       "Node.Recognition.Succeeded": "已回到主界面"
@@ -104,17 +92,9 @@
         "y": 972
       }
     },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
-    },
     "next": [
       "开始返回主界面"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
+    ]
   },
   "开始返回主界面": {
     "$__mpe_code": {
@@ -122,10 +102,6 @@
         "x": 370,
         "y": 938
       }
-    },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
     },
     "focus": {
       "Node.Recognition.Starting": "正在返回主界面"
@@ -143,12 +119,16 @@
         "jump_back": true,
         "name": "点击主界面"
       },
-      "已回到主界面"
+      "已回到主界面",
+      {
+        "jump_back": true,
+        "name": "退出选卡"
+      },
+      {
+        "jump_back": true,
+        "name": "返回保底点击"
+      }
     ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    },
     "timeout": 60000
   },
   "无后续路线": {
@@ -157,14 +137,6 @@
         "x": 1422,
         "y": 1417
       }
-    },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
-    },
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
     }
   },
   "点击主界面": {
@@ -191,6 +163,51 @@
         ]
       },
       "type": "OCR"
+    }
+  },
+  "返回保底点击": {
+    "$__mpe_code": {
+      "position": {
+        "x": 737,
+        "y": 1966
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          590,
+          560,
+          132,
+          42
+        ]
+      },
+      "type": "Click"
+    }
+  },
+  "退出选卡": {
+    "$__mpe_code": {
+      "position": {
+        "x": 731,
+        "y": 1712
+      }
+    },
+    "action": {
+      "param": {},
+      "type": "Click"
+    },
+    "recognition": {
+      "param": {
+        "roi": [
+          1111,
+          75,
+          145,
+          158
+        ],
+        "template": [
+          "实验室/确定-选卡.png"
+        ]
+      },
+      "type": "TemplateMatch"
     }
   }
 }

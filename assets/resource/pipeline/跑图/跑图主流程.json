@@ -4,14 +4,14 @@
       "filePath": "D:\\Projects\\MSA\\assets\\resource\\pipeline\\跑图\\跑图主流程.json",
       "filename": "跑图主流程",
       "isModifiedExternally": true,
-      "lastSyncTime": 1768901039568,
+      "lastSyncTime": 1770648020602,
       "prefix": "",
       "savedViewport": {
-        "x": -395,
-        "y": 161,
-        "zoom": 1
+        "x": -131,
+        "y": 113,
+        "zoom": 0.66
       },
-      "version": "v0.16.1"
+      "version": "v1.0.3"
     }
   },
   "$__mpe_external_升级_跑图主流程": {
@@ -74,29 +74,6 @@
         ]
       },
       "type": "TemplateMatch"
-    }
-  },
-  "保底点击-确定": {
-    "$__mpe_code": {
-      "position": {
-        "x": 1200,
-        "y": 0
-      }
-    },
-    "action": {
-      "param": {
-        "target": [
-          612,
-          412,
-          59,
-          15
-        ]
-      },
-      "type": "Click"
-    },
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
     }
   },
   "判断达到跑图时限": {
@@ -177,17 +154,9 @@
         "y": 45
       }
     },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
-    },
     "next": [
       "读取吃药上限"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
+    ]
   },
   "读取免费恢复": {
     "$__mpe_code": {
@@ -207,11 +176,7 @@
     },
     "next": [
       "跑图循环开始"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
+    ]
   },
   "读取吃药上限": {
     "$__mpe_code": {
@@ -234,10 +199,25 @@
     },
     "next": [
       "读取免费恢复"
-    ],
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
+    ]
+  },
+  "跑图保底点击-确定": {
+    "$__mpe_code": {
+      "position": {
+        "x": 1200,
+        "y": 0
+      }
+    },
+    "action": {
+      "param": {
+        "target": [
+          590,
+          560,
+          132,
+          42
+        ]
+      },
+      "type": "Click"
     }
   },
   "跑图循环开始": {
@@ -246,10 +226,6 @@
         "x": 900,
         "y": 17
       }
-    },
-    "action": {
-      "param": {},
-      "type": "DoNothing"
     },
     "next": [
       {
@@ -275,15 +251,11 @@
       },
       {
         "jump_back": true,
-        "name": "保底点击-确定"
+        "name": "跑图保底点击-确定"
       }
     ],
     "post_delay": 500,
-    "rate_limit": 500,
-    "recognition": {
-      "param": {},
-      "type": "DirectHit"
-    }
+    "rate_limit": 500
   },
   "跑图获得卡牌": {
     "$__mpe_code": {

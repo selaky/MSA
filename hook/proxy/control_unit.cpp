@@ -169,6 +169,10 @@ bool MsaControlUnit::touch_down(int contact, int x, int y, int pressure)
         return original_->touch_down(contact, x, y, pressure);
     }
 
+    // 保存坐标（供 touch_up 使用）
+    last_x_ = x;
+    last_y_ = y;
+
     // 设置目标坐标
     shared_memory_->set_target(x, y);
     shared_memory_->enable();
@@ -200,6 +204,10 @@ bool MsaControlUnit::touch_move(int contact, int x, int y, int pressure)
     // 更新目标坐标
     shared_memory_->set_target(x, y);
 
+    // 保存坐标（供 touch_up 使用）
+    last_x_ = x;
+    last_y_ = y;
+
     // 诊断日志
     wchar_t log_buffer[256];
     swprintf_s(log_buffer, L"[MSA] touch_move: (%d, %d), contact=%d\n", x, y, contact);
@@ -225,8 +233,8 @@ bool MsaControlUnit::touch_up(int contact)
     swprintf_s(log_buffer, L"[MSA] touch_up: contact=%d\n", contact);
     OutputDebugStringW(log_buffer);
 
-    // 发送鼠标抬起消息（使用当前坐标）
-    LPARAM lParam = MAKELPARAM(0, 0);  // 坐标在 touch_down/move 中已设置
+    // 发送鼠标抬起消息（使用 touch_down/touch_move 保存的坐标）
+    LPARAM lParam = MAKELPARAM(last_x_, last_y_);
     DWORD tick_up = GetTickCount();
     SendMessageW(hwnd_, WM_LBUTTONUP, 0, lParam);
     swprintf_s(log_buffer, L"[MSA] WM_LBUTTONUP 发送完成, tick=%u\n", tick_up);
